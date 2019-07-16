@@ -29,16 +29,16 @@
 - a.在路由器web界面“服务”选项中找到“恢复网易云音乐无版权歌曲”
 - b.勾选“启用UnblockNeteaseMusic”
 - c.勾选“启用严格模式”
-- c.“音源选择”选择“所有平台”
-- d.勾选“启用IPSet转发相关流量”
-- e.点击“保存&应用”
+- d.“音源选择”选择“所有平台”
+- e.勾选“启用IPSet转发相关流量”
+- f.点击“保存&应用”
 - 现在您局域网下的所有设备，无需任何设置即可正常播放网易云音乐无版权歌曲
 
 ## 效果图
 ### luci界面
   ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views1.jpg)
   ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views2.jpg)
-### PC网易云客户端
+### UWP网易云音乐客户端
   ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views3.jpg)
 
 ## 协议

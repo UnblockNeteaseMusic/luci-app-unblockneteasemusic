@@ -42,5 +42,6 @@
   ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views3.jpg)
 
 ## 协议
+### [核心功能\(UnblockNeteaseMusic\)](https://github.com/nondanee/UnblockNeteaseMusic)使用[MIT](https://github.com/nondanee/UnblockNeteaseMusic/blob/master/LICENSE)协议
 ### [源项目](https://github.com/maxlicheng/luci-app-unblockmusic)使用[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)协议
 ### [本项目](https://github.com/shell-script/luci-app-unblockmusic)使用[GNU General Public License v3.0](https://github.com/shell-script/luci-app-unblockmusic/blob/master/LICENSE)协议

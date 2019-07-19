@@ -1,3 +1,5 @@
+ - ### 欢迎加入我的Telegram群组：[@ctcgfw_openwrt_discuss](https://t.me/ctcgfw_openwrt_discuss)
+
 # 说明
 - 用于恢复网易云音乐无版权歌曲的LEDE/OpenWRT Luci插件
 - 核心功能github地址：[nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)

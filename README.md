@@ -1,10 +1,10 @@
  - ### 欢迎加入我的Telegram群组：[@ctcgfw_openwrt_discuss](https://t.me/ctcgfw_openwrt_discuss)
 
 # 说明
-- 用于恢复网易云音乐无版权歌曲的LEDE/OpenWRT Luci插件
-- 核心功能github地址：[nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
+- 用于恢复网易云音乐无版权歌曲的OpenWRT/LEDE Luci插件
+- 核心功能实现：[nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
 - 基于[maxlicheng](https://github.com/maxlicheng/luci-app-unblockmusic)的Luci插件进行二改，使源项目代码更方便的在路由器上运行
-- 温馨提示：本插件显式依赖node.js，如您的型号不支持，将无法使用
+- 温馨提示：本插件显式依赖node.js，如您的设备型号不支持，将无法使用
 
 ## 原理
 - 其原理是采用 [网易云旧链/QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云无版权歌曲链接
@@ -17,7 +17,7 @@
     #进入OpenWRT/LEDE源码package目录
     cd package
     #克隆插件源码
-    git clone https://github.com/shell-script/luci-app-unblockmusic.git
+    git clone https://github.com/project-openwrt/luci-app-unblockmusic.git
     #返回上一层目录
     cd ..
     #配置
@@ -38,12 +38,12 @@
 
 ## 效果图
 ### luci界面
-  ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views1.jpg)
-  ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views2.jpg)
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/views1.jpg)
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/views2.jpg)
 ### UWP网易云音乐客户端
-  ![Image text](https://raw.githubusercontent.com/shell-script/luci-app-unblockmusic/master/views/views3.jpg)
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/views3.jpg)
 
 ## 协议
 ### [核心功能\(UnblockNeteaseMusic\)](https://github.com/nondanee/UnblockNeteaseMusic)使用[MIT](https://github.com/nondanee/UnblockNeteaseMusic/blob/master/LICENSE)协议
 ### [源项目](https://github.com/maxlicheng/luci-app-unblockmusic)使用[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)协议
-### [本项目](https://github.com/shell-script/luci-app-unblockmusic)使用[GNU General Public License v3.0](https://github.com/shell-script/luci-app-unblockmusic/blob/master/LICENSE)协议
+### [本项目](https://github.com/project-openwrt/luci-app-unblockmusic)使用[GNU General Public License v3.0](https://github.com/project-openwrt/luci-app-unblockmusic/blob/master/LICENSE)协议

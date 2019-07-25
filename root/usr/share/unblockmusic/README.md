@@ -12,10 +12,10 @@
 
 ## 运行
 
-从源码运行
+使用 npx
 
 ```
-$ node app.js
+$ npx @nondanee/unblockneteasemusic
 ```
 
 或使用 Docker
@@ -31,7 +31,7 @@ $ docker-compose up
 ### 配置参数
 
 ```
-$ node app.js -h
+$ UnblockNeteaseMusic -h
 usage: unblockneteasemusic [-v] [-p port] [-u url] [-f host]
                            [-o source [source ...]] [-t token] [-e url] [-s]
                            [-h]
@@ -102,11 +102,11 @@ PAC 自动代理脚本地址 `http://<Server Name:PORT>/proxy.pac`
 作为依赖库使用
 
 ```
-$ npm install nondanee/UnblockNeteaseMusic
+$ npm install @nondanee/unblockneteasemusic
 ```
 
 ```javascript
-const match = require('unblockneteasemusic')
+const match = require('@nondanee/unblockneteasemusic')
 
 /** 
  * Set proxy or hosts if needed
@@ -120,7 +120,7 @@ global.hosts = {'i.y.qq.com': '59.37.96.220'}
  * @param {Array<String>||undefined} source support netease, qq, xiami, baidu, kugou, kuwo, migu, joox
  * @return {Promise<Object>}
  */
-match(418602084, ['netease', 'qq', 'xiami', 'baidu']).then(song => console.log(song))
+match(418602084, ['netease', 'qq', 'xiami', 'baidu']).then(console.log)
 ```
 
 ## 效果

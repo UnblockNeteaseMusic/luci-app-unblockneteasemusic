@@ -6,7 +6,7 @@
 # www.maxlicheng.com
 # 2019-06-08
 #
-# Second revision by [CTCGFW]Shell-Script
+# Second revision by [CTCGFW]Project-OpenWRT
 # 2019.07.15
 
 include $(TOPDIR)/rules.mk

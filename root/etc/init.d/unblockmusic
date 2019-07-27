@@ -46,7 +46,7 @@ iptables -t nat -A prerouting_rule -i br-lan -p tcp -m set --match-set music dst
 stop()
 {
 	kill -9 "$(ps | grep app.js | grep -v grep | awk '{print $1}')" >/dev/null 2>&1
-	kill -9 "$(ps | grep logcheck.sh | grep -v grep | awk '{print $1}')" >/dev/null 2>&1
+	kill -9 $(ps | grep logcheck.sh | grep -v grep | awk '{print $1}') >/dev/null 2>&1
 	rm -f /tmp/unblockmusic.log
 	echo "" > /var/etc/unblockmusic.include
 	/etc/init.d/firewall restart >/dev/null 2>&1

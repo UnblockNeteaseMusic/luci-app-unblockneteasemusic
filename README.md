@@ -2,7 +2,7 @@
 
 # 说明
 - 用于恢复网易云音乐无版权歌曲的OpenWRT/LEDE Luci插件
-- 核心功能实现：[nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
+- 核心功能基于：[nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
 - 基于[maxlicheng](https://github.com/maxlicheng/luci-app-unblockmusic)的Luci插件进行二改，使源项目代码更方便的在路由器上运行
 - 温馨提示：本插件显式依赖node.js，如您的设备型号不支持，将无法使用
 

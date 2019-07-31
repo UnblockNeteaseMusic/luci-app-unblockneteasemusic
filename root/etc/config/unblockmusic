@@ -1,6 +1,6 @@
 
 config unblockmusic
-	option enabled '1'
+	option enabled '0'
 	option enable_ipset_forward '0'
 	option http_port '5200'
 	option https_port '5201'

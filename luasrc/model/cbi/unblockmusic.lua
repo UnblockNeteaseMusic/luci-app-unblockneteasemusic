@@ -13,7 +13,7 @@ enabled.description = translate("启用本插件以恢复网易云音乐无版�
 enabled.default = 0
 enabled.rmempty = false
 
-enabled = s:option(Flag, "enable_ipset_forward", translate("启用IPSet劫持相关请求"))
+enabled = s:option(Flag, "enable_ipset_forward", translate("使用IPSet劫持相关请求"))
 enabled.description = translate("开启后，网易云音乐相关请求会被强制劫持到UnblockNeteaseMusic进行处理")
 enabled.default = 1
 enabled.rmempty = false

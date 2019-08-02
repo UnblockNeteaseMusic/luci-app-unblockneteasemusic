@@ -56,15 +56,15 @@ set_hosts(){
 
 		ip route add 223.252.199.10 dev lo
 	elif [ "${set_type}" = "stop" ]; then
-		music_id1="$(uci show dhcp| grep "interface"| grep -Eo "domain\[[0-9]+\]"| grep -Eo "[0-9]+")"
+		music_id1="$(uci show dhcp| grep "interface.music.163.com"| grep -Eo "domain\[[0-9]+\]"| grep -Eo "[0-9]+")"
 		uci delete dhcp.@domain["${music_id1}"]
 		uci commit dhcp
 
-		music_id2="$(uci show dhcp| grep "httpdns"| grep -Eo "domain\[[0-9]+\]"| grep -Eo "[0-9]+")"
+		music_id2="$(uci show dhcp| grep "music.httpdns.c.163.com"| grep -Eo "domain\[[0-9]+\]"| grep -Eo "[0-9]+")"
 		uci delete dhcp.@domain["${music_id2}"]
 		uci commit dhcp
 
-		music_id3="$(uci show dhcp| grep "music"| grep -Eo "domain\[[0-9]+\]"| grep -Eo "[0-9]+")"
+		music_id3="$(uci show dhcp| grep "music.163.com"| grep -Eo "domain\[[0-9]+\]"| grep -Eo "[0-9]+")"
 		uci delete dhcp.@domain["${music_id3}"]
 		uci commit dhcp
 

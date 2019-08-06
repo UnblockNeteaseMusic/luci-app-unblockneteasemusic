@@ -22,7 +22,7 @@ include $(INCLUDE_DIR)/package.mk
 define Package/$(PKG_NAME)
 	SECTION:=net
 	CATEGORY:=Network
-	TITLE:=Revive unavailable songs for Netease Cloud Music on OpenWR
+	TITLE:=Revive unavailable songs for Netease Cloud Music on OpenWRT
 	URL:=https://github.com/nondanee/UnblockNeteaseMusic
 	DEPENDS:=+node
 endef

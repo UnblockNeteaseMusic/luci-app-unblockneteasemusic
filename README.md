@@ -39,9 +39,10 @@
 3. “音源接口”选择“默认”
 4. 勾选“启用劫持”
 5. 点击“保存&应用”
+- 现在您局域网下的设备，即可自动解除播放限制
 - ### 特别说明
 1. iOS/MacOS设备请将 WiFi/有线 代理方式设置为自动
-2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
+2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)<br/>
 \*. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以方便HTTPS通讯；若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)
 
 ## 效果图

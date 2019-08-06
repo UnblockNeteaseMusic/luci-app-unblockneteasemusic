@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=UnblockNeteaseMusic-nondanee
-PKG_VERSION:=lastest
+PKG_VERSION:=latest
 PKG_RELEASE:=1
 
 PKG_LICENSE:=GPLv3

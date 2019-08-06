@@ -33,13 +33,16 @@
 ```
 
 ## 使用方法
-### 1.路由器web界面插件配置
-- a.在路由器web界面“服务”选项中找到“解除网易云音乐播放限制”
-- b.勾选“启用本插件”
-- c.“音源接口”选择“默认”
-- d.勾选“启用劫持”
-- e.点击“保存&应用”
-- 现在您局域网下的所有设备，无需任何设置即可正常播放网易云音乐无版权歌曲
+- ### 路由器插件配置
+1. 在路由器Luci界面“服务”选项中找到“解除网易云音乐播放限制”
+2. 勾选“启用本插件”
+3. “音源接口”选择“默认”
+4. 勾选“启用劫持”
+5. 点击“保存&应用”
+- ### 特别说明
+1. iOS/MacOS设备请将 WiFi/有线 代理方式设置为自动
+2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
+\*. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以方便HTTPS通讯；若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)
 
 ## 效果图
 ### luci界面
@@ -61,3 +64,4 @@
 ##### [luci-app-unblockmusic](https://github.com/maxlicheng/luci-app-unblockmusic)的开发者：[maxlicheng](https://github.com/maxlicheng)
 ##### IPSet劫持方式指导：[恩山692049 #125楼](https://www.right.com.cn/forum/forum.php?mod=viewthread&tid=692049&page=9#pid4104303) [Lean](https://github.com/coolsnowwolf/lede/tree/master/package/lean/luci-app-unblockmusic)
 ##### Hosts劫持方式指导：[UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) [云音乐安卓又搞事啦](https://jixun.moe/post/netease-android-hosts-bypass/)
+

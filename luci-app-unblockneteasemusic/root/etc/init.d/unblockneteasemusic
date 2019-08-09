@@ -48,7 +48,7 @@ iptables -t nat -I PREROUTING -p tcp -m set --match-set music dst -j cloud_music
 	elif [ "${set_type}" = "stop" ]; then
 		echo "" > /var/etc/unblockneteasemusic.include
 		/etc/init.d/firewall restart >/dev/null 2>&1
-		ipset destory music
+		ipset destroy music
 
 		rm -f "/tmp/dnsmasq.d/dnsmasq-unblockneteasemusic.conf"
 		/etc/init.d/dnsmasq restart >/dev/null 2>&1

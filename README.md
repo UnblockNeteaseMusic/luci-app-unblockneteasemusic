@@ -7,18 +7,16 @@
 ## 功能说明：
 1. 支持自定义音源选择，一般设置默认即可；如需高音质音乐，推荐选择“咪咕”或“酷我”
 2. 支持使用IPset/Hosts自动劫持相关请求，客户端无需设置代理即可使用
-3. 支持HTTPS劫持，客户端信任证书后即可正常使用，网页端需要额外安装油猴插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
+3. 支持HTTPS劫持，客户端信任证书后即可正常使用
 4. 支持将服务公开至公网（默认监听局域网），支持开启严格模式
 5. 支持设定代理，支持指定网易云音乐服务器IP（针对Hosts劫持法）
 - PS：如果直接在本插件中开启Hosts劫持，则无需指定网易云音乐服务器IP
 
 ## 原理
-- 其原理是采用 [网易云旧链/QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云 无版权/收费 歌曲链接
+- 其原理是采用 [~~网易云旧链~~/QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云 无版权/收费 歌曲链接
 - 通俗地理解就是通过脚本，将主流客户端的音乐链接汇集到一个客户端上
 
 ## 编译
-- 插件显式依赖Node.JS，OpenWRT/LEDE源码默认是v8.10.0版本，编译过程中下载会比较慢，可以提前将Node.JS源码下载好上传到dl目录
-- 下载链接(17.5M)：https://nodejs.org/dist/v8.10.0/node-v8.10.0.tar.xz  
 ```bash
     #进入OpenWRT/LEDE源码package目录
     cd package
@@ -29,14 +27,14 @@
     #配置
     make menuconfig
     #在luci->application选中插件，开始编译
-    make package/luci-app-unblockneteasemusic/compile V=99
+    make package/luci-app-unblockneteasemusic/compile V=s
 ```
 
 ## 使用方法
 - ### 路由器插件配置
 1. 在路由器Luci界面“服务”选项中找到“解除网易云音乐播放限制”
 2. 勾选“启用本插件”
-3. “音源接口”选择“默认”
+3. “音源接口”选择“默认”（高音质音源推荐选择“酷我”或“咪咕”）
 4. 勾选“启用劫持”
 5. 点击“保存&应用”
 - 现在您局域网下的设备，即可自动解除播放限制

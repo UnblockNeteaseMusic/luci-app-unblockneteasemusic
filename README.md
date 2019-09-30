@@ -10,10 +10,11 @@
 3. 支持HTTPS劫持，客户端信任证书后即可正常使用
 4. 支持将服务公开至公网（默认监听局域网），支持开启严格模式
 5. 支持设定代理，支持指定网易云音乐服务器IP（针对Hosts劫持法）
+6. 支持设定EndPoint，配置更加方便
 - PS：如果直接在本插件中开启Hosts劫持，则无需指定网易云音乐服务器IP
 
 ## 原理
-- 其原理是采用 [~~网易云旧链~~/QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云 无版权/收费 歌曲链接
+- 其原理是采用 [QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云 无版权/收费 歌曲链接
 - 通俗地理解就是通过脚本，将主流客户端的音乐链接汇集到一个客户端上
 
 ## 编译
@@ -21,7 +22,7 @@
     #进入OpenWRT/LEDE源码package目录
     cd package
     #克隆插件源码
-    git clone https://github.com/project-openwrt/UnblockNeteaseMusic.git
+    git clone https://github.com/project-openwrt/luci-app-unblockneteasemusic.git
     #返回上一层目录
     cd ..
     #配置
@@ -39,20 +40,19 @@
 5. 点击“保存&应用”
 - 现在您局域网下的设备，即可自动解除播放限制
 - ### 特别说明
-1. iOS/MacOS设备请将 WiFi/有线 代理方式设置为自动
+1. iOS/MacOSX设备请将 WiFi/有线 代理方式设置为自动
 2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
 3. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以方便HTTPS通讯；若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)
 
 ## 效果图
 ### luci界面
-  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/view1.jpg)
-  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/view2.jpg)
-  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/view3.jpg)
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view1.jpg)
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view2.jpg)
 ### UWP网易云音乐客户端
-  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockmusic/master/views/view4.jpg)
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view3.jpg)
 
 ## 协议
-### 本项目使用[GPLv3.0](https://github.com/project-openwrt/UnblockNeteaseMusic/blob/master/LICENSE)协议授权，在遵循此协议的前提下，你可以自由修改和分发
+### 本项目使用[GPLv3.0](https://github.com/project-openwrt/luci-app-unblockneteasemusic/blob/master/LICENSE)协议授权，在遵循此协议的前提下，你可以自由修改和分发
 #### 总而言之，根据协议，你可以：
 - ##### 仅自己使用，在不重新分发的情况下，没有任何限制
 - ##### 不修改源代码并重新分发，需要在明显的地方标注本项目源码地址，并沿用GPLv3.0协议

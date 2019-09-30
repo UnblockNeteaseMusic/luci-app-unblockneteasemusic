@@ -64,7 +64,7 @@ enabled.default = 0
 enabled.rmempty = false
 enabled:depends("advanced_mode", 1)
 
-account = s:option(Value, "netease_server_ip", translate("自定义网易云服务器IP"))
+account = s:option(Value, "netease_server_ip", translate("网易云服务器IP"))
 account.description = translate("通过 ping music.163.com 即可获得IP地址，仅限填写一个")
 account.placeholder = "59.111.181.38"
 account.datatype = "ipaddr"
@@ -73,10 +73,11 @@ account:depends("advanced_mode", 1)
 
 account = s:option(Value, "endpoint_url", translate("EndPoint"))
 account.description = translate("具体说明请参见：https://github.com/nondanee/UnblockNeteaseMusic")
+account.placeholder = "https://music.163.com"
 account.datatype = "string"
 account:depends("advanced_mode", 1)
 
-account = s:option(Value, "proxy_server_ip", translate("代理服务器IP"))
+account = s:option(Value, "proxy_server_ip", translate("代理服务器地址"))
 account.description = translate("使用代理服务器获取音乐信息")
 account.placeholder = "http(s)://host:port"
 account.datatype = "string"

@@ -5,12 +5,12 @@
 4. #### 欢迎加入我的Telegram群组：[@ctcgfw_openwrt_discuss](https://t.me/ctcgfw_openwrt_discuss)
 
 ## 功能说明：
-1. 支持自定义音源选择，一般设置默认即可；如需高音质音乐，推荐选择“咪咕”或“酷我”
+1. 支持自定义音源选择，一般设置默认即可；如需高音质音乐，推荐选择“酷我”或“咪咕”
 2. 支持使用IPset/Hosts自动劫持相关请求，客户端无需设置代理即可使用
 3. 支持HTTPS劫持，客户端信任证书后即可正常使用
 4. 支持将服务公开至公网（默认监听局域网），支持开启严格模式
 5. 支持设定代理，支持指定网易云音乐服务器IP，支持设定EndPoint
-6. 启动时自动更新Core，确保插件正常运作
+6. 支持手动/自动更新Core，确保插件正常运作
 
 ## 原理
 - 其原理是采用 [QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云 无版权/收费 歌曲链接
@@ -41,7 +41,7 @@
 - ### 特别说明
 1. iOS/MacOSX设备请将 WiFi/有线 代理方式设置为自动
 2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
-3. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以方便HTTPS通讯；若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)
+3. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以便HTTPS通讯；若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)
 
 ## 效果图
 ### luci界面

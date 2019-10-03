@@ -77,14 +77,7 @@ iptables -t nat -I PREROUTING -p tcp -m set --match-set music dst -j cloud_music
 		iptables -t nat -X cloud_music
 		ipset destroy music
 
-		cat <<-EOF > "/var/etc/unblockneteasemusic.include"
-if ! ipset list music >/dev/null; then ipset create music hash:ip; fi
-iptables -t nat -D PREROUTING -p tcp -m set --match-set music dst -j cloud_music
-iptables -t nat -F cloud_music
-iptables -t nat -X cloud_music
-ipset destroy music
-		EOF
-
+		echo "" > "/var/etc/unblockneteasemusic.include"
 		rm -f "/tmp/dnsmasq.d/dnsmasq-unblockneteasemusic.conf"
 		/etc/init.d/dnsmasq restart >/dev/null 2>&1
 	fi

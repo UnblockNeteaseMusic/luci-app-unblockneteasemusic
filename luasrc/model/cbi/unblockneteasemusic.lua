@@ -47,6 +47,20 @@ hijack.description = translate("如果使用Hosts劫持，请将HTTP/HTTPS端口
 hijack.default = "dont_hijack"
 hijack.rmempty = false
 
+button_update_core = s:option (Button, "_button_update_core", translate("更新主程序"))
+button_update_core.description = translate("更新完毕后会自动重启插件；更新插件需要一点时间，请不要反复点击按钮")
+local latest_ver = luci.sys.exec("/bin/bash /usr/share/unblockneteasemusic/check_update.sh")
+button_update_core.inputtitle = translate (latest_ver)
+button_update_core.inputstyle = "apply"
+function button_update_core.write (self, section, value)
+	luci.sys.call ("/bin/bash /usr/share/unblockneteasemusic/update_core.sh &")
+end
+
+enabled = s:option(Flag, "auto_update", translate("启用自动更新"))
+enabled.description = translate("勾选后会在每天凌晨自动检测最新版本并更新")
+enabled.default = 0
+enabled.rmempty = false
+
 enabled = s:option(Flag, "advanced_mode", translate("启用进阶设置"))
 enabled.description = translate("仅推荐高级玩家使用")
 enabled.default = 0

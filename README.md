@@ -35,13 +35,14 @@
 1. 在路由器Luci界面“服务”选项中找到“解除网易云音乐播放限制”
 2. 勾选“启用本插件”
 3. “音源接口”选择“默认”（高音质音源推荐选择“酷我”或“咪咕”）
-4. 勾选“启用劫持”
+4. “劫持方法”选择“使用IPSet劫持”
 5. 点击“保存&应用”
-- 现在您局域网下的设备，即可自动解除播放限制
+- 现在您局域网下的所有设备，（一般情况下）无需任何设置即可自动解除网易云音乐播放限制
 - ### 特别说明
-1. iOS/MacOSX设备请将 WiFi/有线 代理方式设置为自动
-2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
-3. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以便HTTPS通讯；若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)
+1. 首次使用本插件时，将会在后台下载核心程序，故启动时间可能会稍微长一点
+2. iOS/MacOSX设备请将网络代理方式设置为自动
+3. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
+4. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以便HTTPS通讯（若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)）
 
 ## 效果图
 ### luci界面

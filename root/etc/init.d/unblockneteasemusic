@@ -125,7 +125,7 @@ start()
 	if [ "${type}" = "default" ]; then
 		nohup node /usr/share/unblockneteasemusic/core/app.js -a "${addr}" -p "${http_port}":"${https_port}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >>/tmp/unblockneteasemusic.log 2>&1 &
 	elif [ "${type}" = "all" ]; then
-		nohup node /usr/share/unblockneteasemusic/core/app.js -a "${addr}" -p "${http_port}":"${https_port}" -o "kuwo migu qq xiami kugou joox" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >>/tmp/unblockneteasemusic.log 2>&1 &
+		nohup node /usr/share/unblockneteasemusic/core/app.js -a "${addr}" -p "${http_port}":"${https_port}" -o "kuwo qq xiami baidu kugou migu joox" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >>/tmp/unblockneteasemusic.log 2>&1 &
 	else
 		nohup node /usr/share/unblockneteasemusic/core/app.js -a "${addr}" -p "${http_port}":"${https_port}" -o "${type}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >>/tmp/unblockneteasemusic.log 2>&1 &
 	fi

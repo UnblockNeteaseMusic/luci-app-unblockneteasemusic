@@ -1,5 +1,5 @@
 # 前言：
-1. #### 这是一个用于解除网易云音乐播放限制的OpenWRT/LEDE插件，完整支持 播放/下载 无版权/收费 歌曲
+1. #### 这是一个用于解除网易云音乐播放限制的OpenWrt插件，完整支持 播放/下载 无版权/收费 歌曲
 2. #### 如果你目前的网易云音乐客户端能正常使用，那就不要轻易升级（不然可能会炸）
 3. #### 求dalao们点个Star
 4. #### 欢迎加入我的Telegram群组：[@ctcgfw_openwrt_discuss](https://t.me/ctcgfw_openwrt_discuss)

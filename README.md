@@ -63,3 +63,4 @@
 ##### [luci-app-unblockmusic](https://github.com/maxlicheng/luci-app-unblockmusic)的开发者：[maxlicheng](https://github.com/maxlicheng)
 ##### IPSet劫持方式指导：[恩山692049#125楼](https://www.right.com.cn/forum/forum.php?mod=viewthread&tid=692049&page=9#pid4104303) [Lean](https://github.com/coolsnowwolf/lede/tree/master/package/lean/luci-app-unblockmusic) [rufengsuixing](https://github.com/rufengsuixing/luci-app-unblockmusic) [binsee](https://github.com/binsee/luci-app-unblockmusic)
 ##### Hosts劫持方式指导：[UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) [云音乐安卓又搞事啦](https://jixun.moe/post/netease-android-hosts-bypass/)
+##### 核心程序版本检测方法指导：[vernesong](https://github.com/vernesong)

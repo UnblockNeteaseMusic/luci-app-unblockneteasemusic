@@ -48,8 +48,9 @@
 ### luci界面
   ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view1.jpg)
   ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view2.jpg)
-### UWP网易云音乐客户端
   ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view3.jpg)
+### UWP网易云音乐客户端
+  ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view4.jpg)
 
 ## 协议
 ### 本项目使用[GPLv3.0](https://github.com/project-openwrt/luci-app-unblockneteasemusic/blob/master/LICENSE)协议授权，在遵循此协议的前提下，你可以自由修改和分发

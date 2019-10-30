@@ -18,7 +18,7 @@
 
 ## 编译
 ```bash
-    #进入OpenWRT/LEDE源码package目录
+    #进入OpenWrt源码package目录
     cd package
     #克隆插件源码
     git clone https://github.com/project-openwrt/luci-app-unblockneteasemusic.git

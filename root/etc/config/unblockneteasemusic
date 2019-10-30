@@ -1,9 +1,9 @@
 
 config unblockneteasemusic
-	option enabled '0'
+	option enable '0'
 	option http_port '5200'
 	option https_port '5201'
-	option musicapptype 'default'
+	option music_source 'default'
 	option hijack_ways 'dont_hijack'
 	option auto_update '0'
 	option advanced_mode '0'

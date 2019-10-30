@@ -35,7 +35,7 @@ speedtype:value("kugou", translate("酷狗音乐"))
 speedtype:value("kuwo", translate("酷我音乐"))
 speedtype:value("migu", translate("咕咪音乐"))
 speedtype:value("joox", translate("JOOX音乐"))
-speedtype:value("all", translate("所有平台"))
+speedtype:value("youtube", translate("Youtube音乐"))
 speedtype.description = translate("音源调用接口")
 speedtype.default = "default"
 speedtype.rmempty = false

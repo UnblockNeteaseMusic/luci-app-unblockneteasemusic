@@ -26,7 +26,7 @@ https_port.default = "5201"
 https_port.datatype = "port"
 https_port.rmempty = false
 
-music_source:value = s:option(ListValue, "music_source", translate("音源接口"))
+music_source = s:option(ListValue, "music_source", translate("音源接口"))
 music_source:value("default", translate("默认"))
 music_source:value("qq", translate("QQ音乐"))
 music_source:value("xiami", translate("虾米音乐"))

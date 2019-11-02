@@ -43,7 +43,6 @@ music_source.rmempty = false
 youtube_key = s:option(Value, "youtube_key", translate("Youtube API Key"))
 youtube_key.description = translate("API Key申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start")
 youtube_key.datatype = "string"
-youtube_key.rmempty = false
 youtube_key:depends("music_source", "youtube")
 
 hijack = s:option(ListValue, "hijack_ways", translate("劫持方法"))

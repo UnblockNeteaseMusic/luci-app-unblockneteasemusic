@@ -14,10 +14,8 @@ music_source="$(uci get unblockneteasemusic.@unblockneteasemusic[0].music_source
 youtube_key="$(uci get unblockneteasemusic.@unblockneteasemusic[0].youtube_key 2>/dev/null)"
 hijack_ways="$(uci get unblockneteasemusic.@unblockneteasemusic[0].hijack_ways)"
 auto_update="$(uci get unblockneteasemusic.@unblockneteasemusic[0].auto_update)"
-
 [ "*$(uci get unblockneteasemusic.@unblockneteasemusic[0].pub_access 2>/dev/null)*" = "*1*" ] && addr="0.0.0.0" || addr="${lan_addr}"
 [ "*$(uci get unblockneteasemusic.@unblockneteasemusic[0].strict_mode 2>/dev/null)*" = "*1*" ] && strict_mode="-s"
-
 netease_server_ip="$(uci get unblockneteasemusic.@unblockneteasemusic[0].netease_server_ip 2>/dev/null)"
 [ -n "${netease_server_ip}" ] && netease_server_ip="-f ${netease_server_ip}"
 endpoint_url="$(uci get unblockneteasemusic.@unblockneteasemusic[0].endpoint_url 2>/dev/null)"
@@ -123,8 +121,8 @@ set_ports(){
 
 		mkdir -p /var/etc
 		cat <<-EOF >> "/var/etc/unblockneteasemusic.include"
-iptables -D INPUT -p tcp --dport "${http_port}" -j ACCEPT
-iptables -D INPUT -p tcp --dport "${https_port}" -j ACCEPT
+iptables -I INPUT -p tcp --dport "${http_port}" -j ACCEPT
+iptables -I INPUT -p tcp --dport "${https_port}" -j ACCEPT
 		EOF
 	elif [ "${set_type}" = "stop" ]; then
 		iptables -D INPUT -p tcp --dport "${http_port}" -j ACCEPT

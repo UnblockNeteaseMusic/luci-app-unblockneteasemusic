@@ -110,21 +110,15 @@ set_ports(){
 	if [ "${set_type}" = "start" ]; then
 		iptables -I INPUT -p tcp --dport "${http_port}" -j ACCEPT
 		iptables -I INPUT -p tcp --dport "${https_port}" -j ACCEPT
-		ip6tables -I INPUT -p tcp --dport "${http_port}" -j ACCEPT
-		ip6tables -I INPUT -p tcp --dport "${https_port}" -j ACCEPT
 
 		mkdir -p /var/etc
 		cat <<-EOF >> "/var/etc/unblockneteasemusic.include"
 iptables -I INPUT -p tcp --dport "${http_port}" -j ACCEPT
 iptables -I INPUT -p tcp --dport "${https_port}" -j ACCEPT
-ip6tables -I INPUT -p tcp --dport "${http_port}" -j ACCEPT
-ip6tables -I INPUT -p tcp --dport "${https_port}" -j ACCEPT
 		EOF
 	elif [ "${set_type}" = "stop" ]; then
 		iptables -D INPUT -p tcp --dport "${http_port}" -j ACCEPT
 		iptables -D INPUT -p tcp --dport "${https_port}" -j ACCEPT
-		ip6tables -D INPUT -p tcp --dport "${http_port}" -j ACCEPT
-		ip6tables -D INPUT -p tcp --dport "${https_port}" -j ACCEPT
 
 		echo "" > "/var/etc/unblockneteasemusic.include"
 	fi

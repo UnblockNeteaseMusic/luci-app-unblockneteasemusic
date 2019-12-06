@@ -54,9 +54,16 @@ hijack.default = "dont_hijack"
 hijack.rmempty = false
 
 auto_update = s:option(Flag, "auto_update", translate("启用自动更新"))
-auto_update.description = translate("启用后会在每天凌晨检测最新版本并自动更新")
+auto_update.description = translate("启用后会在每天设定的时间检测最新版本并自动更新")
 auto_update.default = 0
 auto_update.rmempty = false
+
+update_time = s:option(ListValue, "update_time", translate("自动更新时间"))
+for h = 0,23 do
+update_time:value(h, h..":00")
+end
+update_time.default = "6"
+update_time.rmempty = false
 
 advanced_mode = s:option(Flag, "advanced_mode", translate("启用进阶设置"))
 advanced_mode.description = translate("仅推荐高级玩家使用")

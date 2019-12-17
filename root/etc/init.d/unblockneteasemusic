@@ -90,6 +90,9 @@ set_hosts(){
 dhcp-option=252,http://${lan_addr}:${http_port}/proxy.pac
 address=/music.163.com/${lan_addr}
 address=/interface.music.163.com/${lan_addr}
+address=/interface3.music.163.com/${lan_addr}
+address=/apm.music.163.com/${lan_addr}
+address=/apm3.music.163.com/${lan_addr}
 address=/music.httpdns.c.163.com/0.0.0.0
 		EOF
 		/etc/init.d/dnsmasq restart >/dev/null 2>&1

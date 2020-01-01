@@ -140,6 +140,7 @@ start()
 		sed -i -e "1i const key = '${youtube_key}'" "/usr/share/unblockneteasemusic/core/provider/youtube.js"
 	fi
 
+	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	if [ "${music_source}" = "default" ]; then
 		nohup node "/usr/share/unblockneteasemusic/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/unblockneteasemusic.log" 2>&1 &
 		nohup node "/usr/share/unblockneteasemusic/core/app.js" -a "${addr}" -p "${apple_http_port}":"${apple_https_port}" -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/unblockneteasemusic.log" 2>&1 &
@@ -149,9 +150,9 @@ start()
 	fi
 
 	set_type="start"
-	if [ "*${hijack_ways}*" = "*use_ipset*" ]; then
+	if [ "${hijack_ways}" = "use_ipset" ]; then
 		set_ipset > "/dev/null" 2>&1
-	elif [ "*${hijack_ways}*" = "*use_hosts*" ]; then
+	elif [ "${hijack_ways}" = "use_hosts" ]; then
 		set_hosts > "/dev/null" 2>&1
 	fi
 	[ "*$(uci get unblockneteasemusic.@unblockneteasemusic[0].pub_access 2>"/dev/null")*" = "*1*" ] && set_ports > "/dev/null" 2>&1

@@ -47,7 +47,7 @@ hijack = s:option(ListValue, "hijack_ways", translate("劫持方法"))
 hijack:value("dont_hijack", translate("不开启劫持"))
 hijack:value("use_ipset", translate("使用IPSet劫持"))
 hijack:value("use_hosts", translate("使用Hosts劫持"))
-hijack.description = translate("如果使用Hosts劫持，请将HTTP/HTTPS端口设置为80/443")
+hijack.description = translate("如果使用Hosts劫持，主实例的HTTP/HTTPS端口将被锁定为80/443")
 hijack.default = "dont_hijack"
 hijack.rmempty = false
 

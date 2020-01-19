@@ -1,8 +1,7 @@
 # 前言：
 1. #### 这是一个用于解除网易云音乐播放限制的OpenWrt插件，完整支持 播放/下载 无版权/收费 歌曲
 2. #### 如果你目前的网易云音乐客户端能正常使用，那就不要轻易升级（不然可能会炸）
-3. #### 求dalao们点个Star
-4. #### 欢迎加入我的Telegram群组：[@ctcgfw_openwrt_discuss](https://t.me/ctcgfw_openwrt_discuss)
+3. #### 欢迎加入我的Telegram群组：[@ctcgfw_openwrt_discuss](https://t.me/ctcgfw_openwrt_discuss)
 
 ## 功能说明：
 1. 支持自定义音源选择，一般设置默认即可；如需高音质音乐，推荐选择“酷我”或“咪咕”
@@ -11,6 +10,7 @@
 4. 支持将服务公开至公网（默认监听局域网），支持开启严格模式
 5. 支持设定代理，支持指定网易云音乐服务器IP，支持设定EndPoint
 6. 支持手动/自动更新Core，确保插件正常运作
+7. 支持设定QQ Cookie/Youtube API，以正常使用相关音源
 
 ## 原理
 - 其原理是采用 [QQ/虾米/百度/酷狗/酷我/咕咪/JOOX] 等音源，替换网易云 无版权/收费 歌曲链接
@@ -34,15 +34,14 @@
 - ### 路由器插件配置
 1. 在路由器Luci界面“服务”选项中找到“解除网易云音乐播放限制”
 2. 勾选“启用本插件”
-3. “音源接口”选择“默认”（高音质音源推荐选择“酷我”或“咪咕”）
+3. “音源接口”选择“默认”（高音质音源推荐选择“QQ”、“酷我”或“咪咕”）
 4. “劫持方法”选择“使用IPSet劫持”
 5. 点击“保存&应用”
 - 现在您局域网下的所有设备，（一般情况下）无需任何设置即可自动解除网易云音乐播放限制
 - ### 特别说明
 1. 首次使用本插件时，将会在后台下载核心程序，故启动时间可能会稍微长一点
-2. iOS/MacOSX设备请将网络代理方式设置为自动
-3. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
-4. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以便HTTPS通讯（若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)）
+2. 如需使用网页端，请额外安装Tampermonkey插件：[NeteaseMusic UI Unlocker](https://greasyfork.org/zh-CN/scripts/382285-neteasemusic-ui-unlocker)
+3. 推荐在客户端信任[UnblockNeteaseMusic证书](https://raw.githubusercontent.com/nondanee/UnblockNeteaseMusic/master/ca.crt)，以便HTTPS通讯（若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)）
 
 ## 效果图
 ### luci界面

@@ -167,4 +167,28 @@ self_issue_cert_key.placeholder = "/usr/share/unblockneteasemusic/core/server.ke
 self_issue_cert_key.datatype = "file"
 self_issue_cert_key:depends("advanced_mode", 1)
 
+acl_rule = mp:section(TypedSection,"acl_rule",translate("例外客户端规则"), translate("可以为局域网客户端分别设置不同的例外模式，默认无需设置"))
+acl_rule.template="cbi/tblsection"
+acl_rule.sortable=true
+acl_rule.anonymous=true
+acl_rule.addremove=true
+
+acl_ip_addr=acl_rule:option(Value, "acl_ip_addr", translate("IP 地址"))
+acl_ip_addr.width = "40%"
+acl_ip_addr.datatype = "ip4addr"
+acl_ip_addr.placeholder = "0.0.0.0/0"
+luci.ip.neighbors({ family = 4 }, function(entry)
+	if entry.reachable then
+		acl_ip_addr:value(entry.dest:string())
+	end
+end)
+
+acl_filter_mode = acl_rule:option(ListValue, "acl_filter_mode", translate("规则"))
+acl_filter_mode.width = "40%"
+acl_filter_mode.default = "disable_all"
+acl_filter_mode.rmempty = false
+acl_filter_mode:value("disable_all", translate("不代理HTTP和HTTPS"))
+acl_filter_mode:value("disable_http", translate("不代理HTTP"))
+acl_filter_mode:value("disable_https", translate("不代理HTTPS"))
+
 return mp

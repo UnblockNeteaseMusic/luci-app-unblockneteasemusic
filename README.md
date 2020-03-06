@@ -10,7 +10,7 @@
 4. 支持将服务公开至公网（默认监听局域网），支持开启严格模式
 5. 支持设定代理，支持指定网易云音乐服务器IP，支持设定EndPoint
 6. 支持手动/自动更新Core，确保插件正常运作
-7. 支持设定QQ Cookie/Youtube API，以正常使用相关音源
+7. 支持设定NeteaseMusic Cookie/QQ Cookie/Youtube API，以正常使用相关音源
 8. 支持在开启Adbyby/KoolProxy的环境下工作
 9. 支持无损音质（目前仅支持QQ、酷我、咪咕音源）
 

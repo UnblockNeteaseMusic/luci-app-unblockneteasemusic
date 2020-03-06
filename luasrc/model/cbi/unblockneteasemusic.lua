@@ -14,6 +14,7 @@ enable.rmempty = false
 
 music_source = s:option(Value, "music_source", translate("音源接口"))
 music_source:value("default", translate("默认"))
+music_source:value("netease", translate("网易云音乐"))
 music_source:value("qq", translate("QQ音乐"))
 music_source:value("kuwo", translate("酷我音乐"))
 music_source:value("migu", translate("咕咪音乐"))
@@ -25,6 +26,11 @@ music_source:value("youtube", translate("Youtube音乐"))
 music_source.description = translate("自定义模式下，多个音源请用空格隔开")
 music_source.default = "default"
 music_source.rmempty = false
+
+neteasemusic_cookie = s:option(Value, "neteasemusic_cookie", translate("NeteaseMusic Cookie"))
+neteasemusic_cookie.description = translate("在 music.163.com 获取，需要MUSIC_U值")
+neteasemusic_cookie.datatype = "string"
+neteasemusic_cookie:depends("music_source", "netease")
 
 qq_cookie = s:option(Value, "qq_cookie", translate("QQ Cookie"))
 qq_cookie.description = translate("在 y.qq.com 获取，需要uin和qm_keyst值")

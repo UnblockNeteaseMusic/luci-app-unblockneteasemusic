@@ -2,7 +2,7 @@
 # Created By [CTCGFW]Project OpenWRT
 # https://github.com/project-openwrt
 
-START=80
+START=89
 STOP=10
 
 NAME="unblockneteasemusic"
@@ -189,8 +189,8 @@ start()
 		sed -i "/if (netease.path.includes('song\/enhance')) {/a\\\t\\t\\t\\t\\treq.headers.cookie = [" "/usr/share/unblockneteasemusic/core/src/hook.js";
 		sed -i "/req.headers.cookie = \[/a\\\t\\t\\t\\t\\t\\t'MUSIC_U=${neteasemusic_cookie}'," "/usr/share/unblockneteasemusic/core/src/hook.js";
 		sed -i "/'MUSIC_U=${neteasemusic_cookie}',/a\\\t\\t\\t\\t\\t\\treq.headers.cookie.replace(\/\\\s*MUSIC_\\\w=[^\\\s;]+;*\/g, '')" "/usr/share/unblockneteasemusic/core/src/hook.js";
-		sed -i "/req.headers.cookie.replace(\/\\\s\\*MUSIC_\\\w=[^\\\s;]\\+/a\\\t\\t\\t\\t\\t].filter(line => line).join('; ')" "/usr/share/unblockneteasemusic/core/src/hook.js"
-		sed -i "/].filter(line => line).join('; ')/a\\\t\\t\\t\\t}\\n" "/usr/share/unblockneteasemusic/core/src/hook.js"
+		sed -i "/req.headers.cookie.replace(\/\\\s\\*MUSIC_\\\w=[^\\\s;]\\+/a\\\t\\t\\t\\t\\t].filter(line => line).join('; ')" "/usr/share/unblockneteasemusic/core/src/hook.js";
+		sed -i "/].filter(line => line).join('; ')/a\\\t\\t\\t\\t}\\n" "/usr/share/unblockneteasemusic/core/src/hook.js";
 }
 	[ -n "${qq_cookie}" ] && {
 		qq_cookie_line="$(awk "/'cookie':/{print NR}" "/usr/share/unblockneteasemusic/core/src/provider/qq.js")";
@@ -234,7 +234,7 @@ stop()
 	sed -i '/unblockneteasemusic/d' "/etc/crontabs/root"
 	/etc/init.d/cron restart > "/dev/null" 2>&1
 
-	sed -i '#unblockneteasemusic/core#d' "/etc/sysupgrade.conf"
+	sed -i '#unblockneteasemusic/core#d;#unblockneteasemusic/local_ver#d' "/etc/sysupgrade.conf"
 	[ "${keep_core_when_upgrade}" -eq "1" ] && { echo "/usr/share/unblockneteasemusic/core/" >> "/etc/sysupgrade.conf"; echo "/usr/share/unblockneteasemusic/local_ver" >> "/etc/sysupgrade.conf"; }
 
 	rm -f "/tmp/unblockneteasemusic.log"

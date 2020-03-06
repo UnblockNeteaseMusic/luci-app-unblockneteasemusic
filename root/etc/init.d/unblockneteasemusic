@@ -44,7 +44,7 @@ update_time="$(uci_get_by_type "unblockneteasemusic" "update_time" "3")"
 http_port="$(uci_get_by_type "unblockneteasemusic" "http_port" "5200")"
 https_port="$(uci_get_by_type "unblockneteasemusic" "https_port" "5201")"
 
-keep_core_when_upgrade="$(uci_get_by_type "unblockneteasemusic" keep_core_when_upgrade)"
+keep_core_when_upgrade="$(uci_get_by_type "unblockneteasemusic" "keep_core_when_upgrade")"
 [ "$(uci_get_by_type "unblockneteasemusic" "pub_access")" = "1" ] && addr="0.0.0.0" || addr="${lan_addr}"
 [ "$(uci_get_by_type "unblockneteasemusic" "strict_mode")" = "1" ] && strict_mode="-s"
 
@@ -97,29 +97,29 @@ ipset=/clientlog3.music.163.com/neteasemusic
 
 		if ! ipset list "neteasemusic" > "/dev/null"; then ipset create "neteasemusic" hash:ip; fi
 		curl --retry "5" --retry-delay "3" -s "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |grep -Eo '[0-9]+?\.[0-9]+?\.[0-9]+?\.[0-9]+?' |sort |uniq |awk '{print "ipset add neteasemusic "$1}' |bash > "/dev/null" 2>&1
-		iptables -t nat -N "netease_cloud_music"
-		iptables -t nat -A "netease_cloud_music" -d "0.0.0.0/8" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "10.0.0.0/8" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "127.0.0.0/8" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "169.254.0.0/16" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "172.16.0.0/12" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "192.168.0.0/16" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "224.0.0.0/4" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -d "240.0.0.0/4" -j RETURN
-		iptables -t nat -A "netease_cloud_music" -p tcp -m set ! --match-set "acl_neteasemusic_http" src --dport 80 -j "REDIRECT" --to-ports "${http_port}"
-		iptables -t nat -A "netease_cloud_music" -p tcp -m set ! --match-set "acl_neteasemusic_https" src --dport 443 -j "REDIRECT" --to-ports "${https_port}"
-		iptables -t nat -I PREROUTING -p tcp -m set --match-set "neteasemusic" dst -j "netease_cloud_music"
-		[ -z "$(iptables -t nat -L "ADBYBY" | grep "UnblockMusic" | sed 's/\/.*//')" ] && iptables -t nat -I "ADBYBY" -m "set" --match-set "neteasemusic" dst -j "RETURN" -m "comment" --comment "AD for UnblockMusic"
-		[ -z "$(iptables -t nat -L "KOOLPROXY" | grep "UnblockMusic" | sed 's/\/.*//')" ] && iptables -t nat -I "KOOLPROXY" -m "set" --match-set "neteasemusic" "dst" -j "RETURN" -m "comment" --comment "KP for UnblockMusic"
+		iptables -t "nat" -N "netease_cloud_music"
+		iptables -t "nat" -A "netease_cloud_music" -d "0.0.0.0/8" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "10.0.0.0/8" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "127.0.0.0/8" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "169.254.0.0/16" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "172.16.0.0/12" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "192.168.0.0/16" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "224.0.0.0/4" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -d "240.0.0.0/4" -j "RETURN"
+		iptables -t "nat" -A "netease_cloud_music" -p "tcp" -m "set" ! --match-set "acl_neteasemusic_http" "src" --dport 80 -j "REDIRECT" --to-ports "${http_port}"
+		iptables -t "nat" -A "netease_cloud_music" -p "tcp" -m "set" ! --match-set "acl_neteasemusic_https" "src" --dport 443 -j "REDIRECT" --to-ports "${https_port}"
+		iptables -t "nat" -I "PREROUTING" -p "tcp" -m "set" --match-set "neteasemusic" "dst" -j "netease_cloud_music"
+		[ -z "$(iptables -t "nat" -L "ADBYBY" | grep "UnblockMusic" | sed 's/\/.*//')" ] && iptables -t "nat" -I "ADBYBY" -m "set" --match-set "neteasemusic" "dst" -j "RETURN" -m "comment" --comment "AD for UnblockMusic"
+		[ -z "$(iptables -t "nat" -L "KOOLPROXY" | grep "UnblockMusic" | sed 's/\/.*//')" ] && iptables -t "nat" -I "KOOLPROXY" -m "set" --match-set "neteasemusic" "dst" -j "RETURN" -m "comment" --comment "KP for UnblockMusic"
 
 		mkdir -p "/var/etc/"
 		echo "/etc/init.d/unblockneteasemusic restart" > "/var/etc/unblockneteasemusic.include"
 	elif [ "${set_type}" = "stop" ]; then
-		iptables -t nat -D "PREROUTING" -p tcp -m set --match-set "neteasemusic" dst -j "netease_cloud_music"
-		iptables -t nat -D "ADBYBY" -m set --match-set "neteasemusic" dst -j RETURN -m comment --comment "AD for UnblockMusic"
-		iptables -t nat -D "KOOLPROXY" -m set --match-set "neteasemusic" dst -j RETURN -m comment --comment "KP for UnblockMusic"
-		iptables -t nat -F "netease_cloud_music"
-		iptables -t nat -X "netease_cloud_music"
+		iptables -t "nat" -D "PREROUTING" -p "tcp" -m set --match-set "neteasemusic" "dst" -j "netease_cloud_music"
+		iptables -t "nat" -D "ADBYBY" -m "set" --match-set "neteasemusic" "dst" -j "RETURN" -m "comment" --comment "AD for UnblockMusic"
+		iptables -t "nat" -D "KOOLPROXY" -m "set" --match-set "neteasemusic" "dst" -j "RETURN" -m "comment" --comment "KP for UnblockMusic"
+		iptables -t "nat" -F "netease_cloud_music"
+		iptables -t "nat" -X "netease_cloud_music"
 		ipset destroy "neteasemusic"
 		ipset destroy "acl_neteasemusic_http"
 		ipset destroy "acl_neteasemusic_https"
@@ -160,14 +160,14 @@ address=/music.httpdns.c.163.com/0.0.0.0
 set_ports()
 {
 	if [ "${set_type}" = "start" ]; then
-		iptables -I INPUT -p tcp --dport "${http_port}" -j ACCEPT
-		iptables -I INPUT -p tcp --dport "${https_port}" -j ACCEPT
+		iptables -I "INPUT" -p "tcp" --dport "${http_port}" -j "ACCEPT"
+		iptables -I "INPUT" -p "tcp" --dport "${https_port}" -j "ACCEPT"
 
 		mkdir -p "/var/etc/"
 		echo "/etc/init.d/unblockneteasemusic restart" > "/var/etc/unblockneteasemusic.include"
 	elif [ "${set_type}" = "stop" ]; then
-		iptables -D INPUT -p tcp --dport "${http_port}" -j ACCEPT
-		iptables -D INPUT -p tcp --dport "${https_port}" -j ACCEPT
+		iptables -D "INPUT" -p "tcp" --dport "${http_port}" -j "ACCEPT"
+		iptables -D "INPUT" -p "tcp" --dport "${https_port}" -j "ACCEPT"
 
 		echo "" > "/var/etc/unblockneteasemusic.include"
 	fi

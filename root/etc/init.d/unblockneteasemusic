@@ -176,7 +176,7 @@ start()
 {
 	stop
 
-	[ "${enable}" -ne "1" ] && exit 0
+	#[ "${enable}" -ne "1" ] && exit 0
 
 	[ ! -e "/usr/share/unblockneteasemusic/core/app.js" ] && { rm -f "/usr/share/unblockneteasemusic/local_ver"; bash "/usr/share/unblockneteasemusic/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/unblockneteasemusic/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/unblockneteasemusic.log"; exit 1; }
@@ -256,4 +256,10 @@ stop()
 	set_ipset > "/dev/null" 2>&1
 	set_hosts > "/dev/null" 2>&1
 	set_ports > "/dev/null" 2>&1
+}
+
+restart()
+{
+	stop
+	start
 }

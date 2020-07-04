@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI support for UnblockNeteaseMusic
-LUCI_DEPENDS:=+bash +busybox +coreutils-nohup +curl +dnsmasq-full +ipset +libopenssl +node
+LUCI_DEPENDS:=+bash +busybox +coreutils +coreutils-nohup +curl +dnsmasq-full +ipset +libopenssl +node
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-unblockneteasemusic
 PKG_VERSION:=2.8

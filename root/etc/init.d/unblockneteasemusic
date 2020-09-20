@@ -29,12 +29,15 @@ enable="$(uci_get_by_type "$NAME" "enable" "0")"
 
 music_source="$(uci_get_by_type "$NAME" "music_source" "default")"
 neteasemusic_cookie="$(uci_get_by_type "$NAME" "neteasemusic_cookie")"
+
 qq_cookie="$(uci_get_by_type "$NAME" "qq_cookie")"
+[ -n "${qq_cookie}" ] && qq_env="QQ_COOKIE=${qq_cookie}"
 youtube_key="$(uci_get_by_type "$NAME" "youtube_key")"
+[ -n "${youtube_key}" ] && youtube_env="YOUTUBE_KEY={youtube_key}"
 
 replace_music_source="$(uci_get_by_type "$NAME" "replace_music_source" "dont_replace")"
 enable_flac="$(uci_get_by_type "$NAME" "enable_flac" "0")"
-[ "${enable_flac}" -eq "1" ] && un_env="ENABLE_FLAC=true"
+[ "${enable_flac}" -eq "1" ] && flac_env="ENABLE_FLAC=true"
 
 endpoint_url="$(uci_get_by_type "$NAME" "endpoint_url" "http://music.163.com")"
 hijack_ways="$(uci_get_by_type "$NAME" "hijack_ways" "use_ipset")"
@@ -196,8 +199,6 @@ start()
 		sed -i "/req.headers.cookie.replace(\/\\\s\\*MUSIC_\\\w=[^\\\s;]\\+/a\\\t\\t\\t\\t\\t].filter(line => line).join('; ')" "/usr/share/unblockneteasemusic/core/src/hook.js"
 		sed -i "/].filter(line => line).join('; ')/a\\\t\\t\\t\\t}\\n" "/usr/share/unblockneteasemusic/core/src/hook.js"
 }
-	[ -n "${qq_cookie}" ] && un_env="${un_env} QQ_COOKIE=${qq_cookie}"
-	[ -n "${youtube_key}" ] && un_env="${un_env} YOUTUBE_KEY=${youtube_key}"
 
 	quality_check_line="$(awk "/target == 0 \|\| item.id == target/{print NR}" "/usr/share/unblockneteasemusic/core/src/hook.js")"
 	sed -i "${quality_check_line}d" "/usr/share/unblockneteasemusic/core/src/hook.js"
@@ -217,11 +218,8 @@ start()
 	{ [ -f "${self_issue_cert_key}" ] && [ "${self_issue_cert_key}" != "/usr/share/unblockneteasemusic/core/server.key" ]; } && { ln -sf "${self_issue_cert_key}" "/usr/share/unblockneteasemusic/core/server.key"; sed -i "/${self_issue_cert_key//\//\\/}/d"; echo "${self_issue_cert_key}" >> "/etc/sysupgrade.conf"; }
 
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
-	if [ "${music_source}" = "default" ]; then
-		nohup env ${un_env} node "/usr/share/unblockneteasemusic/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/unblockneteasemusic.log" 2>&1 &
-	else
-		nohup env ${un_env} node "/usr/share/unblockneteasemusic/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" -o ${music_source} -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/unblockneteasemusic.log" 2>&1 &
-	fi
+	[ "${music_source}" = "default" ] && music_source="" || music_source="-o ${music_source}"
+	nohup env "${qq_env:-env}" ${youtube_env} ${flac_env} node "/usr/share/unblockneteasemusic/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" ${music_source} -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/unblockneteasemusic.log" 2>&1 &
 
 	set_type="start"
 	if [ "${hijack_ways}" = "use_ipset" ]; then

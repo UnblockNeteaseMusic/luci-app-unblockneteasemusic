@@ -56,7 +56,7 @@ const single = (id, format) => {
 	const concatenate = vkey => {
 		if (!vkey) return Promise.reject()
 		const host = ['streamoc.music.tc.qq.com', 'mobileoc.music.tc.qq.com', 'isure.stream.qqmusic.qq.com', 'dl.stream.qqmusic.qq.com', 'aqqmusic.tc.qq.com/amobile.music.tc.qq.com'][3]
-		return `http://${host}/${format.join(id.file)}?vkey=${vkey}&uin=0&fromtag=8&guid=7332953645`
+		return \`http://\${host}/\${format.join(id.file)}?vkey=\${vkey}&uin=0&fromtag=8&guid=7332953645\`
 	}
 
 	const url =
@@ -178,4 +178,5 @@ const track = id => {
 const check = info => cache(search, info).then(track)
 
 module.exports = {check, track}"
+else echo -e "Usage: $0 [local|remote] (1)"
 fi

@@ -193,7 +193,7 @@ start()
 	[ ! -e "/usr/share/unblockneteasemusic/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/unblockneteasemusic.log"; exit 1; }
 
 	[ "${use_remote_qq_server}" -ne "1" ] && qq_server_mode="local" || qq_server_mode="remote"
-	grep -q "${qq_server_mode}" "/usr/share/unblockneteasemusic/core/src/provider/qq.js" || bash "/usr/share/unblockneteasemusic/gen_remote_qq_server.sh" "${qq_server_mode}" "${enable_flac}" > "/usr/share/unblockneteasemusic/core/src/provider/qq.js"
+	bash "/usr/share/unblockneteasemusic/gen_remote_qq_server.sh" "${qq_server_mode}" "${enable_flac}" > "/usr/share/unblockneteasemusic/core/src/provider/qq.js"
 
 	[ -n "${neteasemusic_cookie}" ] && {
 		ub_cookie_line="$(sed -n -e "/netease.path.includes('song\/enhance')/=" "/usr/share/unblockneteasemusic/core/src/hook.js")";

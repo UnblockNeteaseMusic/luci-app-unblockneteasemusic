@@ -42,7 +42,7 @@ replace_music_source.description = translate("当音乐音质低于指定数值�
 replace_music_source.default = "dont_replace"
 replace_music_source.rmempty = false
 
-use_remote_qq_server = s:option(Flag, "use_remote_qq_server", translate("使用云端QQ音源解析服务器"))
+use_remote_qq_server = s:option(Flag, "use_remote_qq_server", translate("使用云端QQ音源解析"))
 use_remote_qq_server.description = translate("通过云端服务器以获取QQ音源信息，无需开通QQ绿钻")
 use_remote_qq_server.default = 0
 use_remote_qq_server.rmempty = false

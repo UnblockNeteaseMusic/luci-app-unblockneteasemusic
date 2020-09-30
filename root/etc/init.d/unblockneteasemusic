@@ -192,10 +192,8 @@ start()
 	[ ! -e "/usr/share/unblockneteasemusic/core/app.js" ] && { rm -f "/usr/share/unblockneteasemusic/local_ver"; bash "/usr/share/unblockneteasemusic/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/unblockneteasemusic/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/unblockneteasemusic.log"; exit 1; }
 
-	# Fix QQ search API, waiting merged by upstream
-	# See also: https://github.com/nondanee/UnblockNeteaseMusic/pull/618
-	sed -i 's/searchid=46804741196796149&//g' "/usr/share/unblockneteasemusic/core/src/provider/qq.js"
-	[ "${use_remote_qq_server}" -eq "1" ] && /usr/share/unblockneteasemusic/gen_remote_qq_server.sh "${enable_flac}" > "/usr/share/unblockneteasemusic/core/src/provider/qq.js"
+	[ "${use_remote_qq_server}" -ne "1" ] && qq_server_mode="local" || qq_server_mode="remote"
+	grep -q "${qq_server_mode}" "/usr/share/unblockneteasemusic/core/src/provider/qq.js" || bash "/usr/share/unblockneteasemusic/gen_remote_qq_server.sh" "${qq_server_mode}" "${enable_flac}" > "/usr/share/unblockneteasemusic/core/src/provider/qq.js"
 
 	[ -n "${neteasemusic_cookie}" ] && {
 		ub_cookie_line="$(sed -n -e "/netease.path.includes('song\/enhance')/=" "/usr/share/unblockneteasemusic/core/src/hook.js")";

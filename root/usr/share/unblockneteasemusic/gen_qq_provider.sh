@@ -128,7 +128,7 @@ const track = id => {
 			if (res === 100) {
 				let songUrl = jsonBody.data
 				return songUrl
-			} else if (i === 3) {
+			} else if (i === $[${loop_times}-1]) {
 				return Promise.reject()
 			} else {
 				return

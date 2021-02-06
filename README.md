@@ -23,7 +23,7 @@
     #进入OpenWrt源码package目录
     cd package
     #克隆插件源码
-    git clone https://github.com/project-openwrt/luci-app-unblockneteasemusic.git
+    git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
     #返回上一层目录
     cd ..
     #配置
@@ -54,7 +54,7 @@
   ![Image text](https://raw.githubusercontent.com/project-openwrt/luci-app-unblockneteasemusic/master/views/view4.jpg)
 
 ## 协议
-### 本项目使用[GPLv3.0](https://github.com/project-openwrt/luci-app-unblockneteasemusic/blob/master/LICENSE)协议授权，在遵循此协议的前提下，你可以自由修改和分发
+### 本项目使用[GPLv3.0](https://github.com/immortalwrt/luci-app-unblockneteasemusic/blob/master/LICENSE)协议授权，在遵循此协议的前提下，你可以自由修改和分发
 #### 总而言之，根据协议，你可以：
 - ##### 仅自己使用，在不重新分发的情况下，没有任何限制
 - ##### 不修改源代码并重新分发，需要在明显的地方标注本项目源码地址，并沿用GPLv3.0协议

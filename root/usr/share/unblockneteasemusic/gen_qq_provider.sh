@@ -1,6 +1,6 @@
 #!/bin/bash
-# Created By [CTCGFW]Project OpenWRT
-# https://github.com/project-openwrt
+# Created By ImmortalWrt
+# https://github.com/immortalwrt
 
 header="const cache = require('../cache')
 const insure = require('./insure')

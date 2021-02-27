@@ -63,11 +63,6 @@ youtube_key.description = translate("API Key申请地址：https://developers.go
 youtube_key.datatype = "string"
 youtube_key:depends("use_custom_cookie", 1)
 
-use_remote_qq_server = s:option(Flag, "use_remote_qq_server", translate("使用云端QQ音源解析"))
-use_remote_qq_server.description = translate("通过云端服务器以获取QQ音源信息，无需开通QQ绿钻")
-use_remote_qq_server.default = 0
-use_remote_qq_server.rmempty = false
-
 auto_update = s:option(Flag, "auto_update", translate("启用自动更新"))
 auto_update.description = translate("启用后，每天将定时自动检查最新版本并更新")
 auto_update.default = 0

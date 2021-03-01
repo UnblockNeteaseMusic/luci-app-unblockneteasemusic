@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2021 ImmortalWrt
-# (https://project-openwrt.eu.org)
+# (https://immortalwrt.org)
 #
 # This is free software, licensed under the GNU General Public License v3.
 # See /LICENSE for more information.
@@ -16,7 +16,7 @@ PKG_NAME:=luci-app-unblockneteasemusic
 PKG_VERSION:=2.8
 PKG_RELEASE:=10
 
-PKG_MAINTAINER:=CN_SZTL <cnsztl@project-openwrt.eu.org>
+PKG_MAINTAINER:=CN_SZTL <cnsztl@immortalwrt.org>
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

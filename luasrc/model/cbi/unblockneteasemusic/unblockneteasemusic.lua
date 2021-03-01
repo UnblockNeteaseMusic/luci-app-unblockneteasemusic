@@ -23,6 +23,7 @@ music_source:value("xiami", translate("虾米音乐"))
 music_source:value("baidu", translate("百度音乐"))
 music_source:value("joox", translate("JOOX音乐"))
 music_source:value("youtube", translate("Youtube音乐"))
+music_source:value("bilibili", translate("Bilibili音乐"))
 music_source.description = translate("自定义模式下，多个音源请用空格隔开")
 music_source.default = "default"
 music_source.rmempty = false

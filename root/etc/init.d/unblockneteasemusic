@@ -45,6 +45,8 @@ https_port="$(uci_get_by_type "$NAME" "https_port" "5201")"
 endpoint_url="$(uci_get_by_type "$NAME" "endpoint_url" "http://music.163.com")"
 hijack_ways="$(uci_get_by_type "$NAME" "hijack_ways" "use_ipset")"
 
+migu_cookie="$(uci_get_by_type "$NAME" "migu_cookie")"
+[ -n "${migu_cookie}" ] && export MIGU_COOKIE="${migu_cookie}"
 neteasemusic_cookie="$(uci_get_by_type "$NAME" "neteasemusic_cookie")"
 qq_cookie="$(uci_get_by_type "$NAME" "qq_cookie")"
 [ -n "${qq_cookie}" ] && export QQ_COOKIE="${qq_cookie}"

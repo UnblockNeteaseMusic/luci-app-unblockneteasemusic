@@ -47,6 +47,11 @@ use_custom_cookie.description = translate("使用自定义 Cookie 请求音源�
 use_custom_cookie.default = 0
 use_custom_cookie.rmempty = false
 
+migu_cookie = s:option(Value, "migu_cookie", translate("Migu Cookie"))
+migu_cookie.description = translate("在 music.migu.cn 获取，需要migu_music_sid值")
+migu_cookie.datatype = "string"
+migu_cookie:depends("use_custom_cookie", 1)
+
 neteasemusic_cookie = s:option(Value, "neteasemusic_cookie", translate("NeteaseMusic Cookie"))
 neteasemusic_cookie.description = translate("在 music.163.com 获取，需要MUSIC_U值")
 neteasemusic_cookie.datatype = "string"

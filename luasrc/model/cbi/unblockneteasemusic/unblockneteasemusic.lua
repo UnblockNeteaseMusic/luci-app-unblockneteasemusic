@@ -48,7 +48,7 @@ use_custom_cookie.default = 0
 use_custom_cookie.rmempty = false
 
 migu_cookie = s:option(Value, "migu_cookie", translate("Migu Cookie"))
-migu_cookie.description = translate("在 music.migu.cn 获取，需要migu_music_sid值")
+migu_cookie.description = translate("通过抓包手机客户端请求获取，需要aversionid值")
 migu_cookie.datatype = "string"
 migu_cookie:depends("use_custom_cookie", 1)
 

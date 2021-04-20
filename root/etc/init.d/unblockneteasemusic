@@ -47,7 +47,6 @@ hijack_ways="$(uci_get_by_type "$NAME" "hijack_ways" "use_ipset")"
 
 migu_cookie="$(uci_get_by_type "$NAME" "migu_cookie")"
 [ -n "${migu_cookie}" ] && export MIGU_COOKIE="${migu_cookie}"
-neteasemusic_cookie="$(uci_get_by_type "$NAME" "neteasemusic_cookie")"
 qq_cookie="$(uci_get_by_type "$NAME" "qq_cookie")"
 [ -n "${qq_cookie}" ] && export QQ_COOKIE="${qq_cookie}"
 youtube_key="$(uci_get_by_type "$NAME" "youtube_key")"
@@ -193,17 +192,6 @@ start()
 
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; bash "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
-
-	[ -n "${neteasemusic_cookie}" ] && {
-		ub_cookie_line="$(sed -n -e "/netease.path.includes('song\/enhance')/=" "/usr/share/$NAME/core/src/hook.js")";
-		[ -n "${ub_cookie_line}" ] && { let ub_cookie_endline="ub_cookie_line+6"; sed -i "${ub_cookie_line},${ub_cookie_endline}d" "/usr/share/$NAME/core/src/hook.js"; }
-		sed -i "/netease.path == '\/api\/song\/enhance\/download\/url'/i\\\t\\t\\t\\tif (netease.path.includes('song\/enhance')) {" "/usr/share/$NAME/core/src/hook.js"
-		sed -i "/if (netease.path.includes('song\/enhance')) {/a\\\t\\t\\t\\t\\treq.headers.cookie = [" "/usr/share/$NAME/core/src/hook.js"
-		sed -i "/req.headers.cookie = \[/a\\\t\\t\\t\\t\\t\\t'MUSIC_U=${neteasemusic_cookie}'," "/usr/share/$NAME/core/src/hook.js"
-		sed -i "/'MUSIC_U=${neteasemusic_cookie}',/a\\\t\\t\\t\\t\\t\\treq.headers.cookie.replace(\/\\\s*MUSIC_\\\w=[^\\\s;]+;*\/g, '')" "/usr/share/$NAME/core/src/hook.js"
-		sed -i "/req.headers.cookie.replace(\/\\\s\\*MUSIC_\\\w=[^\\\s;]\\+/a\\\t\\t\\t\\t\\t].filter(line => line).join('; ')" "/usr/share/$NAME/core/src/hook.js"
-		sed -i "/].filter(line => line).join('; ')/a\\\t\\t\\t\\t}\\n" "/usr/share/$NAME/core/src/hook.js"
-}
 
 	quality_check_line="$(awk "/target == 0 \|\| item.id == target/{print NR}" "/usr/share/$NAME/core/src/hook.js")"
 	sed -i "${quality_check_line}d" "/usr/share/$NAME/core/src/hook.js"

@@ -52,11 +52,6 @@ migu_cookie.description = translate("通过抓包手机客户端请求获取，�
 migu_cookie.datatype = "string"
 migu_cookie:depends("use_custom_cookie", 1)
 
-neteasemusic_cookie = s:option(Value, "neteasemusic_cookie", translate("NeteaseMusic Cookie"))
-neteasemusic_cookie.description = translate("在 music.163.com 获取，需要MUSIC_U值")
-neteasemusic_cookie.datatype = "string"
-neteasemusic_cookie:depends("use_custom_cookie", 1)
-
 qq_cookie = s:option(Value, "qq_cookie", translate("QQ Cookie"))
 qq_cookie.description = translate("在 y.qq.com 获取，需要uin和qm_keyst值")
 qq_cookie.placeholder = "uin=; qm_keyst="

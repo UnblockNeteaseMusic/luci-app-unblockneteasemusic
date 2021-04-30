@@ -63,6 +63,10 @@ proxy_server_ip="$(uci_get_by_type "$NAME" "proxy_server_ip")"
 
 self_issue_cert_crt="$(uci_get_by_type "$NAME" "self_issue_cert_crt")"
 self_issue_cert_key="$(uci_get_by_type "$NAME" "self_issue_cert_key")"
+{ [ -n "{$self_issue_cert_crt}" ] && [ -n "${self_issue_cert_key}" ]; } && {
+	export SIGN_CERT="${self_issue_cert_crt}"
+	export SIGN_KEY="${self_issue_cert_key}"
+}
 
 set_ipset()
 {
@@ -207,13 +211,6 @@ start()
 		sed -i -e "${quality_check_line}i \\\t\\tif (target == 0 || item.id == target) {" "/usr/share/$NAME/core/src/hook.js"
 	fi
 
-	{ [ -f "${self_issue_cert_crt}" ] && [ -f "${self_issue_cert_key}" ]; } && {
-		{ [ "${self_issue_cert_crt}" != "/usr/share/$NAME/core/server.crt" ] && [ "${self_issue_cert_key}" != "/usr/share/$NAME/core/server.key" ]; } && {
-			ln -sf "${self_issue_cert_crt}" "/usr/share/$NAME/core/server.crt"
-			ln -sf "${self_issue_cert_key}" "/usr/share/$NAME/core/server.key"
-		}
-	}
-
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	[ "${music_source}" = "default" ] && music_source="" || music_source="-o ${music_source}"
 	nohup node "/usr/share/$NAME/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" ${music_source} -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/$NAME.log" 2>&1 &
@@ -239,13 +236,11 @@ stop()
 	[ "${keep_core_when_upgrade}" -eq "1" ] && { echo "/usr/share/$NAME/core/" >> "${UPGRADE_CONF}"; echo "/usr/share/$NAME/local_ver" >> "${UPGRADE_CONF}"; }
 
 	{ [ -f "${self_issue_cert_crt}" ] && [ -f "${self_issue_cert_key}" ]; } && {
-		{ [ "${self_issue_cert_crt}" != "/usr/share/$NAME/core/server.crt" ] && [ "${self_issue_cert_key}" != "/usr/share/$NAME/core/server.key" ]; } && {
-			sed -i "/${self_issue_cert_crt//\//\\/}/d" "${UPGRADE_CONF}"
-			echo "${self_issue_cert_crt}" >> "${UPGRADE_CONF}"
+		sed -i "/${self_issue_cert_crt//\//\\/}/d" "${UPGRADE_CONF}"
+		sed -i "/${self_issue_cert_key//\//\\/}/d" "${UPGRADE_CONF}"
 
-			sed -i "/${self_issue_cert_key//\//\\/}/d" "${UPGRADE_CONF}"
-			echo "${self_issue_cert_key}" >> "${UPGRADE_CONF}"
-		}
+		echo "${self_issue_cert_crt}" >> "${UPGRADE_CONF}"
+		echo "${self_issue_cert_key}" >> "${UPGRADE_CONF}"
 	}
 
 	rm -f "/tmp/$NAME.log"

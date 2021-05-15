@@ -31,7 +31,7 @@ function act_status()
 end
 
 function update_luci()
-	luci_cloud_ver=luci.sys.exec("curl -s 'https://github.com/immortalwrt/luci-app-unblockneteasemusic/releases/latest'| grep -Eo '[0-9\.]+\-[0-9]+'")
+	luci_cloud_ver=luci.sys.exec("curl -s 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name'")
 	if not luci_cloud_ver then
 		return "1"
 	else
@@ -59,7 +59,7 @@ function act_update_luci()
 end
 
 function update_core()
-	core_cloud_ver=luci.sys.exec("curl -s 'https://github.com/1715173329/UnblockNeteaseMusic/commits/enhanced' |tr -d '\n' |grep -Eo 'commit\/[0-9a-z]+' |sed -n 1p |sed 's#commit/##g'")
+	core_cloud_ver=luci.sys.exec("curl -s 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha'")
 	core_cloud_ver_mini=string.sub(core_cloud_ver, 1, 7)
 	if not core_cloud_ver or not core_cloud_ver_mini then
 		return "1"

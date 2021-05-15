@@ -19,7 +19,7 @@ function clean_log(){
 }
 
 function check_luci_latest_version(){
-	luci_latest_ver="$(curl -s 'https://github.com/immortalwrt/luci-app-unblockneteasemusic/releases/latest'| grep -Eo '[0-9\.]+\-[0-9]+')"
+	luci_latest_ver="$(curl -s 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name')"
 	[ -z "${luci_latest_ver}" ] && { echo -e "\nFailed to check latest LuCI version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
 	if [ "$(opkg info "luci-app-unblockneteasemusic" |sed -n "2p" |tr -d "Version: ")" != "${luci_latest_ver}" ]; then
 		clean_log
@@ -55,7 +55,7 @@ function update_luci(){
 }
 
 function check_core_latest_version(){
-	core_latest_ver="$(curl -s https://github.com/1715173329/UnblockNeteaseMusic/commits/enhanced |tr -d '\n' |grep -Eo 'commit\/[0-9a-z]+' |sed -n 1p |sed 's#commit/##g')"
+	core_latest_ver="$(curl -s 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha')"
 	[ -z "${core_latest_ver}" ] && { echo -e "\nFailed to check latest core version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
 	if [ ! -e "/usr/share/$NAME/core_local_ver" ]; then
 		clean_log

@@ -31,14 +31,14 @@ function act_status()
 end
 
 function update_luci()
-	luci_cloud_ver=luci.sys.exec("curl -s 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name'")
+	luci_cloud_ver=luci.sys.exec("uclient-fetch -q -O- 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name'")
 	if not luci_cloud_ver then
 		return "1"
 	else
 		luci_local_ver=luci.sys.exec("opkg info 'luci-app-unblockneteasemusic' |sed -n '2p' |tr -d 'Version: '")
 		if not luci_local_ver or (luci_local_ver ~= luci_cloud_ver) then
 			luci.sys.call("rm -f /usr/share/unblockneteasemusic/update_luci_successfully")
-			luci.sys.call("/bin/bash /usr/share/unblockneteasemusic/update.sh update_luci")
+			luci.sys.call("/usr/share/unblockneteasemusic/update.sh update_luci")
 			if not nixio.fs.access("/usr/share/unblockneteasemusic/update_luci_successfully") then
 				return "2"
 			else
@@ -59,7 +59,7 @@ function act_update_luci()
 end
 
 function update_core()
-	core_cloud_ver=luci.sys.exec("curl -s 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha'")
+	core_cloud_ver=luci.sys.exec("uclient-fetch -q -O- 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha'")
 	core_cloud_ver_mini=string.sub(core_cloud_ver, 1, 7)
 	if not core_cloud_ver or not core_cloud_ver_mini then
 		return "1"
@@ -67,7 +67,7 @@ function update_core()
 		core_local_ver=luci.sys.exec("cat '/usr/share/unblockneteasemusic/core_local_ver'")
 		if not core_local_ver or (core_local_ver ~= core_cloud_ver) then
 			luci.sys.call("rm -f /usr/share/unblockneteasemusic/update_core_successfully")
-			luci.sys.call("/bin/bash /usr/share/unblockneteasemusic/update.sh update_core_from_luci")
+			luci.sys.call("/usr/share/unblockneteasemusic/update.sh update_core_from_luci")
 			if not nixio.fs.access("/usr/share/unblockneteasemusic/update_core_successfully") then
 				return "2"
 			else

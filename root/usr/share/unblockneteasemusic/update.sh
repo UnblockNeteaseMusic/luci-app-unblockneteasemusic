@@ -1,6 +1,6 @@
-#!/bin/bash
-# Created By ImmortalWrt
-# https://github.com/immortalwrt
+#!/bin/sh
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
 
 NAME="unblockneteasemusic"
 
@@ -19,7 +19,7 @@ function clean_log(){
 }
 
 function check_luci_latest_version(){
-	luci_latest_ver="$(curl -s 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name')"
+	luci_latest_ver="$(uclient-fetch -q -O- 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name')"
 	[ -z "${luci_latest_ver}" ] && { echo -e "\nFailed to check latest LuCI version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
 	if [ "$(opkg info "luci-app-unblockneteasemusic" |sed -n "2p" |tr -d "Version: ")" != "${luci_latest_ver}" ]; then
 		clean_log
@@ -37,7 +37,7 @@ function update_luci(){
 
 	mkdir -p "/tmp" > "/dev/null" 2>&1
 
-	curl -sL "https://github.com/immortalwrt/luci-app-unblockneteasemusic/releases/download/v${luci_latest_ver}/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk" -o "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk" > "/dev/null" 2>&1
+	uclient-fetch -q "https://github.com/immortalwrt/luci-app-unblockneteasemusic/releases/download/v${luci_latest_ver}/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk" -O "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk" > "/dev/null" 2>&1
 	opkg install "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk"
 	rm -f "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk"
 	rm -rf "/tmp/luci-indexcache" "/tmp/luci-modulecache"
@@ -55,7 +55,7 @@ function update_luci(){
 }
 
 function check_core_latest_version(){
-	core_latest_ver="$(curl -s 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha')"
+	core_latest_ver="$(uclient-fetch -q -O- 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha')"
 	[ -z "${core_latest_ver}" ] && { echo -e "\nFailed to check latest core version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
 	if [ ! -e "/usr/share/$NAME/core_local_ver" ]; then
 		clean_log
@@ -80,7 +80,7 @@ function update_core(){
 	mkdir -p "/usr/share/$NAME/core" > "/dev/null" 2>&1
 	rm -rf /usr/share/$NAME/core/* > "/dev/null" 2>&1
 
-	curl -sL "https://github.com/1715173329/UnblockNeteaseMusic/archive/enhanced.tar.gz" -o "/usr/share/$NAME/core/core.tar.gz" > "/dev/null" 2>&1
+	uclient-fetch -q "https://github.com/1715173329/UnblockNeteaseMusic/archive/enhanced.tar.gz" -O "/usr/share/$NAME/core/core.tar.gz" > "/dev/null" 2>&1
 	tar -zxf "/usr/share/$NAME/core/core.tar.gz" -C "/usr/share/$NAME/core/" > "/dev/null" 2>&1
 	mv /usr/share/$NAME/core/UnblockNeteaseMusic-enhanced/* "/usr/share/$NAME/core/"
 	rm -rf "/usr/share/$NAME/core/core.tar.gz" "/usr/share/$NAME/core/UnblockNeteaseMusic-enhanced" > "/dev/null" 2>&1

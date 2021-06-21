@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
-# Created By ImmortalWrt
-# https://github.com/immortalwrt
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
 
 START=92
 STOP=10
@@ -108,7 +108,7 @@ ipset=/clientlog3.music.163.com/neteasemusic
 		done
 
 		if ! ipset list "neteasemusic" > "/dev/null"; then ipset create "neteasemusic" hash:ip; fi
-		curl --retry "5" --retry-delay "3" -s "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |grep -Eo '[0-9]+?\.[0-9]+?\.[0-9]+?\.[0-9]+?' |sort |uniq |awk '{print "ipset add neteasemusic "$1}' |bash > "/dev/null" 2>&1
+		uclient-fetch -q -O- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.data.*.ip.*' |sort -u |awk '{print "ipset add neteasemusic "$1}' |sh > "/dev/null" 2>&1
 		iptables -t "nat" -N "netease_cloud_music"
 		iptables -t "nat" -A "netease_cloud_music" -d "0.0.0.0/8" -j "RETURN"
 		iptables -t "nat" -A "netease_cloud_music" -d "10.0.0.0/8" -j "RETURN"
@@ -194,7 +194,7 @@ start()
 	echo "*/5 * * * * /usr/share/$NAME/log_check.sh" >> "/etc/crontabs/root"
 	/etc/init.d/cron restart > "/dev/null" 2>&1
 
-	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; bash "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
+	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; sh "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
 
 	quality_check_line="$(awk "/target == 0 \|\| item.id == target/{print NR}" "/usr/share/$NAME/core/src/hook.js")"
@@ -213,7 +213,7 @@ start()
 
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	[ "${music_source}" = "default" ] && music_source="" || music_source="-o ${music_source}"
-	nohup node "/usr/share/$NAME/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" ${music_source} -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/$NAME.log" 2>&1 &
+	node "/usr/share/$NAME/core/app.js" -a "${addr}" -p "${http_port}":"${https_port}" ${music_source} -e "${endpoint_url}" ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >> "/tmp/$NAME.log" 2>&1 &
 
 	set_type="start"
 	if [ "${hijack_ways}" = "use_ipset" ]; then

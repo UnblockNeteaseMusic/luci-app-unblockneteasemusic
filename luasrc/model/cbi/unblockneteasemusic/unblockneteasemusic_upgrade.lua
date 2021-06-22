@@ -4,12 +4,6 @@ m = SimpleForm("Version")
 m.reset = false
 m.submit = false
 
-up_luci = m:field(DummyValue,"update_luci", translate("更新LuCI"))
-up_luci.rawhtml = true
-up_luci.template = "unblockneteasemusic/update_luci"
-up_luci.value = translate("未检查")
-up_luci.description = "更新完毕后请手动刷新该界面"
-
 up_core = m:field(DummyValue,"update_core", translate("更新主程序"))
 up_core.rawhtml = true
 up_core.template = "unblockneteasemusic/update_core"

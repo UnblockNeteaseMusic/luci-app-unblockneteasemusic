@@ -16,10 +16,9 @@ function index()
 
 	entry({"admin", "services", "unblockneteasemusic", "general"},cbi("unblockneteasemusic/unblockneteasemusic"), _("基本设定"), 1)
 	entry({"admin", "services", "unblockneteasemusic", "upgrade"},form("unblockneteasemusic/unblockneteasemusic_upgrade"), _("更新组件"), 2).leaf = true
-	entry({"admin", "services", "unblockneteasemusic", "log"},form("unblockneteasemusic/unblockneteasemusiclog"), _("日志"), 3)
+	entry({"admin", "services", "unblockneteasemusic", "log"},form("unblockneteasemusic/unblockneteasemusic_log"), _("日志"), 3)
 
 	entry({"admin", "services", "unblockneteasemusic", "status"},call("act_status")).leaf=true
-	entry({"admin", "services", "unblockneteasemusic", "update_luci"},call("act_update_luci"))
 	entry({"admin", "services", "unblockneteasemusic", "update_core"},call("act_update_core"))
 end
 
@@ -28,34 +27,6 @@ function act_status()
 	e.running=luci.sys.call("ps |grep unblockneteasemusic |grep app.js |grep -v grep >/dev/null")==0
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(e)
-end
-
-function update_luci()
-	luci_cloud_ver=luci.sys.exec("uclient-fetch -q -O- 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name'")
-	if not luci_cloud_ver then
-		return "1"
-	else
-		luci_local_ver=luci.sys.exec("opkg info 'luci-app-unblockneteasemusic' |sed -n '2p' |tr -d 'Version: '")
-		if not luci_local_ver or (luci_local_ver ~= luci_cloud_ver) then
-			luci.sys.call("rm -f /usr/share/unblockneteasemusic/update_luci_successfully")
-			luci.sys.call("/usr/share/unblockneteasemusic/update.sh update_luci")
-			if not nixio.fs.access("/usr/share/unblockneteasemusic/update_luci_successfully") then
-				return "2"
-			else
-				luci.sys.call("rm -f /usr/share/unblockneteasemusic/update_luci_successfully")
-				return luci_cloud_ver
-			end
-		else
-			return "0"
-		end
-	end
-end
-
-function act_update_luci()
-	luci.http.prepare_content("application/json")
-	luci.http.write_json({
-		ret = update_luci();
-	})
 end
 
 function update_core()

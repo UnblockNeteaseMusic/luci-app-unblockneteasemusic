@@ -18,42 +18,6 @@ function clean_log(){
 	echo "" > "/tmp/$NAME.log"
 }
 
-function check_luci_latest_version(){
-	luci_latest_ver="$(uclient-fetch -q -O- 'https://api.github.com/repos/immortalwrt/luci-app-unblockneteasemusic/releases/latest' | jsonfilter -e '@.tag_name')"
-	[ -z "${luci_latest_ver}" ] && { echo -e "\nFailed to check latest LuCI version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
-	if [ "$(opkg info "luci-app-unblockneteasemusic" |sed -n "2p" |tr -d "Version: ")" != "${luci_latest_ver}" ]; then
-		clean_log
-		echo -e "Local LuCI version: $(opkg info "luci-app-unblockneteasemusic" |sed -n "2p" |tr -d "Version: "), cloud LuCI version: ${luci_latest_ver}." >> "/tmp/$NAME.log"
-		update_luci
-	else
-		echo -e "\nLocal LuCI version: $(opkg info "luci-app-unblockneteasemusic" |sed -n "2p" |tr -d "Version: "), cloud LuCI version: ${luci_latest_ver}." >> "/tmp/$NAME.log"
-		echo -e "You're already using the latest LuCI version." >> "/tmp/$NAME.log"
-		exit 3
-	fi
-}
-
-function update_luci(){
-	echo -e "Updating LuCI..." >> "/tmp/$NAME.log"
-
-	mkdir -p "/tmp" > "/dev/null" 2>&1
-
-	uclient-fetch -q "https://github.com/immortalwrt/luci-app-unblockneteasemusic/releases/download/v${luci_latest_ver}/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk" -O "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk" > "/dev/null" 2>&1
-	opkg install "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk"
-	rm -f "/tmp/luci-app-unblockneteasemusic_${luci_latest_ver}_all.ipk"
-	rm -rf "/tmp/luci-indexcache" "/tmp/luci-modulecache"
-
-	if [ "$(opkg info 'luci-app-unblockneteasemusic' |sed -n '2p' |tr -d 'Version: ')" != "${luci_latest_ver}" ]; then
-		echo -e "Failed to update LuCI." >> "/tmp/$NAME.log"
-		exit 1
-	else
-		touch "/usr/share/$NAME/update_luci_successfully"
-		/etc/init.d/firewall restart > "/dev/null" 2>&1
-	fi
-
-	echo -e "Succeeded in updating LuCI." > "/tmp/$NAME.log"
-	echo -e "Current LuCI version: ${luci_latest_ver}.\n" >> "/tmp/$NAME.log"
-}
-
 function check_core_latest_version(){
 	core_latest_ver="$(uclient-fetch -q -O- 'https://api.github.com/repos/1715173329/UnblockNeteaseMusic/commits/enhanced' | jsonfilter -e '@.sha')"
 	[ -z "${core_latest_ver}" ] && { echo -e "\nFailed to check latest core version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
@@ -99,10 +63,6 @@ function update_core(){
 }
 
 case "$1" in
-	"update_luci")
-		check_luci_if_already_running
-		check_luci_latest_version
-		;;
 	"update_core")
 		check_core_if_already_running
 		check_core_latest_version

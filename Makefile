@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
+# Copyright (C) 2019-2021 Tianling Shen <cnsztl@immortalwrt.org>
 
 include $(TOPDIR)/rules.mk
 

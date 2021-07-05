@@ -1,6 +1,6 @@
 #!/bin/sh /etc/rc.common
 # SPDX-License-Identifier: GPL-3.0-only
-# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
+# Copyright (C) 2019-2021 Tianling Shen <cnsztl@immortalwrt.org>
 
 START=92
 STOP=10
@@ -42,7 +42,7 @@ update_time="$(uci_get_by_type "$NAME" "update_time" "3")"
 http_port="$(uci_get_by_type "$NAME" "http_port" "5200")"
 https_port="$(uci_get_by_type "$NAME" "https_port" "5201")"
 
-endpoint_url="$(uci_get_by_type "$NAME" "endpoint_url" "http://music.163.com")"
+endpoint_url="$(uci_get_by_type "$NAME" "endpoint_url" "https://music.163.com")"
 hijack_ways="$(uci_get_by_type "$NAME" "hijack_ways" "use_ipset")"
 
 migu_cookie="$(uci_get_by_type "$NAME" "migu_cookie")"

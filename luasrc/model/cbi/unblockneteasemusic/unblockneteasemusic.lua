@@ -127,8 +127,8 @@ https_port:depends("advanced_mode", 1)
 
 endpoint_url = s:option(Value, "endpoint_url", translate("EndPoint"))
 endpoint_url.description = translate("具体说明参见：https://github.com/nondanee/UnblockNeteaseMusic")
-endpoint_url.default = "http://music.163.com"
-endpoint_url.placeholder = "http://music.163.com"
+endpoint_url.default = "https://music.163.com"
+endpoint_url.placeholder = "https://music.163.com"
 endpoint_url.datatype = "string"
 endpoint_url:depends("advanced_mode", 1)
 

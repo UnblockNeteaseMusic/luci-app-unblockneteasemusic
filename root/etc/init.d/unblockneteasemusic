@@ -197,18 +197,18 @@ start()
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; sh "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
 
-	quality_check_line="$(awk "/target == 0 \|\| item.id == target/{print NR}" "/usr/share/$NAME/core/src/hook.js")"
+	quality_check_line="$(awk "/item.code != 200 \|\| item.freeTrialInfo/{print NR}" "/usr/share/$NAME/core/src/hook.js")"
 	sed -i "${quality_check_line}d" "/usr/share/$NAME/core/src/hook.js"
 	if [ "${replace_music_source}" = "dont_replace" ]; then
-		sed -i -e "${quality_check_line}i \\\t\\tif ((item.code != 200 || item.freeTrialInfo) && (target == 0 || item.id == target)) {" "/usr/share/$NAME/core/src/hook.js"
+		sed -i -e "${quality_check_line}i \\\t\\t\\t(item.code != 200 || item.freeTrialInfo) &&" "/usr/share/$NAME/core/src/hook.js"
 	elif [ "${replace_music_source}" = "lower_than_192kbps" ]; then
-		sed -i -e "${quality_check_line}i \\\t\\tif ((item.code != 200 || item.freeTrialInfo || item.br < 192000) && (target == 0 || item.id == target)) {" "/usr/share/$NAME/core/src/hook.js"
+		sed -i -e "${quality_check_line}i \\\t\\t\\t(item.code != 200 || item.freeTrialInfo || item.br < 192000) &&" "/usr/share/$NAME/core/src/hook.js"
 	elif [ "${replace_music_source}" = "lower_than_320kbps" ]; then
-		sed -i -e "${quality_check_line}i \\\t\\tif ((item.code != 200 || item.freeTrialInfo || item.br < 320000) && (target == 0 || item.id == target)) {" "/usr/share/$NAME/core/src/hook.js"
+		sed -i -e "${quality_check_line}i \\\t\\t\\t(item.code != 200 || item.freeTrialInfo || item.br < 320000) &&" "/usr/share/$NAME/core/src/hook.js"
 	elif [ "${replace_music_source}" = "lower_than_999kbps" ]; then
-		sed -i -e "${quality_check_line}i \\\t\\tif ((item.code != 200 || item.freeTrialInfo || item.br < 999000) && (target == 0 || item.id == target)) {" "/usr/share/$NAME/core/src/hook.js"
+		sed -i -e "${quality_check_line}i \\\t\\t\\t(item.code != 200 || item.freeTrialInfo || item.br < 999000) &&" "/usr/share/$NAME/core/src/hook.js"
 	elif [ "${replace_music_source}" = "replace_all" ]; then
-		sed -i -e "${quality_check_line}i \\\t\\tif (target == 0 || item.id == target) {" "/usr/share/$NAME/core/src/hook.js"
+		sed -i -e "${quality_check_line}i \\\t\\t\\t(item.code != 200 || item.freeTrialInfo || true) &&" "/usr/share/$NAME/core/src/hook.js"
 	fi
 
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }

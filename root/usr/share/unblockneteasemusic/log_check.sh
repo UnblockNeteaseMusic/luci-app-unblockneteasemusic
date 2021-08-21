@@ -9,5 +9,3 @@ log_file="/tmp/$NAME.log"
 
 log_size="$(expr $(ls -l "${log_file}" | awk -F ' ' '{print $5}') / "1024")"
 [ "${log_size}" -lt "${log_max_size}" ] || echo "" > "${log_file}"
-
-[ "*$(uci get $NAME.@$NAME[0].daemon_enable 2>/dev/null)*" != "*1*" ] || { [ -n "$(ps |grep "$NAME" |grep "app.js" |grep -v "grep")" ] || /etc/init.d/$NAME restart; }

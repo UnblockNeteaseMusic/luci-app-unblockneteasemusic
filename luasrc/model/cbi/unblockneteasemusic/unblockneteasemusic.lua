@@ -82,11 +82,6 @@ update_time.default = "3"
 update_time.description = translate("设定每天自动检查更新时间")
 update_time:depends("auto_update", 1)
 
-daemon_enable = s:option(Flag, "daemon_enable", translate("启用进程守护"))
-daemon_enable.description = translate("开启后，附属程序会自动检测主程序运行状态，在主程序退出时自动重启")
-daemon_enable.default = 0
-daemon_enable.rmempty = false
-
 download_cert = s:option(Button,"certificate", translate("HTTPS 证书"))
 download_cert.inputtitle = translate("下载 CA 根证书")
 download_cert.description = translate("Linux/iOS/MacOSX在信任根证书后方可正常使用")

@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (C) 2019-2021 Tianling Shen <cnsztl@immortalwrt.org>
 
+USE_PROCD=1
+
 START=99
 STOP=10
 
@@ -20,16 +22,20 @@ is_enabled() {
 	fi
 }
 
-config_padding_arg() {
+append_param() {
+	procd_append_param command "$1" $2
+}
+
+append_param_arg() {
 	local value
 	config_get value "$1" "$2" $4
-	[ -n "$value" ] && export "$2"="$3 $value"
+	[ -n "$value" ] && append_param "$3" "$value"
 }
 
 append_param_env() {
 	local value
 	config_get value "$1" "$2"
-	[ -n "$value" ] && export "$3"="$value"
+	[ -n "$value" ] && procd_set_param env "$3"="$value"
 }
 
 uci_get_by_name() {
@@ -38,7 +44,7 @@ uci_get_by_name() {
 	echo "${ret:-$3}"
 }
 
-start()
+start_service()
 {
 	stop
 
@@ -55,16 +61,20 @@ start()
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; sh "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
 
+	procd_open_instance "$NAME"
+	procd_set_param command node "/usr/share/$NAME/core/app.js"
+
 	local http_port https_port hijack_ways
 	config_get http_port "config" "http_port" "5200"
 	config_get https_port "config" "https_port" "5201"
 	config_get hijack_ways "config" "hijack_ways" "use_ipset"
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
+	append_param "-p" "${http_port}":"${https_port}"
 
 	local lan_addr
 	lan_addr="$(uci get network.lan.ipaddr)"
 	if is_enabled "config" "pub_access"; then
-		listen_addr="0.0.0.0"
+		append_param "-a" "0.0.0.0"
 
 		iptables -I "INPUT" -p "tcp" --dport "${http_port}" -j "ACCEPT"
 		iptables -I "INPUT" -p "tcp" --dport "${https_port}" -j "ACCEPT"
@@ -73,21 +83,17 @@ start()
 		mkdir -p "/var/etc/"
 		echo "/etc/init.d/$NAME restart" > "/var/etc/$NAME.include"
 	else
-		listen_addr="${lan_addr}"
+		append_param "-a" "${lan_addr}"
 	fi
 
 	local music_source
 	config_get music_source "config" "music_source" "default"
-	if [ "${music_source}" = "default" ]; then
-	       unset music_source
-	else
-	       music_source="-o ${music_source}"
-	fi
+	[ "${music_source}" != "default" ] && append_param -o "${music_source}"
 
-	is_enabled "config" "strict_mode" && strict_mode="-s"
-	config_padding_arg "config" "endpoint_url" "-e" "https://music.163.com"
-	config_padding_arg "config" "netease_server_ip" "-f"
-	config_padding_arg "config" "proxy_server_ip" "-u"
+	append_param_arg "config" "endpoint_url" "-e" "https://music.163.com"
+	append_param_arg "config" "netease_server_ip" "-f"
+	append_param_arg "config" "proxy_server_ip" "-u"
+	is_enabled "config" "strict_mode" && append_param "-s"
 
 	append_param_env "config" "joox_cookie" "JOOX_COOKIE"
 	append_param_env "config" "migu_cookie" "MIGU_COOKIE"
@@ -96,15 +102,19 @@ start()
 	append_param_env "config" "self_issue_cert_crt" "SIGN_CERT"
 	append_param_env "config" "self_issue_cert_key" "SIGN_KEY"
 
-	is_enabled "config" "enable_flac" && export ENABLE_FLAC="true"
+	is_enabled "config" "enable_flac" && procd_set_param env ENABLE_FLAC="true"
 	case "$(config_get "config" "replace_music_source")" in
-		"lower_than_192kbps") export MIN_BR="192000" ;;
-		"lower_than_320kbps") export MIN_BR="320000" ;;
-		"lower_than_999kbps") export MIN_BR="999000" ;;
-		"replace_all") export MIN_BR="999999" ;;
+		"lower_than_192kbps") procd_set_param env MIN_BR="192000" ;;
+		"lower_than_320kbps") procd_set_param env MIN_BR="320000" ;;
+		"lower_than_999kbps") procd_set_param env MIN_BR="999000" ;;
+		"replace_all") procd_set_param env MIN_BR="999999" ;;
 	esac
 
-	node "/usr/share/$NAME/core/app.js" -a "${listen_addr}" -p "${http_port}":"${https_port}" ${music_source} ${endpoint_url} ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >"/tmp/$NAME.log" 2>&1 &
+	procd_set_param env LOG_FILE="/tmp/$NAME.log"
+
+	procd_set_param stdout 1
+	procd_set_param stderr 1
+	procd_set_param respawn
 
 	if [ "${hijack_ways}" = "use_ipset" ]; then
 		mkdir -p "/tmp/dnsmasq.d"
@@ -177,12 +187,12 @@ start()
 
 		ip route add "223.252.199.10" dev lo
 	fi
+
+	procd_close_instance
 } >"/dev/null" 2>&1
 
-stop()
+stop_service()
 {
-	{ ps |grep "$NAME" |grep "app.js" |grep -v "grep" |awk '{print $1}' |xargs kill -9; }
-
 	config_load "$NAME"
 
 	sed -i "/$NAME/d" "/etc/crontabs/root"
@@ -222,3 +232,12 @@ stop()
 
 	rm -f "/tmp/$NAME.log"
 } >"/dev/null" 2>&1
+
+reload_service() {
+	stop
+	start
+}
+
+service_triggers() {
+	procd_add_reload_trigger "$NAME"
+}

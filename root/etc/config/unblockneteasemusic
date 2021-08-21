@@ -1,5 +1,5 @@
 
-config unblockneteasemusic
+config unblockneteasemusic 'config'
 	option enable '0'
 	option music_source 'default'
 	option enable_flac '0'

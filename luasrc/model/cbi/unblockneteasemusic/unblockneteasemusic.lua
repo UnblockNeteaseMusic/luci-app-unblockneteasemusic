@@ -81,7 +81,7 @@ daemon_enable.description = translate("开启后，附属程序会自动检测�
 daemon_enable.default = 0
 daemon_enable.rmempty = false
 
-download_cert = s:option(Button,"certificate",translate("HTTPS 证书"))
+download_cert = s:option(Button,"certificate", translate("HTTPS 证书"))
 download_cert.inputtitle = translate("下载 CA 根证书")
 download_cert.description = translate("Linux/iOS/MacOSX在信任根证书后方可正常使用")
 download_cert.inputstyle = "reload"
@@ -182,11 +182,11 @@ self_issue_cert_key.placeholder = "/usr/share/unblockneteasemusic/core/server.ke
 self_issue_cert_key.datatype = "file"
 self_issue_cert_key:depends("advanced_mode", 1)
 
-acl_rule = mp:section(TypedSection,"acl_rule",translate("例外客户端规则"), translate("可以为局域网客户端分别设置不同的例外模式，默认无需设置"))
-acl_rule.template="cbi/tblsection"
-acl_rule.sortable=true
-acl_rule.anonymous=true
-acl_rule.addremove=true
+acl_rule = mp:section(TypedSection, "acl_rule", translate("例外客户端规则"), translate("可以为局域网客户端分别设置不同的例外模式，默认无需设置"))
+acl_rule.template = "cbi/tblsection"
+acl_rule.sortable = true
+acl_rule.anonymous = true
+acl_rule.addremove = true
 
 acl_ip_addr=acl_rule:option(Value, "ip_addr", translate("IP 地址"))
 acl_ip_addr.width = "40%"

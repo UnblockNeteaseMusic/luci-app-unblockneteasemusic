@@ -9,11 +9,6 @@ function check_core_if_already_running(){
 	[ "${running_tasks}" -gt "2" ] && { echo -e "\nA task is already running." >> "/tmp/$NAME.log"; exit 2; }
 }
 
-function check_luci_if_already_running(){
-	running_tasks="$(ps |grep "$NAME" |grep "update.sh" |grep "update_luci" |grep -v "grep" |awk '{print $1}' |wc -l)"
-	[ "${running_tasks}" -gt "2" ] && { echo -e "\nA task is already running." >> "/tmp/$NAME.log"; exit 2; }
-}
-
 function clean_log(){
 	echo "" > "/tmp/$NAME.log"
 }
@@ -23,16 +18,16 @@ function check_core_latest_version(){
 	[ -z "${core_latest_ver}" ] && { echo -e "\nFailed to check latest core version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
 	if [ ! -e "/usr/share/$NAME/core_local_ver" ]; then
 		clean_log
-		echo -e "Local version: NOT FOUND, cloud version: ${core_latest_ver}." >> "/tmp/$NAME.log"
+		echo -e "Local version: NOT FOUND, latest version: ${core_latest_ver}." >> "/tmp/$NAME.log"
 		update_core
 	else
 		if [ "$(cat /usr/share/$NAME/core_local_ver)" != "${core_latest_ver}" ]; then
 			clean_log
-			echo -e "Local core version: $(cat /usr/share/$NAME/core_local_ver 2>"/dev/null"), cloud core version: ${core_latest_ver}." >> "/tmp/$NAME.log"
+			echo -e "Local version: $(cat /usr/share/$NAME/core_local_ver 2>"/dev/null"), latest version: ${core_latest_ver}." >> "/tmp/$NAME.log"
 			update_core
 		else
-			echo -e "\nLocal core version: $(cat /usr/share/$NAME/core_local_ver 2>"/dev/null"), cloud core version: ${core_latest_ver}." >> "/tmp/$NAME.log"
-			echo -e "You're already using the latest core version." >> "/tmp/$NAME.log"
+			echo -e "\nLocal version: $(cat /usr/share/$NAME/core_local_ver 2>"/dev/null"), latest version: ${core_latest_ver}." >> "/tmp/$NAME.log"
+			echo -e "You're already using the latest version." >> "/tmp/$NAME.log"
 			exit 3
 		fi
 	fi
@@ -78,6 +73,6 @@ case "$1" in
 		check_core_latest_version
 		;;
 	*)
-		echo -e "Usage: ./update.sh {update_luci|update_core}"
+		echo -e "Usage: ./update.sh update_core"
 		;;
 esac

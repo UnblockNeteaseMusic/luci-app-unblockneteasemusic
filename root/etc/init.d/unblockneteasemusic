@@ -23,13 +23,13 @@ is_enabled() {
 config_padding_arg() {
 	local value
 	config_get value "$1" "$2" $4
-	[ -n "$value" ] && export $(eval echo "$2")="$3 $value"
+	[ -n "$value" ] && export "$2"="$3 $value"
 }
 
 append_param_env() {
 	local value
 	config_get value "$1" "$2"
-	[ -n "$value" ] && export $(eval echo "$3")="$value"
+	[ -n "$value" ] && export "$3"="$value"
 }
 
 uci_get_by_name() {

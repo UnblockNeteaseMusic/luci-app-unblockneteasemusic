@@ -4,11 +4,11 @@ m = SimpleForm("Version")
 m.reset = false
 m.submit = false
 
-rm_core = m:field(DummyValue,"remove_core", translate("删除现有核心"))
+rm_core = m:field(DummyValue,"remove_core", translate("删除核心"))
 rm_core.rawhtml = true
 rm_core.template = "unblockneteasemusic/remove_core"
 rm_core.value = translate("")
-rm_core.description = "删除现有核心后，需手动点击下面的按钮重新下载，有助于解决版本冲突问题"
+rm_core.description = "删除核心后，需手动点击下面的按钮重新下载，有助于解决版本冲突问题"
 
 up_core = m:field(DummyValue,"update_core", translate("更新核心"))
 up_core.rawhtml = true

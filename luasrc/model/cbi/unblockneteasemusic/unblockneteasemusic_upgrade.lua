@@ -13,7 +13,7 @@ rm_core.description = "删除现有核心后，需手动点击下面的按钮重
 up_core = m:field(DummyValue,"update_core", translate("更新核心"))
 up_core.rawhtml = true
 up_core.template = "unblockneteasemusic/update_core"
-up_core.value = translate("未检查")
+up_core.value = translate("")
 up_core.description = "更新完毕后会自动在后台重启插件，无需手动重启"
 
 return m

@@ -10,21 +10,22 @@ function index()
 	end
 
 	local page
-	page = entry({"admin", "services", "unblockneteasemusic"},firstchild(), _("解除网易云音乐播放限制"), 50)
+	page = entry({"admin", "services", "unblockneteasemusic"}, firstchild(), _("解除网易云音乐播放限制"), 50)
 	page.dependent = false
 	page.acl_depends = { "luci-app-unblockneteasemusic" }
 
-	entry({"admin", "services", "unblockneteasemusic", "general"},cbi("unblockneteasemusic/unblockneteasemusic"), _("基本设定"), 1)
-	entry({"admin", "services", "unblockneteasemusic", "upgrade"},form("unblockneteasemusic/unblockneteasemusic_upgrade"), _("更新组件"), 2).leaf = true
-	entry({"admin", "services", "unblockneteasemusic", "log"},form("unblockneteasemusic/unblockneteasemusic_log"), _("日志"), 3)
+	entry({"admin", "services", "unblockneteasemusic", "general"}, cbi("unblockneteasemusic/unblockneteasemusic"), _("基本设定"), 1)
+	entry({"admin", "services", "unblockneteasemusic", "upgrade"}, form("unblockneteasemusic/unblockneteasemusic_upgrade"), _("更新组件"), 2).leaf = true
+	entry({"admin", "services", "unblockneteasemusic", "log"}, form("unblockneteasemusic/unblockneteasemusic_log"), _("日志"), 3)
 
-	entry({"admin", "services", "unblockneteasemusic", "status"},call("act_status")).leaf=true
-	entry({"admin", "services", "unblockneteasemusic", "update_core"},call("act_update_core"))
+	entry({"admin", "services", "unblockneteasemusic", "status"}, call("act_status")).leaf = true
+	entry({"admin", "services", "unblockneteasemusic", "update_core"}, call("act_update_core"))
+	entry({"admin", "services", "unblockneteasemusic", "remove_core"}, call("act_remove_core"))
 end
 
 function act_status()
-	local e={}
-	e.running=luci.sys.call("ps |grep unblockneteasemusic |grep app.js |grep -v grep >/dev/null")==0
+	local e = {}
+	e.running = luci.sys.call("ps |grep unblockneteasemusic |grep app.js |grep -v grep >/dev/null") == 0
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(e)
 end
@@ -56,4 +57,11 @@ function act_update_core()
 	luci.http.write_json({
 		ret = update_core();
 	})
+end
+
+function act_remove_core()
+	local ret = {}
+	ret.ret = luci.sys.call("cd /usr/share/unblockneteasemusic && rm -rf core && rm -f core_local_ver") == 0
+	luci.http.prepare_content("application/json")
+	luci.http.write_json(ret)
 end

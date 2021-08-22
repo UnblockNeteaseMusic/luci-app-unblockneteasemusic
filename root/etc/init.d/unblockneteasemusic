@@ -82,7 +82,11 @@ start()
 
 	local music_source
 	config_get music_source "config" "music_source" "default"
-	[ "${music_source}" != "default" ] && music_source="-o ${music_source}"
+	if [ "${music_source}" = "default" ]; then
+	       unset music_source
+	else
+	       music_source="-o ${music_source}"
+	fi
 
 	is_enabled "config" "strict_mode" && strict_mode="-s"
 	config_padding_arg "config" "endpoint_url" "-e" "https://music.163.com"

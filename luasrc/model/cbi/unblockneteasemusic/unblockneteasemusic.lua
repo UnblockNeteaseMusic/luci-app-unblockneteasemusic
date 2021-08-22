@@ -47,6 +47,12 @@ use_custom_cookie.description = translate("使用自定义 Cookie 请求音源�
 use_custom_cookie.default = 0
 use_custom_cookie.rmempty = false
 
+joox_cookie = s:option(Value, "joox_cookie", translate("JOOX Cookie"))
+joox_cookie.description = translate("在 joox.com 获取，需要wmid和session_key值")
+joox_cookie.placeholder = "wmid=; session_key=")
+joox_cookie.datatype = "string"
+joox_cookie:depends("use_custom_cookie", 1)
+
 migu_cookie = s:option(Value, "migu_cookie", translate("Migu Cookie"))
 migu_cookie.description = translate("通过抓包手机客户端请求获取，需要aversionid值")
 migu_cookie.datatype = "string"

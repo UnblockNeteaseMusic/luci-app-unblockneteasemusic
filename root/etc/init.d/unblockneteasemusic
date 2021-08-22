@@ -93,6 +93,7 @@ start()
 	config_padding_arg "config" "netease_server_ip" "-f"
 	config_padding_arg "config" "proxy_server_ip" "-u"
 
+	append_param_env "config" "joox_cookie" "JOOX_COOKIE"
 	append_param_env "config" "migu_cookie" "MIGU_COOKIE"
 	append_param_env "config" "qq_cookie" "QQ_COOKIE"
 	append_param_env "config" "youtube_key" "YOUTUBE_KEY"

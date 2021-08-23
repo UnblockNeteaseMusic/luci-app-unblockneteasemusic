@@ -49,7 +49,7 @@ use_custom_cookie.rmempty = false
 
 joox_cookie = s:option(Value, "joox_cookie", translate("JOOX Cookie"))
 joox_cookie.description = translate("在 joox.com 获取，需要wmid和session_key值")
-joox_cookie.placeholder = "wmid=; session_key=")
+joox_cookie.placeholder = "wmid=; session_key="
 joox_cookie.datatype = "string"
 joox_cookie:depends("use_custom_cookie", 1)
 

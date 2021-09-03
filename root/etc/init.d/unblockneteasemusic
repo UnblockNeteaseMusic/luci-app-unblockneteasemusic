@@ -33,13 +33,9 @@ append_param_env() {
 }
 
 uci_get_by_name() {
-	local "index"
-	index=0
-	if [ -n "$4" ]; then
-		index="$4"
-	fi
-	ret="$(uci get "$NAME".@"$1"["${index}"]."$2" 2>/dev/null)"
-	echo "${ret:=$3}"
+	local ret
+	ret="$(uci -q get "$NAME".@"$1"["${4:-0}"]."$2")"
+	echo "${ret:-$3}"
 }
 
 start()
@@ -54,7 +50,7 @@ start()
 	sed -i "/$NAME/d" /etc/crontabs/root
 	is_enabled "config" "auto_update" && echo "0 ${update_time} * * * /usr/share/$NAME/update.sh update_core" >> "/etc/crontabs/root"
 	echo "*/5 * * * * /usr/share/$NAME/log_check.sh" >> "/etc/crontabs/root"
-	/etc/init.d/cron restart > "/dev/null" 2>&1
+	/etc/init.d/cron restart
 
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; sh "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
 	[ ! -e "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
@@ -123,10 +119,10 @@ start()
 			ipset=/clientlog.music.163.com/neteasemusic
 			ipset=/clientlog3.music.163.com/neteasemusic
 		EOF
-		/etc/init.d/dnsmasq reload >"/dev/null" 2>&1
+		/etc/init.d/dnsmasq reload
 
-		if ! ipset list "acl_neteasemusic_http" > "/dev/null"; then ipset create "acl_neteasemusic_http" hash:ip; fi
-		if ! ipset list "acl_neteasemusic_https" > "/dev/null"; then ipset create "acl_neteasemusic_https" hash:ip; fi
+		ipset list "acl_neteasemusic_http" > "/dev/null" || ipset create "acl_neteasemusic_http" hash:ip
+		ipset list "acl_neteasemusic_https" > "/dev/null" || ipset create "acl_neteasemusic_https" hash:ip
 		ip_addr_num="$(uci show "$NAME" | grep -c "filter_mode")"
 		let ip_addr_num="ip_addr_num-1"
 		[ "${ip_addr_num}" -ge "0" ] && for i in $(seq 0 "${ip_addr_num}")
@@ -148,7 +144,10 @@ start()
 		done
 
 		ipset list "neteasemusic" > "/dev/null" || ipset create "neteasemusic" hash:ip
-		uclient-fetch -q -O- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.data.*.ip.*' |sort -u |awk '{print "ipset add neteasemusic "$1}' |sh > "/dev/null" 2>&1
+		netease_music_ips="$(uclient-fetch -qO- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.data.*.ip.*')"
+		netease_music_ips+="\n"
+		netease_music_ips+="$(uclient-fetch -qO- "https://music.httpdns.c.163.com/d" --post-data="music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.dns.*["ips"].*')"
+		echo -e "${netease_music_ips}" |sort -u |awk '{print "ipset add neteasemusic "$1}' |sh
 		$IPT_N -N "netease_cloud_music"
 		for local_addr in "0.0.0.0/8" "10.0.0.0/8" "127.0.0.0/8" "169.254.0.0/16" "172.16.0.0/12" "192.168.0.0/16" "224.0.0.0/4" "240.0.0.0/4"; do
 			$IPT_N -A "netease_cloud_music" -d "${local_addr}" -j "RETURN"
@@ -174,7 +173,7 @@ start()
 			address=/clientlog3.music.163.com/${lan_addr}
 			address=/music.httpdns.c.163.com/0.0.0.0
 		EOF
-		/etc/init.d/dnsmasq reload >"/dev/null" 2>&1
+		/etc/init.d/dnsmasq reload
 
 		ip route add "223.252.199.10" dev lo
 	fi
@@ -182,12 +181,12 @@ start()
 
 stop()
 {
-	{ ps |grep "$NAME" |grep "app.js" |grep -v "grep" |awk '{print $1}' |xargs kill -9; } > "/dev/null" 2>&1
+	{ ps |grep "$NAME" |grep "app.js" |grep -v "grep" |awk '{print $1}' |xargs kill -9; }
 
 	config_load "$NAME"
 
 	sed -i "/$NAME/d" "/etc/crontabs/root"
-	/etc/init.d/cron restart > "/dev/null" 2>&1
+	/etc/init.d/cron restart
 
 	[ -f "${UPGRADE_CONF}" ] && sed -i "/$NAME\/core/d;/$NAME\/local_ver/d" "${UPGRADE_CONF}"
 	is_enabled "config" "keep_core_when_upgrade" && { echo "/usr/share/$NAME/core/" >> "${UPGRADE_CONF}"; echo "/usr/share/$NAME/local_ver" >> "${UPGRADE_CONF}"; }
@@ -218,7 +217,7 @@ stop()
 	echo "" > "/var/etc/$NAME.include"
 
 	rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
-	/etc/init.d/dnsmasq reload >"/dev/null" 2>&1
+	/etc/init.d/dnsmasq reload
 	ip route del "223.252.199.10"
 
 	rm -f "/tmp/$NAME.log"

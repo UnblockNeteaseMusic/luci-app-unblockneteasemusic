@@ -104,8 +104,6 @@ start()
 		"replace_all") export MIN_BR="999999" ;;
 	esac
 
-	export NO_CACHE="true"
-
 	node "/usr/share/$NAME/core/app.js" -a "${listen_addr}" -p "${http_port}":"${https_port}" ${music_source} ${endpoint_url} ${netease_server_ip} ${proxy_server_ip} ${strict_mode} >"/tmp/$NAME.log" 2>&1 &
 
 	if [ "${hijack_ways}" = "use_ipset" ]; then

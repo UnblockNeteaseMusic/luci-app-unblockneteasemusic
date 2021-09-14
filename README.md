@@ -52,7 +52,7 @@
 在遵循此协议的前提下，你可以自由修改和分发
 
 ### 鸣谢
-[UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)的开发者：[nondanee](https://github.com/nondanee)<br/>
+[UnblockNeteaseMusic](https://github.com/1715173329/UnblockNeteaseMusic)的开发者：[nondanee](https://github.com/nondanee)、[pan93412](https://github.com/pan93412)、[1715173329](https://github.com/1715173329)<br/>
 [luci-app-unblockmusic](https://github.com/maxlicheng/luci-app-unblockmusic)的开发者：[maxlicheng](https://github.com/maxlicheng)<br/>
 [luci-app-unblockmusic（二次修改）](https://github.com/coolsnowwolf/lede/tree/master/package/lean/luci-app-unblockmusic)的开发者：[Lean](https://github.com/coolsnowwolf)<br/>
 IPSet 劫持方式指导：[恩山 692049#125 楼](https://www.right.com.cn/forum/forum.php?mod=viewthread&tid=692049&page=9#pid4104303) [rufengsuixing](https://github.com/rufengsuixing/luci-app-unblockmusic) [binsee](https://github.com/binsee/luci-app-unblockmusic)<br/>

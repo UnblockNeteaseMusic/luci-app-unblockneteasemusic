@@ -104,8 +104,8 @@ start_service()
 	case "$(config_get "config" "replace_music_source")" in
 		"lower_than_192kbps") procd_set_param env MIN_BR="192000" ;;
 		"lower_than_320kbps") procd_set_param env MIN_BR="320000" ;;
-		"lower_than_999kbps") procd_set_param env MIN_BR="999000" ;;
-		"replace_all") procd_set_param env MIN_BR="999999" ;;
+		"lower_than_999kbps") procd_set_param env MIN_BR="600000" ;;
+		"replace_all") procd_set_param env MIN_BR="9999999" ;;
 	esac
 
 	procd_set_param env LOG_FILE="/tmp/$NAME.log"

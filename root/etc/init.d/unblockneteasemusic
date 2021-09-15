@@ -46,8 +46,6 @@ uci_get_by_name() {
 
 start_service()
 {
-	stop
-
 	config_load "$NAME"
 	is_enabled "config" "enable" || exit 1
 

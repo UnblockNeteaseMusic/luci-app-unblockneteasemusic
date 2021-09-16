@@ -35,7 +35,7 @@ append_param_arg() {
 append_param_env() {
 	local value
 	config_get value "$1" "$2"
-	[ -n "$value" ] && procd_set_param env "$3"="$value"
+	[ -n "$value" ] && procd_append_param env "$3"="$value"
 }
 
 uci_get_by_name() {
@@ -93,6 +93,8 @@ start_service()
 	append_param_arg "config" "proxy_server_ip" "-u"
 	is_enabled "config" "strict_mode" && append_param "-s"
 
+	procd_set_param env LOG_FILE="/tmp/$NAME.log"
+
 	append_param_env "config" "joox_cookie" "JOOX_COOKIE"
 	append_param_env "config" "migu_cookie" "MIGU_COOKIE"
 	append_param_env "config" "qq_cookie" "QQ_COOKIE"
@@ -100,15 +102,13 @@ start_service()
 	append_param_env "config" "self_issue_cert_crt" "SIGN_CERT"
 	append_param_env "config" "self_issue_cert_key" "SIGN_KEY"
 
-	is_enabled "config" "enable_flac" && procd_set_param env ENABLE_FLAC="true"
+	is_enabled "config" "enable_flac" && procd_append_param env ENABLE_FLAC="true"
 	case "$(config_get "config" "replace_music_source")" in
-		"lower_than_192kbps") procd_set_param env MIN_BR="192000" ;;
-		"lower_than_320kbps") procd_set_param env MIN_BR="320000" ;;
-		"lower_than_999kbps") procd_set_param env MIN_BR="600000" ;;
-		"replace_all") procd_set_param env MIN_BR="9999999" ;;
+		"lower_than_192kbps") procd_append_param env MIN_BR="192000" ;;
+		"lower_than_320kbps") procd_append_param env MIN_BR="320000" ;;
+		"lower_than_999kbps") procd_append_param env MIN_BR="600000" ;;
+		"replace_all") procd_append_param env MIN_BR="9999999" ;;
 	esac
-
-	procd_set_param env LOG_FILE="/tmp/$NAME.log"
 
 	procd_set_param stdout 1
 	procd_set_param stderr 1

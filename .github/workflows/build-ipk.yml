@@ -8,7 +8,7 @@ on:
       - 'luasrc/**'
       - 'root/**'
       - 'Makefile'
-      - '.github/workflows/*.yml'
+      - '.github/**'
 
   pull_request:
     types: 
@@ -19,7 +19,7 @@ on:
       - 'luasrc/**'
       - 'root/**'
       - 'Makefile'
-      - '.github/workflows/*.yml'
+      - '.github/**'
 
   release:
     types: 

@@ -1,0 +1,64 @@
+name: Build ipk for luci-app-unblockneteasemusic
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'luasrc/**'
+      - 'root/**'
+      - 'Makefile'
+      - '.github/workflows/*.yml'
+
+  pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened
+    paths:
+      - 'luasrc/**'
+      - 'root/**'
+      - 'Makefile'
+      - '.github/workflows/*.yml'
+
+  release:
+    types: 
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source tree
+        uses: actions/checkout@v2
+
+      - name: Setup dependencies
+        run: |
+          sudo -E apt -qq update
+          sudo -E apt -qq install curl fakeroot tar
+
+      - name: Build ipk file
+        env:
+          RELEASE_TYPE: ${{ github.event_name }}
+        run: |
+          pushd .github
+          fakeroot bash build-ipk.sh
+          echo "ASSET_NAME=$(ls *.ipk)" >> $GITHUB_ENV
+          popd
+
+      - name: Publishing to GitHub Artifacts
+        uses: actions/upload-artifact@v2
+        if: github.event_name != 'release'
+        with:
+          name: ${{ env.ASSET_NAME }}
+          path: .github/*.ipk
+
+      - name: Publishing to GitHub Releases
+        uses: svenstaro/upload-release-action@v2
+        if: github.event_name == 'release'
+        with:
+          repo_token: ${{ github.token }}
+          file: .github/*.ipk
+          tag: ${{ github.ref }}
+          file_glob: true

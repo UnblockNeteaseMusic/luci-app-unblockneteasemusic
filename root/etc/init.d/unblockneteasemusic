@@ -130,8 +130,8 @@ start_service()
 		EOF
 		/etc/init.d/dnsmasq reload
 
-		ipset list "acl_neteasemusic_http" > "/dev/null" || ipset create "acl_neteasemusic_http" hash:ip
-		ipset list "acl_neteasemusic_https" > "/dev/null" || ipset create "acl_neteasemusic_https" hash:ip
+		ipset create "acl_neteasemusic_http" hash:ip
+		ipset create "acl_neteasemusic_https" hash:ip
 		ip_addr_num="$(uci show "$NAME" | grep -c "filter_mode")"
 		let ip_addr_num="ip_addr_num-1"
 		[ "${ip_addr_num}" -ge "0" ] && for i in $(seq 0 "${ip_addr_num}")
@@ -152,7 +152,7 @@ start_service()
 			esac
 		done
 
-		ipset list "neteasemusic" > "/dev/null" || ipset create "neteasemusic" hash:ip
+		ipset create "neteasemusic" hash:ip
 		netease_music_ips="$(uclient-fetch -qO- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.data.*.ip.*')"
 		netease_music_ips2="$(uclient-fetch -qO- "https://music.httpdns.c.163.com/d" --post-data="music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.dns.*["ips"].*')"
 		echo -e "${netease_music_ips}\n${netease_music_ips2}" |sort -u |awk '{print "ipset add neteasemusic "$1}' |sh

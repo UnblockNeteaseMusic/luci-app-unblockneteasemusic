@@ -1,5 +1,6 @@
 #!/bin/sh /etc/rc.common
 # SPDX-License-Identifier: GPL-3.0-only
+#
 # Copyright (C) 2019-2021 Tianling Shen <cnsztl@immortalwrt.org>
 
 USE_PROCD=1
@@ -14,7 +15,7 @@ IPT_N="iptables -t nat"
 
 is_enabled() {
 	local enabled
-	config_get enabled "$1" "$2" "0"
+	config_get_bool enabled "$1" "$2" "${3:-0}"
 	if [ "$enabled" -eq "1" ]; then
 		return 0
 	else

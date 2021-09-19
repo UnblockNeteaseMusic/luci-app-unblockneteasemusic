@@ -18,7 +18,7 @@
     #进入 OpenWrt 源码 package 目录
     cd package
     #克隆插件源码
-    git clone https://github.com/immortalwrt/luci-app-unblockneteasemusic.git
+    git clone https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
     #返回上一层目录
     cd ..
     #配置
@@ -41,14 +41,14 @@
 
 ### 效果图
 #### luci界面
-  ![Image text](https://raw.githubusercontent.com/immortalwrt/luci-app-unblockneteasemusic/master/views/view1.jpg)
-  ![Image text](https://raw.githubusercontent.com/immortalwrt/luci-app-unblockneteasemusic/master/views/view2.jpg)
-  ![Image text](https://raw.githubusercontent.com/immortalwrt/luci-app-unblockneteasemusic/master/views/view3.jpg)
+  ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view1.jpg)
+  ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view2.jpg)
+  ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view3.jpg)
 #### UWP 网易云音乐客户端
-  ![Image text](https://raw.githubusercontent.com/immortalwrt/luci-app-unblockneteasemusic/master/views/view4.jpg)
+  ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view4.jpg)
 
 ### 协议
-本项目使用 [GPL 3.0](https://github.com/immortalwrt/luci-app-unblockneteasemusic/blob/master/LICENSE) 协议授权<br/>
+本项目使用 [GPL 3.0](https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/blob/master/LICENSE) 协议授权<br/>
 在遵循此协议的前提下，你可以自由修改和分发
 
 ### 鸣谢

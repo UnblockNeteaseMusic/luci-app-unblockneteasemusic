@@ -1,6 +1,5 @@
--- This is a free software, use it under GNU General Public License v3.0.
--- Created By ImmortalWrt
--- https://github.com/immortalwrt
+-- SPDX-License-Identifer: GPL-3.0-only
+-- Copyright (C) 2019-2021 Tianling Shen <cnsztl@immortalwrt.org>
 
 module("luci.controller.unblockneteasemusic", package.seeall)
 

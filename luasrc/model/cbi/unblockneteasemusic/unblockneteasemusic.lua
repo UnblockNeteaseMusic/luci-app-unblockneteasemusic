@@ -69,6 +69,11 @@ youtube_key.description = translate("API Key申请地址：https://developers.go
 youtube_key.datatype = "string"
 youtube_key:depends("use_custom_cookie", 1)
 
+local_vip = s:option(Value, "local_vip", translate("启用本地 VIP"))
+local_vip.description = translate("启用后，可以使用去广告、个性换肤、鲸云音效等本地功能")
+local_vip.default = 0
+local_vip.rmempty = false
+
 auto_update = s:option(Flag, "auto_update", translate("启用自动更新"))
 auto_update.description = translate("启用后，每天将定时自动检查最新版本并更新")
 auto_update.default = 0

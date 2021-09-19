@@ -19,7 +19,7 @@ else
 fi
 
 TEMP_DIR="$(mktemp -d -p $PWD)"
-TEMP_PKG_DIR="$TEMP_DIR/$(get_mk_value "PKG_NAME")"
+TEMP_PKG_DIR="$TEMP_DIR/$PKG_NAME"
 mkdir -p "$TEMP_PKG_DIR/CONTROL/"
 mkdir -p "$TEMP_PKG_DIR/usr/lib/lua/luci/"
 

@@ -2,6 +2,8 @@
 这是一个用于解除网易云音乐播放限制的 OpenWrt 插件，完整支持 播放 / 下载 无版权 / 收费 歌曲<br/>
 原理为通过获取其他平台的音乐播放链接，替换网易云音乐内 无版权 / 收费 歌曲链接<br/>
 
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FUnblockNeteaseMusic%2Fluci-app-unblockneteasemusic.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FUnblockNeteaseMusic%2Fluci-app-unblockneteasemusic?ref=badge_shield)
+
 ### 功能说明
 1. 支持自定义音源选择，一般设置默认即可；如需高音质音乐，推荐选择“酷我”或“咪咕”
 2. 支持使用 IPset / Hosts 自动劫持相关请求，客户端无需设置代理即可使用
@@ -40,17 +42,12 @@
 3. 推荐在客户端信任 [UnblockNeteaseMusic 证书](https://raw.githubusercontent.com/UnblockNeteaseMusic/server/enhanced/ca.crt)，以便 HTTPS 通讯（若您不放心，也可以[自行签发证书](https://github.com/nondanee/UnblockNeteaseMusic/issues/48#issuecomment-477870013)）
 
 ### 效果图
-#### luci界面
+#### LuCI 界面
   ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view1.jpg)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FUnblockNeteaseMusic%2Fluci-app-unblockneteasemusic.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FUnblockNeteaseMusic%2Fluci-app-unblockneteasemusic?ref=badge_shield)
   ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view2.jpg)
   ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view3.jpg)
 #### UWP 网易云音乐客户端
   ![Image text](https://raw.githubusercontent.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/master/views/view4.jpg)
-
-### 协议
-本项目使用 [GPL 3.0](https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic/blob/master/LICENSE) 协议授权<br/>
-在遵循此协议的前提下，你可以自由修改和分发
 
 ### 鸣谢
 [UnblockNeteaseMusic](https://github.com/UnblockNeteaseMusic/server)的开发者：[nondanee](https://github.com/nondanee)、[pan93412](https://github.com/pan93412)、[1715173329](https://github.com/1715173329)<br/>
@@ -60,6 +57,8 @@ IPSet 劫持方式指导：[恩山 692049#125 楼](https://www.right.com.cn/foru
 Hosts劫持方式指导：[UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic) [云音乐安卓又搞事啦](https://jixun.moe/post/netease-android-hosts-bypass/)<br/>
 核心程序版本检测方法指导：[vernesong](https://github.com/vernesong)
 
+### 协议
+本项目使用 [GPL-3.0-only](https://spdx.org/licenses/GPL-3.0-only.html) 协议授权<br/>
+在遵循此协议的前提下，你可以自由修改和分发
 
-## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FUnblockNeteaseMusic%2Fluci-app-unblockneteasemusic.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FUnblockNeteaseMusic%2Fluci-app-unblockneteasemusic?ref=badge_large)

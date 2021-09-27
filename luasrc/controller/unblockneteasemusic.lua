@@ -30,7 +30,7 @@ function act_status()
 end
 
 function update_core()
-	core_cloud_ver=luci.sys.exec("uclient-fetch -q -O- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits/enhanced' | jsonfilter -e '@.sha'")
+	core_cloud_ver=luci.sys.exec("uclient-fetch -qO- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits/enhanced' | jsonfilter -e '@.sha'")
 	core_cloud_ver_mini=string.sub(core_cloud_ver, 1, 7)
 	if not core_cloud_ver or not core_cloud_ver_mini then
 		return "1"

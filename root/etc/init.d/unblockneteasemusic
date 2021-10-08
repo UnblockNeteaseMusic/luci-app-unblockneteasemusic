@@ -35,7 +35,7 @@ append_param_arg() {
 
 append_param_env() {
 	local value
-	config_get value "$1" "$2"
+	config_get value "$1" "$2" $4
 	[ -n "$value" ] && procd_append_param env "$3"="$value"
 }
 
@@ -100,8 +100,8 @@ start_service()
 	append_param_env "config" "migu_cookie" "MIGU_COOKIE"
 	append_param_env "config" "qq_cookie" "QQ_COOKIE"
 	append_param_env "config" "youtube_key" "YOUTUBE_KEY"
-	append_param_env "config" "self_issue_cert_crt" "SIGN_CERT"
-	append_param_env "config" "self_issue_cert_key" "SIGN_KEY"
+	append_param_env "config" "self_issue_cert_crt" "SIGN_CERT" "/usr/share/$NAME/core/server.crt"
+	append_param_env "config" "self_issue_cert_key" "SIGN_KEY" "/usr/share/$NAME/core/server.key"
 
 	is_enabled "config" "enable_flac" && procd_append_param env ENABLE_FLAC="true"
 	is_enabled "config" "local_vip" && procd_append_param env ENABLE_LOCAL_VIP="true"

@@ -4,17 +4,17 @@
 
 NAME="unblockneteasemusic"
 
-function check_core_if_already_running(){
+check_core_if_already_running(){
 	running_tasks="$(ps |grep "$NAME" |grep "update.sh" |grep "update_core" |grep -v "grep" |awk '{print $1}' |wc -l)"
 	[ "${running_tasks}" -gt "2" ] && { echo -e "\nA task is already running." >> "/tmp/$NAME.log"; exit 2; }
 }
 
-function clean_log(){
+clean_log(){
 	echo "" > "/tmp/$NAME.log"
 }
 
-function check_core_latest_version(){
-	core_latest_ver="$(uclient-fetch -qO- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits/enhanced' | jsonfilter -e '@.sha')"
+check_core_latest_version(){
+	core_latest_ver="$(uclient-fetch -qO- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' | jsonfilter -e '@[0].sha')"
 	[ -z "${core_latest_ver}" ] && { echo -e "\nFailed to check latest core version, please try again later." >> "/tmp/$NAME.log"; exit 1; }
 	if [ ! -e "/usr/share/$NAME/core_local_ver" ]; then
 		clean_log
@@ -33,25 +33,35 @@ function check_core_latest_version(){
 	fi
 }
 
-function update_core(){
+update_core(){
 	echo -e "Updating core..." >> "/tmp/$NAME.log"
 
 	mkdir -p "/usr/share/$NAME/core" > "/dev/null" 2>&1
 	rm -rf /usr/share/$NAME/core/* > "/dev/null" 2>&1
 
-	uclient-fetch "https://codeload.github.com/UnblockNeteaseMusic/server/tar.gz/${core_latest_ver}" -qO "/usr/share/$NAME/core/core.tar.gz" > "/dev/null" 2>&1
-	tar -zxf "/usr/share/$NAME/core/core.tar.gz" -C "/usr/share/$NAME/core/" > "/dev/null" 2>&1
-	mv "/usr/share/$NAME/core/server-${core_latest_ver}"/* "/usr/share/$NAME/core/"
-	rm -rf "/usr/share/$NAME/core/core.tar.gz" "/usr/share/$NAME/core/server-${core_latest_ver}" > "/dev/null" 2>&1
+	local mirror
+	for mirror in "https://cdn.jsdelivr.net/gh/UnblockNeteaseMusic/server@" "https://raw.githubusercontent.com/UnblockNeteaseMusic/server/"
+	do
+		{
+			uclient-fetch "${mirror}${core_latest_ver}/precompiled/app.js" -qO "/usr/share/$NAME/core/app.js"
+			uclient-fetch "${mirror}${core_latest_ver}/precompiled/bridge.js" -qO "/usr/share/$NAME/core/bridge.js"
+			uclient-fetch "${mirror}${core_latest_ver}/server.crt" -qO "/usr/share/$NAME/core/server.crt"
+			uclient-fetch "${mirror}${core_latest_ver}/server.key" -qO "/usr/share/$NAME/core/server.key"
+		} > "/dev/null" 2>&1 && break
+	done
 
-	if [ ! -e "/usr/share/$NAME/core/app.js" ]; then
-		echo -e "Failed to download core." >> "/tmp/$NAME.log"
-		exit 1
-	else
-		[ "${update_core_from_luci}" == "y" ] && touch "/usr/share/$NAME/update_core_successfully"
-		echo -e "${core_latest_ver}" > "/usr/share/$NAME/core_local_ver"
-		[ "${non_restart}" != "y" ] && /etc/init.d/$NAME restart
-	fi
+	local file
+	for file in "app.js" "bridge.js" "server.crt" "server.key"
+	do
+		[ -s "/usr/share/$NAME/core/${file}" ] || {
+			echo -e "Failed to download ${file}." >> "/tmp/$NAME.log"
+			exit 1
+		}
+	done
+
+	[ -n "${update_core_from_luci}" ] && touch "/usr/share/$NAME/update_core_successfully"
+	echo -e "${core_latest_ver}" > "/usr/share/$NAME/core_local_ver"
+	[ -z "${non_restart}" ] && /etc/init.d/$NAME restart
 
 	echo -e "Succeeded in updating core." > "/tmp/$NAME.log"
 	echo -e "Current core version: ${core_latest_ver}.\n" >> "/tmp/$NAME.log"
@@ -63,12 +73,12 @@ case "$1" in
 		check_core_latest_version
 		;;
 	"update_core_non_restart")
-		non_restart="y"
+		non_restart=1
 		check_core_if_already_running
 		check_core_latest_version
 		;;
 	"update_core_from_luci")
-		update_core_from_luci="y"
+		update_core_from_luci=1
 		check_core_if_already_running
 		check_core_latest_version
 		;;

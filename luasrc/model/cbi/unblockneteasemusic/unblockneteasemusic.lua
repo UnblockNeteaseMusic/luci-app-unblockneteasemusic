@@ -28,6 +28,11 @@ music_source.description = translate("自定义模式下，多个音源请用空
 music_source.default = "default"
 music_source.rmempty = false
 
+local_vip = s:option(Flag, "local_vip", translate("启用本地 VIP"))
+local_vip.description = translate("启用后，可以使用去广告、个性换肤、鲸云音效等本地功能")
+local_vip.default = 0
+local_vip.rmempty = false
+
 enable_flac = s:option(Flag, "enable_flac", translate("启用无损音质"))
 enable_flac.description = translate("目前仅支持QQ、酷我、咪咕音源")
 enable_flac.default = 0
@@ -69,11 +74,6 @@ youtube_key = s:option(Value, "youtube_key", translate("Youtube API Key"))
 youtube_key.description = translate("API Key申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start")
 youtube_key.datatype = "string"
 youtube_key:depends("use_custom_cookie", 1)
-
-local_vip = s:option(Value, "local_vip", translate("启用本地 VIP"))
-local_vip.description = translate("启用后，可以使用去广告、个性换肤、鲸云音效等本地功能")
-local_vip.default = 0
-local_vip.rmempty = false
 
 auto_update = s:option(Flag, "auto_update", translate("启用自动更新"))
 auto_update.description = translate("启用后，每天将定时自动检查最新版本并更新")

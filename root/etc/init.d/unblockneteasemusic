@@ -57,8 +57,8 @@ start_service()
 	echo "*/5 * * * * /usr/share/$NAME/log_check.sh" >> "/etc/crontabs/root"
 	/etc/init.d/cron restart
 
-	[ ! -e "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; sh "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
-	[ ! -e "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
+	[ ! -s "/usr/share/$NAME/core/app.js" ] && { rm -f "/usr/share/$NAME/local_ver"; sh "/usr/share/$NAME/update.sh" "update_core_non_restart"; }
+	[ ! -s "/usr/share/$NAME/core/app.js" ] && { echo "Core Not Found, please download it before starting." >> "/tmp/$NAME.log"; exit 1; }
 
 	procd_open_instance "$NAME"
 	procd_set_param command node "/usr/share/$NAME/core/app.js"

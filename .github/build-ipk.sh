@@ -5,7 +5,8 @@
 
 export PKG_SOURCE_DATE_EPOCH="$(date "+%s")"
 
-PKG_DIR="$(realpath $PWD/../)"
+BASE_DIR="$(cd "$(dirname $0)"; pwd)"
+PKG_DIR="$BASE_DIR/.."
 
 function get_mk_value() {
 	awk -F "$1:=" '{print $2}' "$PKG_DIR/Makefile" | xargs
@@ -18,7 +19,7 @@ else
 	PKG_VERSION="dev-$PKG_SOURCE_DATE_EPOCH-$(git rev-parse --short HEAD)"
 fi
 
-TEMP_DIR="$(mktemp -d -p $PWD)"
+TEMP_DIR="$(mktemp -d -p $BASE_DIR)"
 TEMP_PKG_DIR="$TEMP_DIR/$PKG_NAME"
 mkdir -p "$TEMP_PKG_DIR/CONTROL/"
 mkdir -p "$TEMP_PKG_DIR/usr/lib/lua/luci/"
@@ -67,5 +68,5 @@ curl -fsSL "https://raw.githubusercontent.com/openwrt/openwrt/master/scripts/ipk
 chmod 0755 "$TEMP_DIR/ipkg-build"
 "$TEMP_DIR/ipkg-build" -m "/:root:root:0755" "$TEMP_PKG_DIR" "$TEMP_DIR"
 
-mv "$TEMP_DIR/${PKG_NAME}_${PKG_VERSION}_all.ipk" "$PWD"
+mv "$TEMP_DIR/${PKG_NAME}_${PKG_VERSION}_all.ipk" "$BASE_DIR"
 rm -rf "$TEMP_DIR"

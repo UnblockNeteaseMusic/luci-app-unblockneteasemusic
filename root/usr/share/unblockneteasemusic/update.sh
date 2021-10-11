@@ -44,14 +44,13 @@ update_core(){
 	do
 		{
 			uclient-fetch "${mirror}${core_latest_ver}/precompiled/app.js" -qO "/usr/share/$NAME/core/app.js"
-			uclient-fetch "${mirror}${core_latest_ver}/precompiled/bridge.js" -qO "/usr/share/$NAME/core/bridge.js"
 			uclient-fetch "${mirror}enhanced/server.crt" -qO "/usr/share/$NAME/core/server.crt"
 			uclient-fetch "${mirror}enhanced/server.key" -qO "/usr/share/$NAME/core/server.key"
 		} > "/dev/null" 2>&1 && break
 	done
 
 	local file
-	for file in "app.js" "bridge.js" "server.crt" "server.key"
+	for file in "app.js" "server.crt" "server.key"
 	do
 		[ -s "/usr/share/$NAME/core/${file}" ] || {
 			echo -e "Failed to download ${file}." >> "/tmp/$NAME.log"

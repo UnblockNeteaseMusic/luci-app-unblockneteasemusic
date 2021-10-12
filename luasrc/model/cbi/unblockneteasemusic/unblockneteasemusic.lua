@@ -88,30 +88,8 @@ update_time.default = "3"
 update_time.description = translate("设定每天自动检查更新时间")
 update_time:depends("auto_update", 1)
 
-download_cert = s:option(Button,"certificate", translate("HTTPS 证书"))
-download_cert.inputtitle = translate("下载 CA 根证书")
+download_cert = s:option(DummyValue, "opennewwindow", translate("<input type=\"button\" class=\"btn cbi-button cbi-button-apply\" value=\"下载CA根证书\" onclick=\"window.open('https://raw.githubusercontent.com/UnblockNeteaseMusic/server/enhanced/ca.crt')\" />"))
 download_cert.description = translate("Linux/iOS/MacOSX在信任根证书后方可正常使用")
-download_cert.inputstyle = "reload"
-download_cert.write = function()
-	act_download_cert()
-end
-
-function act_download_cert()
-	local t,e
-	t=nixio.open("/usr/share/unblockneteasemusic/core/ca.crt","r")
-	luci.http.header('Content-Disposition','attachment; filename="ca.crt"')
-	luci.http.prepare_content("application/octet-stream")
-	while true do
-		e=t:read(nixio.const.buffersize)
-		if(not e)or(#e==0)then
-			break
-		else
-			luci.http.write(e)
-		end
-	end
-	t:close()
-	luci.http.close()
-end
 
 advanced_mode = s:option(Flag, "advanced_mode", translate("启用进阶设置"))
 advanced_mode.description = translate("仅推荐高级玩家使用")
@@ -133,7 +111,7 @@ https_port.datatype = "port"
 https_port:depends("advanced_mode", 1)
 
 endpoint_url = s:option(Value, "endpoint_url", translate("EndPoint"))
-endpoint_url.description = translate("具体说明参见：https://github.com/nondanee/UnblockNeteaseMusic")
+endpoint_url.description = translate("具体说明参见：https://github.com/UnblockNeteaseMusic/server")
 endpoint_url.default = "https://music.163.com"
 endpoint_url.placeholder = "https://music.163.com"
 endpoint_url.datatype = "string"

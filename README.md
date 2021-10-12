@@ -11,9 +11,8 @@
 4. 支持将服务公开至公网（默认监听局域网），支持开启严格模式
 5. 支持设定代理，支持指定网易云音乐服务器 IP，支持设定 EndPoint
 6. 支持手动/自动更新 Core，确保插件正常运作
-7. 支持设定 Migu Cookie / QQ Cookie / Youtube API，以正常使用相关音源
-8. 支持在开启 Adbyby / KoolProxy 的环境下工作
-9. 支持无损音质（目前仅支持 QQ、酷我、咪咕音源）
+7. 支持设定 JOOX/Migu/QQ Cookie / Youtube API，以正常使用相关音源
+8. 支持无损音质（目前支持 pyncmd、QQ、酷狗、酷我、咪咕音源）
 
 ### 编译
 ```bash

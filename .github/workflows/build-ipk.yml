@@ -33,11 +33,6 @@ jobs:
       - name: Checkout source tree
         uses: actions/checkout@v2
 
-      - name: Setup dependencies
-        run: |
-          sudo -E apt -qq update
-          sudo -E apt -qq install curl fakeroot tar
-
       - name: Build ipk file
         env:
           RELEASE_TYPE: ${{ github.event_name }}

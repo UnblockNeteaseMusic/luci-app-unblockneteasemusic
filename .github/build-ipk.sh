@@ -32,7 +32,7 @@ echo -e "/etc/config/unblockneteasemusic" > "$TEMP_PKG_DIR/CONTROL/conffiles"
 cat > "$TEMP_PKG_DIR/CONTROL/control" <<-EOF
 	Package: $PKG_NAME
 	Version: $PKG_VERSION
-	Depends: libc, $(get_mk_value "LUCI_DEPENDS" | xargs | tr " +" ", " | xargs)
+	Depends: libc,$(get_mk_value "LUCI_DEPENDS" | xargs | tr " +" ", ")
 	Source: https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic
 	SourceName: $PKG_NAME
 	Section: luci

@@ -35,7 +35,7 @@ function update_core()
 	if not core_cloud_ver or not core_cloud_ver_mini then
 		return "1"
 	else
-		core_local_ver=luci.sys.exec("cat '/usr/share/unblockneteasemusic/core_local_ver'")
+		core_local_ver=luci.sys.exec("cat '/usr/share/unblockneteasemusic/core_local_ver' 2>'/dev/null'")
 		if not core_local_ver or (core_local_ver ~= core_cloud_ver) then
 			luci.sys.call("rm -f /usr/share/unblockneteasemusic/update_core_successfully")
 			luci.sys.call("/usr/share/unblockneteasemusic/update.sh update_core_from_luci")

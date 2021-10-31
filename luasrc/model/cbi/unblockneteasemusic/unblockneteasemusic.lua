@@ -1,5 +1,5 @@
 mp = Map("unblockneteasemusic", translate("解除网易云音乐播放限制"))
-mp.description = translate("原理：采用 [Bilibili/QQ/酷狗/酷我/咪咕/JOOX/Youtube] 等音源，替换网易云音乐 无版权/收费 歌曲链接<br/>具体使用方法参见：https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic")
+mp.description = translate("原理：采用 [Bilibili/JOOX/酷狗/酷我/咪咕/pyncmd/QQ/Youtube] 等音源，替换网易云音乐 无版权/收费 歌曲链接<br/>具体使用方法参见：https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic")
 
 mp:section(SimpleSection).template = "unblockneteasemusic/unblockneteasemusic_status"
 
@@ -34,15 +34,15 @@ local_vip.default = 0
 local_vip.rmempty = false
 
 enable_flac = s:option(Flag, "enable_flac", translate("启用无损音质"))
-enable_flac.description = translate("目前仅支持QQ、酷我、咪咕音源")
+enable_flac.description = translate("目前仅支持酷狗、酷我、咪咕、pyncmd、QQ 音源")
 enable_flac.default = 0
 enable_flac.rmempty = false
 
 replace_music_source = s:option(ListValue, "replace_music_source", translate("强制音乐音源替换"))
 replace_music_source:value("dont_replace", translate("不强制替换音乐音源"))
-replace_music_source:value("lower_than_192kbps", translate("当音质低于192Kbps（中）时"))
-replace_music_source:value("lower_than_320kbps", translate("当音质低于320Kbps（高）时"))
-replace_music_source:value("lower_than_999kbps", translate("当音质低于999Kbps（无损）时"))
+replace_music_source:value("lower_than_192kbps", translate("当音质低于 192 Kbps（中）时"))
+replace_music_source:value("lower_than_320kbps", translate("当音质低于 320 Kbps（高）时"))
+replace_music_source:value("lower_than_999kbps", translate("当音质低于 999 Kbps（无损）时"))
 replace_music_source:value("replace_all", translate("替换所有音乐音源"))
 replace_music_source.description = translate("当音乐音质低于指定数值时，尝试强制使用其他平台的高音质版本进行替换")
 replace_music_source.default = "dont_replace"
@@ -54,24 +54,24 @@ use_custom_cookie.default = 0
 use_custom_cookie.rmempty = false
 
 joox_cookie = s:option(Value, "joox_cookie", translate("JOOX Cookie"))
-joox_cookie.description = translate("在 joox.com 获取，需要wmid和session_key值")
+joox_cookie.description = translate("在 joox.com 获取，需要 wmid 和 session_key 值")
 joox_cookie.placeholder = "wmid=; session_key="
 joox_cookie.datatype = "string"
 joox_cookie:depends("use_custom_cookie", 1)
 
 migu_cookie = s:option(Value, "migu_cookie", translate("Migu Cookie"))
-migu_cookie.description = translate("通过抓包手机客户端请求获取，需要aversionid值")
+migu_cookie.description = translate("通过抓包手机客户端请求获取，需要 aversionid 值")
 migu_cookie.datatype = "string"
 migu_cookie:depends("use_custom_cookie", 1)
 
 qq_cookie = s:option(Value, "qq_cookie", translate("QQ Cookie"))
-qq_cookie.description = translate("在 y.qq.com 获取，需要uin和qm_keyst值")
+qq_cookie.description = translate("在 y.qq.com 获取，需要 uin 和 qm_keyst值 ")
 qq_cookie.placeholder = "uin=; qm_keyst="
 qq_cookie.datatype = "string"
 qq_cookie:depends("use_custom_cookie", 1)
 
 youtube_key = s:option(Value, "youtube_key", translate("Youtube API Key"))
-youtube_key.description = translate("API Key申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start")
+youtube_key.description = translate("API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start")
 youtube_key.datatype = "string"
 youtube_key:depends("use_custom_cookie", 1)
 
@@ -88,23 +88,23 @@ update_time.default = "3"
 update_time.description = translate("设定每天自动检查更新时间")
 update_time:depends("auto_update", 1)
 
-download_cert = s:option(DummyValue, "opennewwindow", translate("<input type=\"button\" class=\"btn cbi-button cbi-button-apply\" value=\"下载CA根证书\" onclick=\"window.open('https://raw.githubusercontent.com/UnblockNeteaseMusic/server/enhanced/ca.crt')\" />"))
-download_cert.description = translate("Linux/iOS/MacOSX在信任根证书后方可正常使用")
+download_cert = s:option(DummyValue, "opennewwindow", translate("<input type=\"button\" class=\"btn cbi-button cbi-button-apply\" value=\"下载 CA 根证书\" onclick=\"window.open('https://raw.githubusercontent.com/UnblockNeteaseMusic/server/enhanced/ca.crt')\" />"))
+download_cert.description = translate("Linux/iOS/MacOSX 在信任根证书后方可正常使用")
 
 advanced_mode = s:option(Flag, "advanced_mode", translate("启用进阶设置"))
-advanced_mode.description = translate("仅推荐高级玩家使用")
+advanced_mode.description = translate("非必要不推荐使用")
 advanced_mode.default = 0
 advanced_mode.rmempty = false
 
 http_port = s:option(Value, "http_port", translate("HTTP 监听端口"))
-http_port.description = translate("程序监听的HTTP端口，不可与 其他程序/HTTPS 共用一个端口")
+http_port.description = translate("程序监听的 HTTP 端口，不可与 其他程序/HTTPS 共用一个端口")
 http_port.placeholder = "5200"
 http_port.default = "5200"
 http_port.datatype = "port"
 http_port:depends("advanced_mode", 1)
 
 https_port = s:option(Value, "https_port", translate("HTTPS 监听端口"))
-https_port.description = translate("程序监听的HTTPS端口，不可与 其他程序/HTTP 共用一个端口")
+https_port.description = translate("程序监听的 HTTPS 端口，不可与 其他程序/HTTP 共用一个端口")
 https_port.placeholder = "5201"
 https_port.default = "5201"
 https_port.datatype = "port"
@@ -119,14 +119,14 @@ endpoint_url:depends("advanced_mode", 1)
 
 hijack = s:option(ListValue, "hijack_ways", translate("劫持方法"))
 hijack:value("dont_hijack", translate("不开启劫持"))
-hijack:value("use_ipset", translate("使用IPSet劫持"))
-hijack:value("use_hosts", translate("使用Hosts劫持"))
-hijack.description = translate("如果使用Hosts劫持，程序监听的HTTP/HTTPS端口将被锁定为80/443")
+hijack:value("use_ipset", translate("使用 IPSet 劫持"))
+hijack:value("use_hosts", translate("使用 Hosts 劫持"))
+hijack.description = translate("如果使用Hosts劫持，程序监听的 HTTP/HTTPS 端口将被锁定为 80/443")
 hijack.default = "dont_hijack"
 hijack:depends("advanced_mode", 1)
 
 keep_core_when_upgrade = s:option(Flag, "keep_core_when_upgrade", translate("升级时保留核心程序"))
-keep_core_when_upgrade.description = translate("默认情况下，在OpenWrt升级后会导致核心程序丢失，开启此选项后会保留当前下载的核心程序")
+keep_core_when_upgrade.description = translate("默认情况下，在系统升级后会导致核心程序丢失，开启此选项后会保留当前下载的核心程序")
 keep_core_when_upgrade.default = 0
 keep_core_when_upgrade.rmempty = false
 keep_core_when_upgrade:depends("advanced_mode", 1)
@@ -143,8 +143,8 @@ strict_mode.default = 0
 strict_mode.rmempty = false
 strict_mode:depends("advanced_mode", 1)
 
-netease_server_ip = s:option(Value, "netease_server_ip", translate("网易云服务器IP"))
-netease_server_ip.description = translate("通过 ping music.163.com 即可获得IP地址，仅限填写一个")
+netease_server_ip = s:option(Value, "netease_server_ip", translate("网易云服务器 IP"))
+netease_server_ip.description = translate("通过 ping music.163.com 即可获得 IP 地址，仅限填写一个")
 netease_server_ip.placeholder = "59.111.181.38"
 netease_server_ip.datatype = "ipaddr"
 netease_server_ip:depends("advanced_mode", 1)
@@ -156,13 +156,13 @@ proxy_server_ip.datatype = "string"
 proxy_server_ip:depends("advanced_mode", 1)
 
 self_issue_cert_crt = s:option(Value, "self_issue_cert_crt", translate("自签发证书公钥位置"))
-self_issue_cert_crt.description = translate("[公钥] 默认使用UnblockNeteaseMusic项目提供的CA证书，您可以指定为您自己的证书")
+self_issue_cert_crt.description = translate("[公钥] 默认使用 UnblockNeteaseMusic 项目提供的 CA 证书，您可以指定为您自己的证书")
 self_issue_cert_crt.placeholder = "/usr/share/unblockneteasemusic/core/server.crt"
 self_issue_cert_crt.datatype = "file"
 self_issue_cert_crt:depends("advanced_mode", 1)
 
 self_issue_cert_key = s:option(Value, "self_issue_cert_key", translate("自签发证书私钥位置"))
-self_issue_cert_key.description = translate("[私钥] 默认使用UnblockNeteaseMusic项目提供的CA证书，您可以指定为您自己的证书")
+self_issue_cert_key.description = translate("[私钥] 默认使用 UnblockNeteaseMusic 项目提供的 CA 证书，您可以指定为您自己的证书")
 self_issue_cert_key.placeholder = "/usr/share/unblockneteasemusic/core/server.key"
 self_issue_cert_key.datatype = "file"
 self_issue_cert_key:depends("advanced_mode", 1)
@@ -187,8 +187,8 @@ acl_filter_mode = acl_rule:option(ListValue, "filter_mode", translate("规则"))
 acl_filter_mode.width = "40%"
 acl_filter_mode.default = "disable_all"
 acl_filter_mode.rmempty = false
-acl_filter_mode:value("disable_all", translate("不代理HTTP和HTTPS"))
-acl_filter_mode:value("disable_http", translate("不代理HTTP"))
-acl_filter_mode:value("disable_https", translate("不代理HTTPS"))
+acl_filter_mode:value("disable_all", translate("不代理 HTTP 和 HTTPS"))
+acl_filter_mode:value("disable_http", translate("不代理 HTTP"))
+acl_filter_mode:value("disable_https", translate("不代理 HTTPS"))
 
 return mp

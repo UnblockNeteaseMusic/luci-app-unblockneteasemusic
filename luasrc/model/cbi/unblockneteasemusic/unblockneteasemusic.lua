@@ -4,8 +4,8 @@ mp.description = translate("原理：采用 [Bilibili/JOOX/酷狗/酷我/咪咕/
 mp:section(SimpleSection).template = "unblockneteasemusic/unblockneteasemusic_status"
 
 s = mp:section(TypedSection, "unblockneteasemusic")
-s.anonymous=true
-s.addremove=false
+s.anonymous = true
+s.addremove = false
 
 enable = s:option(Flag, "enable", translate("启用本插件"))
 enable.description = translate("启用本插件以解除网易云音乐播放限制")
@@ -88,8 +88,30 @@ update_time.default = "3"
 update_time.description = translate("设定每天自动检查更新时间")
 update_time:depends("auto_update", 1)
 
-download_cert = s:option(DummyValue, "opennewwindow", translate("<input type=\"button\" class=\"btn cbi-button cbi-button-apply\" value=\"下载 CA 根证书\" onclick=\"window.open('https://raw.githubusercontent.com/UnblockNeteaseMusic/server/enhanced/ca.crt')\" />"))
+download_cert = s:option(Button,"certificate", translate("HTTPS 证书"))
+download_cert.inputtitle = translate("下载 CA 根证书")
 download_cert.description = translate("Linux/iOS/MacOSX 在信任根证书后方可正常使用")
+download_cert.inputstyle = "reload"
+download_cert.write = function()
+	act_download_cert()
+end
+
+function act_download_cert()
+	local t,e
+	t=nixio.open("/usr/share/unblockneteasemusic/core/ca.crt","r")
+	luci.http.header('Content-Disposition','attachment; filename="ca.crt"')
+	luci.http.prepare_content("application/octet-stream")
+	while true do
+		e=t:read(nixio.const.buffersize)
+		if(not e)or(#e==0)then
+			break
+		else
+			luci.http.write(e)
+		end
+	end
+	t:close()
+	luci.http.close()
+end
 
 advanced_mode = s:option(Flag, "advanced_mode", translate("启用进阶设置"))
 advanced_mode.description = translate("非必要不推荐使用")

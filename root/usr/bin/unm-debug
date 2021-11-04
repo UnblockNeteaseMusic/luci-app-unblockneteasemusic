@@ -1,6 +1,8 @@
 #!/bin/sh
 # Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
 
+command -v "curl" >"/dev/null" || { echo -e "curl is not found."; exit 1; }
+
 mkdir -p "/tmp"
 /usr/share/unblockneteasemusic/debugging.sh 2>&1 | tee "/tmp/unm-debugging-output.txt"
 

@@ -97,13 +97,13 @@ download_cert.write = function()
 end
 
 function act_download_cert()
-	local t,e
-	t=nixio.open("/usr/share/unblockneteasemusic/core/ca.crt","r")
-	luci.http.header('Content-Disposition','attachment; filename="ca.crt"')
+	local t, e
+	t = nixio.open("/usr/share/unblockneteasemusic/core/ca.crt","r")
+	luci.http.header('Content-Disposition', 'attachment; filename="ca.crt"')
 	luci.http.prepare_content("application/octet-stream")
 	while true do
-		e=t:read(nixio.const.buffersize)
-		if(not e)or(#e==0)then
+		e = t:read(nixio.const.buffersize)
+		if (not e) or (#e == 0) then
 			break
 		else
 			luci.http.write(e)

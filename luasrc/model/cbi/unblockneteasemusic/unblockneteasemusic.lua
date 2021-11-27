@@ -23,6 +23,7 @@ music_source:value("pyncmd", translate("网易云音乐（pyncmd）"))
 music_source:value("qq", translate("QQ音乐"))
 music_source:value("youtube", translate("Youtube音乐"))
 music_source:value("youtubedl", translate("Youtube音乐（youtube-dl）"))
+music_source:value("ytdlp", translate("Youtube音乐（ytdlp）"))
 music_source:value("ytdownload", translate("Youtube音乐（ytdownload）"))
 music_source.description = translate("自定义模式下，多个音源请用空格隔开")
 music_source.default = "default"

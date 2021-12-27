@@ -140,6 +140,12 @@ endpoint_url.placeholder = "https://music.163.com"
 endpoint_url.datatype = "string"
 endpoint_url:depends("advanced_mode", 1)
 
+cnrelay = s:option(Value, "cnrelay", translate("UNM API 服务器"))
+cnrelay.description = translate("使用 UnblockNeteaseMusic 中继桥（API）以获取音源信息")
+cnrelay.placeholder = "http(s)://host:port"
+cnrelay.datatype = "string"
+cnrelay:depends("advanced_mode", 1)
+
 hijack = s:option(ListValue, "hijack_ways", translate("劫持方法"))
 hijack:value("dont_hijack", translate("不开启劫持"))
 hijack:value("use_ipset", translate("使用 IPSet 劫持"))

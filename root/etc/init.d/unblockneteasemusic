@@ -62,6 +62,7 @@ start_service()
 
 	procd_open_instance "$NAME"
 	procd_set_param command node "/usr/share/$NAME/core/app.js"
+	append_param "-a" "0.0.0.0"
 
 	local http_port https_port hijack_ways
 	config_get http_port "config" "http_port" "5200"
@@ -70,19 +71,13 @@ start_service()
 	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	append_param "-p" "${http_port}":"${https_port}"
 
-	local lan_addr
-	lan_addr="$(uci get network.lan.ipaddr)"
 	if is_enabled "config" "pub_access"; then
-		append_param "-a" "0.0.0.0"
-
 		iptables -I "INPUT" -p "tcp" --dport "${http_port}" -j "ACCEPT"
 		iptables -I "INPUT" -p "tcp" --dport "${https_port}" -j "ACCEPT"
 		echo "${http_port}:${https_port}" > "/tmp/$NAME.ports"
 
 		mkdir -p "/var/etc/"
 		echo "/etc/init.d/$NAME restart" > "/var/etc/$NAME.include"
-	else
-		append_param "-a" "${lan_addr}"
 	fi
 
 	local music_source

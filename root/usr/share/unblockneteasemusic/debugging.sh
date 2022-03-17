@@ -64,13 +64,17 @@ echo -e "\n"
 
 [ "$procd_running_status" != "running" ] || {
 	echo -e "Firewall info:"
-	iptables -t "nat" -L "netease_cloud_music" 2>"/dev/null" || echo -e 'Chain "netease_cloud_music" not found.'
-	echo -e ""
-	ipset list "neteasemusic" 2>"/dev/null" || echo -e 'Table "neteasemusic" not found.'
-	echo -e ""
-	ipset list "acl_neteasemusic_http" 2>"/dev/null" || echo -e 'Table "acl_neteasemusic_http" not found.'
-	echo -e ""
-	ipset list "acl_neteasemusic_https" 2>"/dev/null" || echo -e 'Table "acl_neteasemusic_https" not found.'
+	[ -e "$(command -v fw4)" ] && {
+		[ -e "/etc/nftables.d/90-unblockneteasemusic-rules.nft" ] && cat "/etc/nftables.d/90-unblockneteasemusic-rules.nft" || echo -e 'netease_cloud_music nft rule file not found.'
+	} || {
+		iptables -t "nat" -L "netease_cloud_music" 2>"/dev/null" || echo -e 'Chain "netease_cloud_music" not found.'
+		echo -e ""
+		ipset list "neteasemusic" 2>"/dev/null" || echo -e 'Table "neteasemusic" not found.'
+		echo -e ""
+		ipset list "acl_neteasemusic_http" 2>"/dev/null" || echo -e 'Table "acl_neteasemusic_http" not found.'
+		echo -e ""
+		ipset list "acl_neteasemusic_https" 2>"/dev/null" || echo -e 'Table "acl_neteasemusic_https" not found.'
+	}
 	echo -e ""
 	cat "/tmp/dnsmasq.d/dnsmasq-unblockneteasemusic.conf"
 	echo -e "\n"

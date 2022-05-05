@@ -3,7 +3,7 @@ local m, s, o
 m = Map("unblockneteasemusic", translate("解除网易云音乐播放限制"))
 m.description = translate("原理：采用 [Bilibili/JOOX/酷狗/酷我/咪咕/pyncmd/QQ/Youtube] 等音源，替换网易云音乐 无版权/收费 歌曲链接<br/>具体使用方法参见：<a href=\"https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic\" target=\"_blank\">GitHub @UnblockNeteaseMusic/luci-app-unblockneteasemusic</a>")
 
-m:section(SimpleSection).template = "unblockneteasemusic/unblockneteasemusic_status"
+m:section(SimpleSection).template  = "unblockneteasemusic/unblockneteasemusic_status"
 
 s = m:section(TypedSection, "unblockneteasemusic")
 s.anonymous = true
@@ -195,7 +195,8 @@ o.placeholder = "/usr/share/unblockneteasemusic/core/server.key"
 o.datatype = "file"
 o:depends("advanced_mode", 1)
 
-s = m:section(TypedSection, "acl_rule", translate("例外客户端规则"), translate("可以为局域网客户端分别设置不同的例外模式，默认无需设置"))
+s = m:section(TypedSection, "acl_rule", translate("例外客户端规则"))
+s.description = translate("可以为局域网客户端分别设置不同的例外模式，默认无需设置")
 s.template = "cbi/tblsection"
 s.sortable = true
 s.anonymous = true

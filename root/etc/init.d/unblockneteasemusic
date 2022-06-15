@@ -135,13 +135,13 @@ start_service()
 		rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
 		cat <<-EOF > "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
 			dhcp-option=252,http://${lan_addr}:${http_port}/proxy.pac
-			${ipset}=/.music.163.com/neteasemusic
-			${ipset}=/interface.music.163.com/neteasemusic
-			${ipset}=/interface3.music.163.com/neteasemusic
-			${ipset}=/apm.music.163.com/neteasemusic
-			${ipset}=/apm3.music.163.com/neteasemusic
-			${ipset}=/clientlog.music.163.com/neteasemusic
-			${ipset}=/clientlog3.music.163.com/neteasemusic
+			${ipset}=/.music.163.com/inet#fw4#neteasemusic
+			${ipset}=/interface.music.163.com/inet#fw4#neteasemusic
+			${ipset}=/interface3.music.163.com/inet#fw4#neteasemusic
+			${ipset}=/apm.music.163.com/inet#fw4#neteasemusic
+			${ipset}=/apm3.music.163.com/inet#fw4#neteasemusic
+			${ipset}=/clientlog.music.163.com/inet#fw4#neteasemusic
+			${ipset}=/clientlog3.music.163.com/inet#fw4#neteasemusic
 		EOF
 		/etc/init.d/dnsmasq reload
 

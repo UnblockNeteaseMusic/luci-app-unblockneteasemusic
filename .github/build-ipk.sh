@@ -1,7 +1,7 @@
 #!/bin/bash
 # SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
+# Copyright (C) 2021-2022 Tianling Shen <cnsztl@immortalwrt.org>
 
 export PKG_SOURCE_DATE_EPOCH="$(date "+%s")"
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2021 Tianling Shen <cnsztl@immortalwrt.org>
+# Copyright (C) 2021-2022 Tianling Shen <cnsztl@immortalwrt.org>
 
 . /lib/functions.sh
 

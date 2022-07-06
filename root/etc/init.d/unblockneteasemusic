@@ -195,13 +195,6 @@ start_service() {
 			json_add_string o_acl_http_addr "$(echo -e "${acl_http_addr}" | sort -u | awk '{print $1}')"
 			json_add_string o_acl_https_addr "$(echo -e "${acl_https_addr}" | sort -u | awk '{print $1}')"
 			json_add_string o_neteasemusic_addr "$neteasemusic_addr"
-			json_dump -i > "$tmp.json"
-
-			if utpl -F "$tmp.json" -S "$RULES_UC" > "$tmp.nft" && ! cmp -s "$tmp.nft" "$RULES_NFT"; then
-				echo "table inet chk {include \"$tmp.nft\";}" > "$tmp.nft.chk"
-				! nft -f "$tmp.nft.chk" -c || { mv -f "$tmp.nft" "$RULES_NFT"; fw4 reload; }
-			fi
-			rm -f "$tmp.json" "$tmp.nft" "$tmp.nft.chk"
 		else
 			echo -e "${netease_music_ips}\n${netease_music_ips2}" | sort -u | awk '{print "ipset add neteasemusic "$1}' | sh
 
@@ -234,14 +227,15 @@ start_service() {
 		/etc/init.d/dnsmasq reload
 
 		ip route add "223.252.199.10" dev lo
-		if [ -n "$FW4" ]; then
-			json_dump -i >"$tmp.json"
-			if utpl -F "$tmp.json" -S "$RULES_UC" > "$tmp.nft" && ! cmp -s "$tmp.nft" "$RULES_NFT"; then
-				echo "table inet chk {include \"$tmp.nft\";}" > "$tmp.nft.chk"
-				! nft -f "$tmp.nft.chk" -c || { mv -f "$tmp.nft" "$RULES_NFT"; fw4 reload; }
-			fi
-			rm -f "$tmp.json" "$tmp.nft" "$tmp.nft.chk"
+	fi
+
+	if [ -n "$FW4" ]; then
+		json_dump -i >"$tmp.json"
+		if utpl -F "$tmp.json" -S "$RULES_UC" > "$tmp.nft" && ! cmp -s "$tmp.nft" "$RULES_NFT"; then
+			echo "table inet chk {include \"$tmp.nft\";}" > "$tmp.nft.chk"
+			! nft -f "$tmp.nft.chk" -c || { mv -f "$tmp.nft" "$RULES_NFT"; fw4 reload; }
 		fi
+		rm -f "$tmp.json" "$tmp.nft" "$tmp.nft.chk"
 	fi
 
 	procd_close_instance

@@ -57,12 +57,8 @@ echo -e "\n"
 
 echo -e "Running info:"
 busybox ps -w | grep "unblockneteasemusic" | grep "app\.js" || { is_stopped=1; echo -e "Thread is not found."; }
-if ! /etc/init.d/unblockneteasemusic info | grep -q "Available commands"; then
-	echo -e "PROCD running info: \n$(/etc/init.d/unblockneteasemusic info | sed -e 's,"YOUTUBE_KEY".*","YOUTUBE_KEY": "set",g' \
-		-e 's,"QQ_COOKIE".*","QQ_COOKIE": "set",g')"
-else
-	echo -e "PROCD too old, cannot dump service info."
-fi
+echo -e "PROCD running info:"
+ubus call service list '{"name": "unblockneteasemusic", "verbose": true}' | sed -e 's,"YOUTUBE_KEY".*","YOUTUBE_KEY": "set",g' -e 's,"QQ_COOKIE".*","QQ_COOKIE": "set",g'
 
 echo -e "\n"
 

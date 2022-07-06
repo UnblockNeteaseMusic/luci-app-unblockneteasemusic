@@ -23,8 +23,10 @@ function index()
 end
 
 function act_status()
-	local e = {}
-	e.running = luci.sys.call("busybox ps -w |grep unblockneteasemusic |grep app.js |grep -v grep >/dev/null") == 0
+	local stat = luci.util.ubus("service", "list", { name = "unblockneteasemusic" })
+	local running = next(stat) and stat.unblockneteasemusic.instances.unblockneteasemusic.running or false
+
+	local e = { running = running }
 	luci.http.prepare_content("application/json")
 	luci.http.write_json(e)
 end

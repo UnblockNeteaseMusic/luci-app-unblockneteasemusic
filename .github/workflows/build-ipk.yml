@@ -11,6 +11,8 @@ on:
       - '.github/**'
 
   pull_request:
+    branches:
+      - 'master'
     types: 
       - opened
       - synchronize

@@ -141,7 +141,6 @@ start_service() {
 	local log_level
 	config_get log_level "config" "log_level" "info"
 	procd_set_param env LOG_FILE="/tmp/$NAME.log"
-	procd_append_param env JSON_LOG="true"
 	procd_append_param env LOG_LEVEL="$log_level"
 
 	append_param_env "config" "joox_cookie" "JOOX_COOKIE"

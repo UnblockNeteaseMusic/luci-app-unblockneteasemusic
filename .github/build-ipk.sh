@@ -22,9 +22,9 @@ fi
 TEMP_DIR="$(mktemp -d -p $BASE_DIR)"
 TEMP_PKG_DIR="$TEMP_DIR/$PKG_NAME"
 mkdir -p "$TEMP_PKG_DIR/CONTROL/"
-mkdir -p "$TEMP_PKG_DIR/usr/lib/lua/luci/"
+mkdir -p "$TEMP_PKG_DIR/www/"
 
-cp -fpR "$PKG_DIR/luasrc"/* "$TEMP_PKG_DIR/usr/lib/lua/luci/"
+cp -fpR "$PKG_DIR/htdocs"/* "$TEMP_PKG_DIR/www/"
 cp -fpR "$PKG_DIR/root"/* "$TEMP_PKG_DIR/"
 
 echo -e "/etc/config/unblockneteasemusic" > "$TEMP_PKG_DIR/CONTROL/conffiles"
@@ -68,5 +68,5 @@ curl -fsSL "https://raw.githubusercontent.com/openwrt/openwrt/master/scripts/ipk
 chmod 0755 "$TEMP_DIR/ipkg-build"
 "$TEMP_DIR/ipkg-build" -m "" "$TEMP_PKG_DIR" "$TEMP_DIR"
 
-mv "$TEMP_DIR/${PKG_NAME}_${PKG_VERSION}_all.ipk" "$BASE_DIR"
+mv "$TEMP_DIR/${PKG_NAME}_${PKG_VERSION}_all.ipk" "$BASE_DIR/${PKG_NAME}_${PKG_VERSION}_javascript_all.ipk"
 rm -rf "$TEMP_DIR"

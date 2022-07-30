@@ -3,20 +3,22 @@ name: Build ipk for luci-app-unblockneteasemusic
 on:
   push:
     branches:
-      - 'master'
+      - 'js'
     paths:
-      - 'luasrc/**'
+      - 'htdocs/**'
       - 'root/**'
       - 'Makefile'
       - '.github/**'
 
   pull_request:
+    branch:
+      - 'js'
     types: 
       - opened
       - synchronize
       - reopened
     paths:
-      - 'luasrc/**'
+      - 'htdocs/**'
       - 'root/**'
       - 'Makefile'
       - '.github/**'

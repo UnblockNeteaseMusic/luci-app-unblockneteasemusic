@@ -46,6 +46,10 @@ append_param_env() {
 append_filter_client() {
 	local cfg="$1"
 
+	local enabled
+	config_get_bool enabled "$cfg" "enable"
+	[ "$enabled" = "1" ] || return 1
+
 	local ip_addr filter_mode
 	config_get ip_addr "$cfg" "ip_addr"
 	config_get filter_mode "$cfg" "filter_mode"
@@ -134,8 +138,11 @@ start_service() {
 	append_param_arg "config" "proxy_server_ip" "-u"
 	is_enabled "config" "strict_mode" && append_param "-s"
 
+	local log_level
+	config_get log_level "config" "log_level" "info"
 	procd_set_param env LOG_FILE="/tmp/$NAME.log"
 	procd_append_param env JSON_LOG="true"
+	procd_append_param env LOG_LEVEL="$log_level"
 
 	append_param_env "config" "joox_cookie" "JOOX_COOKIE"
 	append_param_env "config" "migu_cookie" "MIGU_COOKIE"

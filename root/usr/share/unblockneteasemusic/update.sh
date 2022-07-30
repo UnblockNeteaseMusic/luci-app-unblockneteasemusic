@@ -65,7 +65,6 @@ update_core() {
 		}
 	done
 
-	[ -z "${update_core_from_luci}" ] || touch "/usr/share/$NAME/update_core_successfully"
 	echo -e "${core_latest_ver}" > "/usr/share/$NAME/core_local_ver"
 	[ -n "${non_restart}" ] || /etc/init.d/"$NAME" restart
 
@@ -81,11 +80,6 @@ case "$1" in
 		;;
 	"update_core_non_restart")
 		non_restart=1
-		check_core_if_already_running
-		check_core_latest_version
-		;;
-	"update_core_from_luci")
-		update_core_from_luci=1
 		check_core_if_already_running
 		check_core_latest_version
 		;;

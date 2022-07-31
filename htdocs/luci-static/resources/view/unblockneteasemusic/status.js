@@ -84,7 +84,6 @@ return view.extend({
 		}
 
 		o = s.option(form.DummyValue, '_logview');
-		o.modalonly = true;
 		o.render = function() {
 			/* Thanks to luci-app-aria2 */
 			var css = '					\
@@ -124,7 +123,7 @@ return view.extend({
 						]);
 					else
 						var log = E('pre', { 'wrap': 'pre' }, [
-							_('未知错误：%s。').format(err)
+							_('未知错误：%s。').format(err.toString())
 						]);
 
 					dom.content(log_textarea, log);

@@ -19,13 +19,13 @@ return view.extend({
 
 		m = new form.Map('unblockneteasemusic');
 
-		s = m.section(form.TypedSection, null, _('核心管理'));
+		s = m.section(form.NamedSection, 'config', 'unblockneteasemusic', _('核心管理'));
 		s.anonymous = true;
 
 		o = s.option(form.DummyValue, '_core_version', _('核心版本'));
 		o.cfgvalue = function() {
 			var _this = this;
-			var spanTemp = '<span style="color:%s"><strong>%s</strong></span>';
+			var spanTemp = '<div style="color:%s;margin-top:13px;margin-left:3px;"><strong>%s</strong></div>';
 
 			return Promise.all([
 				fs.read(unm_path + '/core_local_ver'),

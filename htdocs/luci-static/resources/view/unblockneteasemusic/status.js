@@ -43,7 +43,7 @@ return view.extend({
 				if (err.toString().includes('NotFoundError'))
 					_this.default = String.format(spanTemp, 'red', _('未安装'));
 				else {
-					ui.addNotification(null, E('p', [ _('未知错误：%s。').format(err.toString()) ]));
+					ui.addNotification(null, E('p', [ _('未知错误：%s。').format(err) ]));
 					_this.default = String.format(spanTemp, 'red', _('未知错误'));
 				}
 
@@ -65,7 +65,7 @@ return view.extend({
 
 		o = s.option(form.Button, '_update_core', _('更新核心'),
 			_('更新完毕后会自动在后台重启插件，无需手动重启。'));
-		o.inputstyle = 'apply';
+		o.inputstyle = 'action';
 		o.onclick = function() {
 			var _this = this;
 
@@ -81,6 +81,71 @@ return view.extend({
 
 				return _this.map.reset();
 			});
+		}
+
+		o = s.option(form.Button, '_debug_log', _('调试报告'),
+			_('若您遇到使用上的问题，请点此打印调试报告，并将其附在您的 issue 中。'));
+		o.inputstyle = 'action';
+		o.inputtitle = _('打印报告');
+		o.onclick = function() {
+			var log_modal = ui.showModal(_('打印调试报告'), [
+				E('p', { 'class': 'spinning' },
+					_('正在打印调试报告中...'))
+			]);
+
+			fs.exec_direct('/usr/bin/unm-debug', 'text').then(function (res) {
+				log_modal.removeChild(log_modal.lastChild);
+
+				if (res) {
+					log_modal.appendChild(E('p', _('提交 issue 时，您只需附上最后的链接，无需提供整个输出。')));
+					log_modal.appendChild(E('textarea', {
+						'id': 'content_debugLog',
+						'class': 'cbi-input-textarea',
+						'style': 'font-size:13px; resize: none',
+						'readonly': 'readonly',
+						'wrap': 'soft',
+						'rows': '30'
+						}, [ res.trim() ])
+					);
+				} else {
+					log_modal.appendChild(E('p', _('错误')));
+					log_modal.appendChild(E('pre', { 'class': 'errors' }, [ _('无法打印调试报告。') ]));
+				}
+
+				var log_element = document.getElementById('content_debugLog') || null;
+				if (log_element)
+					log_element.scrollTop = log_element.scrollHeight;
+
+				log_modal.appendChild(E('div', { 'class': 'right' }, [
+					log_element ? E('button', {
+						'class': 'btn cbi-button-action',
+						'click': ui.createHandlerFn(this, function() {
+							var links = log_element.value.match(/https:\/\/(litter.catbox.moe|transfer.sh)\/.*.txt/g);
+
+							var textarea = document.createElement('textarea');
+							document.body.appendChild(textarea);
+
+							textarea.style.position = 'absolute';
+							textarea.style.clip = 'rect(0 0 0 0)';
+							textarea.value = links ? links.join('\n'): log_element.value;
+							textarea.select()
+
+							document.execCommand('copy', true);
+							document.body.removeChild(textarea);
+						})
+					}, _('复制')) : '',
+					E('button', {
+						'class': 'btn',
+						'click': ui.hideModal
+					}, _('关闭'))
+				]));
+
+			}).catch(function (err) {
+				ui.addNotification(null, E('p', _('无法打印调试报告：%s。').format(err)));
+				ui.hideModal();
+			});
+
+			return null;
 		}
 
 		o = s.option(form.DummyValue, '_logview');
@@ -123,7 +188,7 @@ return view.extend({
 						]);
 					else
 						var log = E('pre', { 'wrap': 'pre' }, [
-							_('未知错误：%s。').format(err.toString())
+							_('未知错误：%s。').format(err)
 						]);
 
 					dom.content(log_textarea, log);

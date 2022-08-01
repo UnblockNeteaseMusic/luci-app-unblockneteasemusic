@@ -93,7 +93,7 @@ return view.extend({
 					_('正在打印调试报告中...'))
 			]);
 
-			fs.exec_direct('/usr/bin/unm-debug', 'text').then(function (res) {
+			return fs.exec_direct('/usr/bin/unm-debug', 'text').then(function (res) {
 				log_modal.removeChild(log_modal.lastChild);
 
 				if (res) {
@@ -140,12 +140,13 @@ return view.extend({
 					}, _('关闭'))
 				]));
 
+				return null;
 			}).catch(function (err) {
 				ui.addNotification(null, E('p', _('无法打印调试报告：%s。').format(err)));
 				ui.hideModal();
-			});
 
-			return null;
+				return null;
+			});
 		}
 
 		o = s.option(form.DummyValue, '_logview');

@@ -135,9 +135,8 @@ return view.extend({
 		o.placeholder = 'uin=; qm_keyst=';
 		o.depends('use_custom_cookie', '1');
 
-		o = s.option(form.Value, 'qq_cookie', _('Youtube API Key'),
+		o = s.option(form.Value, 'youtube_key', _('Youtube API Key'),
 			_('API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start'));
-		o.placeholder = 'uin=; qm_keyst=';
 		o.depends('use_custom_cookie', '1');
 
 		o = s.option(form.Flag, 'auto_update', _('启用自动更新'),

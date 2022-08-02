@@ -257,19 +257,15 @@ return view.extend({
 		o.datatype = 'file'
 		o.depends('advanced_mode', '1');
 
-		s = m.section(form.GridSection, 'acl_rule', _('例外客户端规则'),
+		s = m.section(form.TableSection, 'acl_rule', _('例外客户端规则'),
 			_('可以为局域网客户端分别设置不同的例外模式，默认无需设置。'));
 		s.addremove = true;
 		s.anonymous = true;
-		s.modaltitle = function(section_id) {
-			return _('例外客户端规则') + ' » ' + section_id;
-		}
-		o.sortable = true;
+		s.sortable = true;
 
 		o = s.option(form.Flag, 'enable', _('启用'));
 		o.default = o.enabled;
 		o.rmempty = false;
-		o.editable = true;
 
 		o = s.option(form.Value, 'ip_addr', _('IP 地址'));
 		o.datatype = 'ip4addr';
@@ -280,7 +276,6 @@ return view.extend({
 					o.value(ip_addr, ip_host ? String.format('%s (%s)', ip_host, ip_addr) : ip_addr)
 				}
 		o.rmempty = false;
-		o.editable = true;
 
 		o = s.option(form.ListValue, 'filter_mode', _('规则'));
 		o.value('disable_all', _('不代理 HTTP 和 HTTPS'));
@@ -288,7 +283,6 @@ return view.extend({
 		o.value('disable_https', _('不代理 HTTPS'));
 		o.default = 'disable_all';
 		o.rmempty = false;
-		o.editable = true;
 
 		return m.render();
 	}

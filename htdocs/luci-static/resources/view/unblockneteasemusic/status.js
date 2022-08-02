@@ -57,7 +57,8 @@ return view.extend({
 		o.inputstyle = 'remove';
 		o.onclick = function() {
 			fs.exec('/etc/init.d/unblockneteasemusic', [ 'stop' ]);
-			fs.exec('/bin/rm', [ '-rf', unm_path + '/core', unm_path + '/core_local_ver' ]);
+			fs.remove(unm_path + '/core');
+			fs.remove(unm_path + '/core_local_ver');
 
 			this.description = '删除完毕。'
 			return this.map.reset();

@@ -15,7 +15,8 @@
 return view.extend({
 	render: function() {
 		var m, s, o;
-		var unm_path = '/usr/share/unblockneteasemusic';
+
+		var unm_helper = '/usr/share/unblockneteasemusic/update.sh';
 
 		m = new form.Map('unblockneteasemusic');
 
@@ -27,25 +28,20 @@ return view.extend({
 			var _this = this;
 			var spanTemp = '<div style="color:%s;margin-top:13px;margin-left:3px;"><strong>%s</strong></div>';
 
-			return Promise.all([
-				fs.read(unm_path + '/core_local_ver'),
-				fs.exec('/usr/bin/node', [ unm_path + '/core/app.js', '-v' ]),
-			]).then(function (res) {
-				if (!res[0] || res[1].message || res[1].code !== 0 || !res[1].stdout) {
-					var err = res[0].message || res[1].message || res[1].stderr || null;
-					ui.addNotification(null, E('p', [ _('获取版本信息失败：%s。').format(err) ]));
-					_this.default = String.format(spanTemp, 'red', _('获取失败'));
-				} else
-					_this.default = String.format(spanTemp, 'green', String.format('%s (%s)', res[1].stdout, res[0].substr(0, 7)));
+			return fs.exec(unm_helper, [ 'check_version' ]).then(function(res) {
+				if (res.code === 0)
+					_this.default = String.format(spanTemp, 'green', res.stdout.trim());
+				else if (res.code === 2)
+					_this.default = String.format(spanTemp, 'red', _('未安装'));
+				else {
+					ui.addNotification(null, E('p', [ _('获取版本信息失败：%s。').format(res) ]));
+					_this.default = String.format(spanTemp, 'red', _('未知错误'));
+				}
 
 				return null;
 			}).catch(function(err) {
-				if (err.toString().includes('NotFoundError'))
-					_this.default = String.format(spanTemp, 'red', _('未安装'));
-				else {
-					ui.addNotification(null, E('p', [ _('未知错误：%s。').format(err) ]));
-					_this.default = String.format(spanTemp, 'red', _('未知错误'));
-				}
+				ui.addNotification(null, E('p', [ _('未知错误：%s。').format(err) ]));
+				_this.default = String.format(spanTemp, 'red', _('未知错误'));
 
 				return null;
 			});
@@ -56,12 +52,16 @@ return view.extend({
 			_('删除核心后，需手动点击下面的按钮重新下载，有助于解决版本冲突问题。'));
 		o.inputstyle = 'remove';
 		o.onclick = function() {
-			fs.exec('/etc/init.d/unblockneteasemusic', [ 'stop' ]);
-			fs.remove(unm_path + '/core');
-			fs.remove(unm_path + '/core_local_ver');
+			var _this = this;
 
-			this.description = '删除完毕。'
-			return this.map.reset();
+			return fs.exec(unm_helper, [ 'remove_core' ]).then(function(res) {
+				_this.description = '删除完毕。'
+				return _this.map.reset();
+			}).catch(function(err) {
+				ui.addNotification(null, E('p', [ _('未知错误：%s。').format(err) ]));
+				_this.description = '删除失败。'
+				return _this.map.reset();
+			});
 		}
 
 		o = s.option(form.Button, '_update_core', _('更新核心'),
@@ -70,7 +70,7 @@ return view.extend({
 		o.onclick = function() {
 			var _this = this;
 
-			return fs.exec(unm_path + '/update.sh', [ 'update_core' ]).then(function (res) {
+			return fs.exec(unm_helper, [ 'update_core' ]).then(function (res) {
 				if (res.code === 0)
 					_this.description = _('更新成功。');
 				else if (res.code === 1)
@@ -80,6 +80,10 @@ return view.extend({
 				else if (res.code === 3)
 					_this.description = _('当前已是最新版本。');
 
+				return _this.map.reset();
+			}).catch(function (err) {
+				ui.addNotification(null, E('p', [ _('未知错误：%s。').format(err) ]));
+				_this.description = _('更新失败。');
 				return _this.map.reset();
 			});
 		}

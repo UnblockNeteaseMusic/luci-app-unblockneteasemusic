@@ -5,9 +5,7 @@
 			"file": {
 				"/etc/init.d/unblockneteasemusic": [ "exec" ],
 				"/tmp/unblockneteasemusic.log": [ "read" ],
-				"/usr/bin/node /usr/share/unblockneteasemusic/core/app.js -v": [ "exec" ],
 				"/usr/bin/unm-debug": [ "exec" ],
-				"/usr/share/unblockneteasemusic/*": [ "read" ],
 				"/usr/share/unblockneteasemusic/update.sh": [ "exec" ]
 			},
 			"ubus": {
@@ -16,10 +14,6 @@
 			"uci": [ "unblockneteasemusic" ]
 		},
 		"write": {
-			"file": {
-				"/usr/share/unblockneteasemusic/core": [ "write" ],
-				"/usr/share/unblockneteasemusic/core_local_ver": [ "write" ]
-			},
 			"uci": [ "unblockneteasemusic" ]
 		}
 	}

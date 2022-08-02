@@ -74,6 +74,17 @@ update_core() {
 }
 
 case "$1" in
+	"check_version")
+		if [ ! -e "/usr/share/$NAME/core_local_ver" ] || [ ! -e "/usr/share/$NAME/core/app.js" ]; then
+			echo -e "Not installed."
+			exit 2
+		else
+			version="$(node "/usr/share/$NAME/core/app.js" -v)"
+			commit="$(cat "/usr/share/$NAME/core_local_ver" | head -c7)"
+			echo "$version ($commit)"
+			exit 0
+		fi
+		;;
 	"update_core")
 		check_core_if_already_running
 		check_core_latest_version
@@ -83,7 +94,11 @@ case "$1" in
 		check_core_if_already_running
 		check_core_latest_version
 		;;
+	"remove_core")
+		/etc/init.d/"$NAME" stop
+		rm -rf "/usr/share/$NAME/core" "/usr/share/$NAME/core_local_ver"
+		;;
 	*)
-		echo -e "Usage: $0/update.sh update_core"
+		echo -e "Usage: $0/update.sh check_version | update_core | remove_core"
 		;;
 esac

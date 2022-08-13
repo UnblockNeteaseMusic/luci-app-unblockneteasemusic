@@ -6,7 +6,8 @@
 				"/etc/init.d/unblockneteasemusic": [ "exec" ],
 				"/tmp/unblockneteasemusic.log": [ "read" ],
 				"/usr/bin/unm-debug": [ "exec" ],
-				"/usr/share/unblockneteasemusic/update.sh": [ "exec" ]
+				"/usr/share/unblockneteasemusic/update.sh": [ "exec" ],
+				"/usr/share/unblockneteasemusic/core/ca.crt": [ "read" ]
 			},
 			"ubus": {
 				"service": [ "list" ]

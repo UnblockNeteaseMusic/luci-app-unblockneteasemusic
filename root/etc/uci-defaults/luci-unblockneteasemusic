@@ -2,8 +2,6 @@
 
 uci -q batch <<-EOF >/dev/null
 	delete ucitrack.@unblockneteasemusic[-1]
-	add ucitrack unblockneteasemusic
-	set ucitrack.@unblockneteasemusic[-1].init=unblockneteasemusic
 	commit ucitrack
 EOF
 [ -e "$(command -v fw4)" ] || {

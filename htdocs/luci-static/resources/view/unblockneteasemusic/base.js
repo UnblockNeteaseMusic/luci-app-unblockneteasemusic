@@ -34,9 +34,9 @@ function renderStatus(isRunning) {
 	var spanTemp = '<em><span style="color:%s"><strong>%s %s</strong></span></em>';
 	var renderHTML;
 	if (isRunning) {
-		renderHTML = String.format(spanTemp, 'green', _('UnblockNeteaseMusic'), _('运行中'));
+		renderHTML = spanTemp.format('green', _('UnblockNeteaseMusic'), _('运行中'));
 	} else {
-		renderHTML = String.format(spanTemp, 'red', _('UnblockNeteaseMusic'), _('未运行'));
+		renderHTML = spanTemp.format('red', _('UnblockNeteaseMusic'), _('未运行'));
 	}
 
 	return renderHTML;
@@ -68,7 +68,7 @@ return view.extend({
 			});
 
 			return E('div', { class: 'cbi-section', id: 'status_bar' }, [
-					E('p', { id: 'service_status' }, _('Collecting data ...'))
+					E('p', { id: 'service_status' }, _('收集数据中...'))
 			]);
 		}
 

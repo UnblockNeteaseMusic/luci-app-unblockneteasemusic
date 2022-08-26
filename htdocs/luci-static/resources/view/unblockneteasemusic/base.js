@@ -62,7 +62,7 @@ return view.extend({
 		s.render = function () {
 			poll.add(function () {
 				return L.resolveDefault(getServiceStatus()).then(function (res) {
-					var view = document.getElementById("service_status");
+					var view = document.getElementById('service_status');
 					view.innerHTML = renderStatus(res);
 				});
 			});

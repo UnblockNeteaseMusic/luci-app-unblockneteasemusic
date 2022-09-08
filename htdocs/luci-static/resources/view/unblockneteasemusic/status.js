@@ -26,7 +26,7 @@ return view.extend({
 		o = s.option(form.DummyValue, '_core_version', _('核心版本'));
 		o.cfgvalue = function() {
 			var _this = this;
-			var spanTemp = '<div style="color:%s;margin-top:13px;margin-left:3px;"><strong>%s</strong></div>';
+			var spanTemp = '<div style="color:%s;margin-top:5px;"><strong>%s</strong></div>';
 
 			return fs.exec(unm_helper, [ 'check_version' ]).then(function(res) {
 				if (res.code === 0)

@@ -42,6 +42,24 @@ function renderStatus(isRunning) {
 	return renderHTML;
 }
 
+function uploadCertificate(option, type, filename, ev) {
+	return ui.uploadFile('/usr/share/unblockneteasemusic/' + filename, ev.target)
+	.then(L.bind(function(btn, res) {
+		btn.firstChild.data = _('检查 %s 中...').format(type);
+
+		if (res.size <= 0) {
+			ui.addNotification(null, E('p', _('上传的 %s 为空。').format(tyupe)));
+			return fs.remove('/usr/share/unblockneteasemusic/' + filename);
+		}
+
+		ui.addNotification(null, E('p', _('您的 %s 已成功上传。大小：%sB。').format(type, res.size)));
+	}, option, ev.target))
+	.catch(function(e) { ui.addNotification(null, E('p', e.message)) })
+	.finally(L.bind(function(btn, input) {
+		btn.firstChild.data = _('上传...');
+	}, option, ev.target));
+}
+
 return view.extend({
 	load: function() {
 		return Promise.all([
@@ -228,34 +246,50 @@ return view.extend({
 		o.rmempty = false;
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Flag, "strict_mode", _('启用严格模式'),
-			_('若将服务部署到公网，则强烈建议使用严格模式，此模式下仅放行网易云音乐所属域名的请求；注意：该模式下不能使用全局代理。'));
+		o = s.option(form.Flag, 'strict_mode', _('启用严格模式'),
+			_('若将服务部署到公网，则强烈建议使用严格模式，此模式下仅放行网易云音乐所属域名的请求。<br/>注意：该模式下不能使用全局代理。'));
 		o.default = o.disabled;
 		o.rmempty = false;
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Value, "netease_server_ip", _('网易云服务器 IP'),
+		o = s.option(form.Value, 'netease_server_ip', _('网易云服务器 IP'),
 			_('通过 ping music.163.com 即可获得 IP 地址，仅限填写一个。'));
 		o.placeholder = '59.111.181.38';
 		o.datatype = 'ipaddr';
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Value, "proxy_server_ip", _('代理服务器地址'),
+		o = s.option(form.Value, 'proxy_server_ip', _('代理服务器地址'),
 			_('使用代理服务器获取音乐信息。'));
 		o.placeholder = 'http(s)://host:port';
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Value, "self_issue_cert_crt", _('自签发证书公钥位置'),
-			_('[公钥] 默认使用 UnblockNeteaseMusic 项目提供的 CA 证书，您可以指定为您自己的证书。'));
+		o = s.option(form.Value, 'self_issue_cert_crt', _('自签发证书公钥位置'));
+		o.value('/usr/share/unblockneteasemusic/core/server.crt', _('内置公钥'));
+		o.value('/usr/share/unblockneteasemusic/server.crt');
 		o.default = '/usr/share/unblockneteasemusic/core/server.crt';
 		o.datatype = 'file';
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Value, "self_issue_cert_key", _('自签发证书私钥位置'),
-			_('[私钥] 默认使用 UnblockNeteaseMusic 项目提供的 CA 证书，您可以指定为您自己的证书。'));
+		o = s.option(form.Button, '_upload_cert', _('上传公钥'));
+		o.inputstyle = 'action';
+		o.inputtitle = _('上传...');
+		o.depends('self_issue_cert_crt', '/usr/share/unblockneteasemusic/server.crt');
+		o.onclick = L.bind(uploadCertificate, this, o, _('公钥'), 'server.crt');
+		o.modalonly = true;
+
+		o = s.option(form.Value, 'self_issue_cert_key', _('自签发证书私钥位置'));
+		o.value('/usr/share/unblockneteasemusic/core/server.key', _('内置私钥'));
+		o.value('/usr/share/unblockneteasemusic/server.key');
 		o.default = '/usr/share/unblockneteasemusic/core/server.key';
 		o.datatype = 'file'
 		o.depends('advanced_mode', '1');
+
+		o = s.option(form.Button, '_upload_key', _('上传私钥'));
+		o.inputstyle = 'action';
+		o.inputtitle = _('上传...');
+		o.depends('self_issue_cert_key', '/usr/share/unblockneteasemusic/server.key');
+		o.onclick = L.bind(uploadCertificate, this, o, _('私钥'), 'server.key');
+		o.modalonly = true;
 
 		s = m.section(form.TableSection, 'acl_rule', _('例外客户端规则'),
 			_('可以为局域网客户端分别设置不同的例外模式，默认无需设置。'));

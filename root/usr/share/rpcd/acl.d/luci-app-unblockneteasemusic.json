@@ -15,6 +15,10 @@
 			"uci": [ "unblockneteasemusic" ]
 		},
 		"write": {
+			"file": {
+				"/usr/share/unblockneteasemusic/server.crt": [ "write" ],
+				"/usr/share/unblockneteasemusic/server.key": [ "write" ]
+			},
 			"uci": [ "unblockneteasemusic" ]
 		}
 	}

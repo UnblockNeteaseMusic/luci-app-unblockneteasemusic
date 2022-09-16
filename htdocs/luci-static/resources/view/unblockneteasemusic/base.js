@@ -42,7 +42,7 @@ function renderStatus(isRunning) {
 	return renderHTML;
 }
 
-function uploadCertificate(option, type, filename, ev) {
+function uploadCertificate(type, filename, ev) {
 	return ui.uploadFile('/usr/share/unblockneteasemusic/' + filename, ev.target)
 	.then(L.bind(function(btn, res) {
 		btn.firstChild.data = _('检查 %s 中...').format(type);
@@ -53,11 +53,11 @@ function uploadCertificate(option, type, filename, ev) {
 		}
 
 		ui.addNotification(null, E('p', _('您的 %s 已成功上传。大小：%sB。').format(type, res.size)));
-	}, option, ev.target))
+	}, this, ev.target))
 	.catch(function(e) { ui.addNotification(null, E('p', e.message)) })
 	.finally(L.bind(function(btn, input) {
 		btn.firstChild.data = _('上传...');
-	}, option, ev.target));
+	}, this, ev.target));
 }
 
 return view.extend({
@@ -274,7 +274,7 @@ return view.extend({
 		o.inputstyle = 'action';
 		o.inputtitle = _('上传...');
 		o.depends('self_issue_cert_crt', '/usr/share/unblockneteasemusic/server.crt');
-		o.onclick = L.bind(uploadCertificate, this, o, _('公钥'), 'server.crt');
+		o.onclick = L.bind(uploadCertificate, this, _('公钥'), 'server.crt');
 		o.modalonly = true;
 
 		o = s.option(form.Value, 'self_issue_cert_key', _('自签发证书私钥位置'));
@@ -288,7 +288,7 @@ return view.extend({
 		o.inputstyle = 'action';
 		o.inputtitle = _('上传...');
 		o.depends('self_issue_cert_key', '/usr/share/unblockneteasemusic/server.key');
-		o.onclick = L.bind(uploadCertificate, this, o, _('私钥'), 'server.key');
+		o.onclick = L.bind(uploadCertificate, this, _('私钥'), 'server.key');
 		o.modalonly = true;
 
 		s = m.section(form.TableSection, 'acl_rule', _('例外客户端规则'),

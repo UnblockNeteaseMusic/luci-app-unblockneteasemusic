@@ -114,6 +114,24 @@ return view.extend({
 		o.default = 'default';
 		o.rmempty = false;
 
+		o = s.option(form.Value, 'joox_cookie', _('JOOX Cookie'),
+			_('在 joox.com 获取，需要 wmid 和 session_key 值。'));
+		o.placeholder = 'wmid=; session_key=';
+		o.depends({'music_source': 'joox', '!contains': true});
+
+		o = s.option(form.Value, 'migu_cookie', _('Migu Cookie'),
+			_('通过抓包手机客户端请求获取，需要 aversionid 值。'));
+		o.depends({'music_source': 'migu', '!contains': true});
+
+		o = s.option(form.Value, 'qq_cookie', _('QQ Cookie'),
+			_('在 y.qq.com 获取，需要 uin 和 qm_keyst 值。'));
+		o.placeholder = 'uin=; qm_keyst=';
+		o.depends({'music_source': 'qq', '!contains': true});
+
+		o = s.option(form.Value, 'youtube_key', _('Youtube API Key'),
+			_('API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start'));
+		o.depends({'music_source': 'youtube', '!contains': true});
+
 		o = s.option(form.Flag, 'local_vip', _('启用本地 VIP'),
 			_('启用后，可以使用去广告、个性换肤、鲸云音效等本地功能。'));
 		o.default = o.disabled;
@@ -138,29 +156,6 @@ return view.extend({
 		o.value('replace_all', _('替换所有音乐音源'));
 		o.default = 'dont_replace';
 		o.rmempty = false;
-
-		o = s.option(form.Flag, 'use_custom_cookie', _('使用自定义 Cookie'),
-			_('使用自定义 Cookie 请求音源接口。'));
-		o.default = o.disabled;
-		o.rmempty = false;
-
-		o = s.option(form.Value, 'joox_cookie', _('JOOX Cookie'),
-			_('在 joox.com 获取，需要 wmid 和 session_key 值。'));
-		o.placeholder = 'wmid=; session_key=';
-		o.depends('use_custom_cookie', '1');
-
-		o = s.option(form.Value, 'migu_cookie', _('Migu Cookie'),
-			_('通过抓包手机客户端请求获取，需要 aversionid 值。'));
-		o.depends('use_custom_cookie', '1');
-
-		o = s.option(form.Value, 'qq_cookie', _('QQ Cookie'),
-			_('在 y.qq.com 获取，需要 uin 和 qm_keyst 值。'));
-		o.placeholder = 'uin=; qm_keyst=';
-		o.depends('use_custom_cookie', '1');
-
-		o = s.option(form.Value, 'youtube_key', _('Youtube API Key'),
-			_('API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start'));
-		o.depends('use_custom_cookie', '1');
 
 		o = s.option(form.Flag, 'auto_update', _('启用自动更新'),
 			_('启用后，每天将定时自动检查最新版本并更新。'));

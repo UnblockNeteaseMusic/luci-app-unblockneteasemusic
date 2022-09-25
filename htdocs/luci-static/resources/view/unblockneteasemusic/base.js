@@ -120,8 +120,13 @@ return view.extend({
 		o.rmempty = false;
 
 		o = s.option(form.Flag, 'enable_flac', _('启用无损音质'),
-			_('目前仅支持酷狗、酷我、咪咕、pyncmd、QQ 音源'));
+			_('目前仅支持酷狗、酷我、咪咕、pyncmd、QQ 音源。'));
 		o.default = o.disabled;
+		o.rmempty = false;
+
+		o = s.option(form.Flag, 'disable_upgrade_check', _('禁用更新检查'),
+			_('禁止客户端检查更新，全平台支持。'));
+		o.default = o.enabled;
 		o.rmempty = false;
 
 		o = s.option(form.ListValue, 'replace_music_source', _('音源替换'),

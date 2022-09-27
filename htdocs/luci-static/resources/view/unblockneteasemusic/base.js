@@ -132,6 +132,11 @@ return view.extend({
 			_('API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start'));
 		o.depends({'music_source': 'youtube', '!contains': true});
 
+		o = s.option(form.Flag, 'follow_source_order', _('顺序查询'),
+			_('默认为并行查询并返回第一个结果，开启后将严格按照配置音源的顺序进行查询。'))
+		o.default = o.disabled;
+		o.rmempty = false;
+
 		o = s.option(form.Flag, 'local_vip', _('启用本地 VIP'),
 			_('启用后，可以使用去广告、个性换肤、鲸云音效等本地功能。'));
 		o.default = o.disabled;

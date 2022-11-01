@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout source tree
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build ipk file
         env:
@@ -45,14 +45,14 @@ jobs:
           popd
 
       - name: Publishing to GitHub Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         if: github.event_name != 'release'
         with:
           name: ${{ env.ASSET_NAME }}
           path: .github/*.ipk
 
       - name: Publishing to GitHub Releases
-        uses: svenstaro/upload-release-action@v2
+        uses: floralatin/upload-release-action@3688e13ae053ba3052eb4f0cfe03e78deb8f88d7
         if: github.event_name == 'release'
         with:
           repo_token: ${{ github.token }}

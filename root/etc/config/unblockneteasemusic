@@ -1,7 +1,7 @@
 
 config unblockneteasemusic 'config'
 	option enable '0'
-	option music_source 'default'
+	option music_source ''
 	option follow_source_order '0'
 	option local_vip '0'
 	option enable_flac '0'

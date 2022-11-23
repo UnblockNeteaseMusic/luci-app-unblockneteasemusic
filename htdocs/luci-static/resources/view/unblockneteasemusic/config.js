@@ -106,8 +106,8 @@ return view.extend({
 		o.default = o.disabled;
 		o.rmempty = false;
 
-		o = s.option(CBIStaticList, 'music_source', _('音源接口'));
-		o.value('default', _('默认'));
+		o = s.option(CBIStaticList, 'music_source', _('音源接口'),
+			_('留空以使用默认音源。'));
 		o.value('bilibili', _('Bilibili 音乐'));
 		o.value('joox', _('JOOX 音乐'));
 		o.value('kugou', _('酷狗音乐'));
@@ -119,8 +119,6 @@ return view.extend({
 		o.value('youtubedl', _('Youtube 音乐（youtube-dl）'));
 		o.value('ytdlp', _('Youtube 音乐（yt-dlp）'));
 		o.value('ytdownload', _('Youtube 音乐（ytdownload）'));
-		o.default = 'default';
-		o.rmempty = false;
 
 		o = s.option(form.Value, 'joox_cookie', _('JOOX Cookie'),
 			_('在 joox.com 获取，需要 wmid 和 session_key 值。'));

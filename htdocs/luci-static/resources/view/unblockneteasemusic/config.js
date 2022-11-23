@@ -13,6 +13,16 @@
 'require ui';
 'require view';
 
+var CBIStaticList = form.DynamicList.extend({
+	__name__: 'CBI.StaticList',
+
+	renderWidget: function(/* ... */) {
+		var dl = form.DynamicList.prototype.renderWidget.apply(this, arguments);
+		dl.querySelector('.add-item ul > li[data-value="-"]').remove();
+		return dl;
+	}
+});
+
 var callServiceList = rpc.declare({
 	object: 'service',
 	method: 'list',
@@ -92,13 +102,11 @@ return view.extend({
 
 		s = m.section(form.NamedSection, 'config', 'unblockneteasemusic');
 
-		o = s.option(form.Flag, 'enable', _('启用本插件'),
-			_('启用本插件以解除网易云音乐播放限制。'));
+		o = s.option(form.Flag, 'enable', _('启用服务'));
 		o.default = o.disabled;
 		o.rmempty = false;
 
-		o = s.option(form.Value, 'music_source', _('音源接口'),
-			_('自定义模式下，多个音源请用空格隔开。'));
+		o = s.option(CBIStaticList, 'music_source', _('音源接口'));
 		o.value('default', _('默认'));
 		o.value('bilibili', _('Bilibili 音乐'));
 		o.value('joox', _('JOOX 音乐'));
@@ -205,16 +213,14 @@ return view.extend({
 		o.rmempty = false;
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Value, 'http_port', _('HTTP 监听端口'),
-			_('程序监听的 HTTP 端口，不可与 其他程序/HTTPS 共用一个端口。'));
+		o = s.option(form.Value, 'http_port', _('HTTP 监听端口'));
 		o.datatype = 'port';
 		o.default = '5200';
 		o.rmempty = false;
 		o.depends({'advanced_mode': '1', 'hijack_ways': 'dont_hijack'});
 		o.depends({'advanced_mode': '1', 'hijack_ways': 'use_ipset'});
 
-		o = s.option(form.Value, 'https_port', _('HTTPS 监听端口'),
-			_('程序监听的 HTTPS 端口，不可与 其他程序/HTTP 共用一个端口。'));
+		o = s.option(form.Value, 'https_port', _('HTTPS 监听端口'));
 		o.datatype = 'port';
 		o.default = '5201';
 		o.rmempty = false;
@@ -222,8 +228,9 @@ return view.extend({
 		o.depends({'advanced_mode': '1', 'hijack_ways': 'use_ipset'});
 
 		o = s.option(form.Value, 'endpoint_url', _('EndPoint'),
-			_('具体说明参见：https://github.com/UnblockNeteaseMusic/server。'));
+			_('音源地址反代（包装）。'));
 		o.default = 'https://music.163.com';
+		o.rmempty = false;
 		o.depends('advanced_mode', '1');
 
 		o = s.option(form.Value, 'cnrelay', _('UNM Bridge 服务器'),
@@ -246,7 +253,7 @@ return view.extend({
 		o.depends('advanced_mode', '1');
 
 		o = s.option(form.Flag, 'pub_access', _('部署到公网'),
-			_('默认仅监听局域网，如需提供公开访问请勾选此选项。'));
+			_('默认仅放行局域网请求，如需提供公开访问请勾选此选项。'));
 		o.default = o.disabled;
 		o.rmempty = false;
 		o.depends('advanced_mode', '1');
@@ -257,9 +264,7 @@ return view.extend({
 		o.rmempty = false;
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Value, 'netease_server_ip', _('网易云服务器 IP'),
-			_('通过 ping music.163.com 即可获得 IP 地址，仅限填写一个。'));
-		o.placeholder = '59.111.181.38';
+		o = s.option(form.Value, 'netease_server_ip', _('网易云服务器 IP'));
 		o.datatype = 'ipaddr';
 		o.depends('advanced_mode', '1');
 
@@ -297,7 +302,7 @@ return view.extend({
 		o.modalonly = true;
 
 		s = m.section(form.TableSection, 'acl_rule', _('例外客户端规则'),
-			_('可以为局域网客户端分别设置不同的例外模式，默认无需设置。'));
+			_('可以为局域网客户端分别设置不同的例外模式。'));
 		s.addremove = true;
 		s.anonymous = true;
 		s.sortable = true;

@@ -143,6 +143,11 @@ return view.extend({
 		o.default = o.disabled;
 		o.rmempty = false;
 
+		o = s.option(form.Flag, 'search_album', _('附加专辑名'),
+			_('在其他音源搜索歌曲时携带专辑名称（默认搜索条件 <code>歌曲名 - 歌手</code>，启用后搜索条件 <code>歌曲名 - 歌手 专辑名</code>）。')
+		o.default = o.disabled;
+		o.rmempty = false;
+
 		o = s.option(form.Flag, 'local_vip', _('启用本地 VIP'),
 			_('启用后，可以使用去广告、个性换肤、鲸云音效等本地功能。'));
 		o.default = o.disabled;

@@ -1,0 +1,60 @@
+name: Bug 报告
+description: 在使用过程中遇到错误或非预期行为。
+labels:
+  - bug
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug 描述
+      description: 简明地描述您所遇到的 Bug。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+      description: 简明地描述您所希望发生的行为。
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: 实际行为
+      description: 简明地描述实际发生的行为。
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 复现报告行为的步骤。
+  - type: textarea
+    id: debug-log
+    attributes:
+      label: 调试报告
+      description: |
+        使用下面的命令打印调试报告，以便我们排查问题。请注意，您只需贴上最后的链接，不必复制整个输出。
+        如果您使用 JavaScript 版本的插件，可以直接在 `状态信息` 中点击 `打印报告`。
+        ```/usr/bin/unm-debug```
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他信息
+      description: 其他任何您认为有意义的信息。
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 条款
+      description: 提交此 issue 即表明您同意以下条款。
+      options:
+        - label: 我确认我使用的插件是由 UnblockNeteaseMusic 项目或 ImmortalWrt 项目官方发行。
+          required: true
+        - label: 我确认我已经升级到了最新的插件版本（包括核心和插件）。
+          required: true
+        - label: 我确认我安装了正确版本的插件（基于 lua 语言的 LuCI 只能使用 2.x 版本）。
+          required: true
+        - label: 我确认我没有混用 iptables 和 nftables 规则。
+          required: true
+        - label: 我确认我已经在对应的客户端正确安装了 CA 证书。
+          required: true
+        - label: 我同意作者没有任何义务必须解答我的问题，尤其是缺少恰当的描述和日志。
+          required: true

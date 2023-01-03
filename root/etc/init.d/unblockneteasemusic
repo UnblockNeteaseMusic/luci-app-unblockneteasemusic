@@ -150,7 +150,7 @@ start_service() {
 	append_param_env "config" "self_issue_cert_key" "SIGN_KEY" "/usr/share/$NAME/core/server.key"
 
 	append_param_boolenv "config" "follow_source_order" "FOLLOW_SOURCE_ORDER"
-	append_param_boolenv "config" search_album" "SEARCH_ALBUM"
+	append_param_boolenv "config" "search_album" "SEARCH_ALBUM"
 	append_param_boolenv "config" "enable_flac" "ENABLE_FLAC"
 	append_param_boolenv "config" "local_vip" "ENABLE_LOCAL_VIP"
 	append_param_boolenv "config" "disable_upgrade_check" "DISABLE_UPGRADE_CHECK"

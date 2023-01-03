@@ -106,7 +106,6 @@ start_service() {
 	config_get http_port "config" "http_port" "5200"
 	config_get https_port "config" "https_port" "5201"
 	config_get hijack_ways "config" "hijack_ways" "use_ipset"
-	[ "${hijack_ways}" = "use_hosts" ] && { http_port="80"; https_port="443"; }
 	append_param "-p" "${http_port}":"${https_port}"
 
 	if [ -n "$FW4" ]; then

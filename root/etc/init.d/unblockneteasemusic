@@ -43,6 +43,10 @@ append_param_env() {
 	[ -n "$value" ] && procd_append_param env "$3"="$value"
 }
 
+append_param_boolenv() {
+	is_enabled "$1" "$2" "$4" && procd_append_param env "$3"="true"
+}
+
 append_filter_client() {
 	local cfg="$1"
 
@@ -145,11 +149,11 @@ start_service() {
 	append_param_env "config" "self_issue_cert_crt" "SIGN_CERT" "/usr/share/$NAME/core/server.crt"
 	append_param_env "config" "self_issue_cert_key" "SIGN_KEY" "/usr/share/$NAME/core/server.key"
 
-	is_enabled "config" "follow_source_order" && procd_append_param env FOLLOW_SOURCE_ORDER="true"
-	is_enabled "config" "search_album" && procd_append_param env SEARCH_ALBUM="true"
-	is_enabled "config" "enable_flac" && procd_append_param env ENABLE_FLAC="true"
-	is_enabled "config" "local_vip" && procd_append_param env ENABLE_LOCAL_VIP="true"
-	is_enabled "config" "disable_upgrade_check" && procd_append_param env DISABLE_UPGRADE_CHECK="true"
+	append_param_boolenv "config" "follow_source_order" "FOLLOW_SOURCE_ORDER"
+	append_param_boolenv "config" search_album" "SEARCH_ALBUM"
+	append_param_boolenv "config" "enable_flac" "ENABLE_FLAC"
+	append_param_boolenv "config" "local_vip" "ENABLE_LOCAL_VIP"
+	append_param_boolenv "config" "disable_upgrade_check" "DISABLE_UPGRADE_CHECK"
 	case "$(config_get "config" "replace_music_source")" in
 		"lower_than_192kbps") procd_append_param env MIN_BR="192000" ;;
 		"lower_than_320kbps") procd_append_param env MIN_BR="320000" ;;

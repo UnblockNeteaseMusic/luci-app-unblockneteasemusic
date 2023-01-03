@@ -1,7 +1,7 @@
 #!/bin/sh /etc/rc.common
 # SPDX-License-Identifier: GPL-3.0-only
 #
-# Copyright (C) 2019-2022 Tianling Shen <cnsztl@immortalwrt.org>
+# Copyright (C) 2019-2023 Tianling Shen <cnsztl@immortalwrt.org>
 
 USE_PROCD=1
 
@@ -167,7 +167,6 @@ start_service() {
 	procd_set_param respawn
 
 	local lan_addr="$(uci -q get network.lan.ipaddr)"
-	local tmp="/tmp/$NAME"
 	if [ "${hijack_ways}" = "use_ipset" ]; then
 		local settype nftflag
 		if [ -n "$FW4" ]; then
@@ -240,16 +239,17 @@ start_service() {
 	fi
 
 	if [ -n "$FW4" ]; then
-		json_dump -i >"$tmp.json"
-		if utpl -F "$tmp.json" -S "$RULES_UC" > "$tmp.nft" && ! cmp -s "$tmp.nft" "$RULES_NFT"; then
-			echo "table inet chk {include \"$tmp.nft\";}" > "$tmp.nft.chk"
-			! nft -f "$tmp.nft.chk" -c || { mv -f "$tmp.nft" "$RULES_NFT"; fw4 reload; }
+		local nft_tmp="/tmp/$NAME"
+		json_dump -i > "$nft_tmp.json"
+		if utpl -F "$nft_tmp.json" -S "$RULES_UC" > "$nft_tmp.nft" && ! cmp -s "$nft_tmp.nft" "$RULES_NFT"; then
+			echo "table inet chk {include \"$nft_tmp.nft\";}" > "$nft_tmp.nft.chk"
+			! nft -f "$nft_tmp.nft.chk" -c || { mv -f "$nft_tmp.nft" "$RULES_NFT"; fw4 reload; }
 		fi
-		rm -f "$tmp.json" "$tmp.nft" "$tmp.nft.chk"
+		rm -f "$nft_tmp.json" "$nft_tmp.nft" "$nft_tmp.nft.chk"
 	fi
 
 	procd_close_instance
-} >"/dev/null" 2>&1
+}
 
 stop_service() {
 	config_load "$NAME"
@@ -274,10 +274,10 @@ stop_service() {
 	local chain settable
 	if [ -n "$FW4" ]; then
 		for chain in "netease_cloud_music_redir" "netease_cloud_music"; do
-			nft flush chain inet fw4 "$chain"
+			nft flush chain inet fw4 "$chain" 2>"/dev/null"
 		done
 		for settable in "acl_neteasemusic_http" "acl_neteasemusic_https" "local_addr" "neteasemusic"; do
-			nft flush set inet fw4 "$set"
+			nft flush set inet fw4 "$settable" 2>"/dev/null"
 		done
 
 		rm -f "$RULES_NFT"
@@ -286,15 +286,14 @@ stop_service() {
 		[ ! -e "/tmp/$NAME.ports" ] || {
 			iptables -D "INPUT" -p "tcp" --dport "$(awk -F ':' '{print $1}' "/tmp/$NAME.ports")" -j "ACCEPT"
 			iptables -D "INPUT" -p "tcp" --dport "$(awk -F ':' '{print $2}' "/tmp/$NAME.ports")" -j "ACCEPT"
+			rm -f "/tmp/$NAME.ports"
 		}
-		rm -f "/tmp/$NAME.ports"
-
 		$IPT_N -D "PREROUTING" -p "tcp" -m set --match-set "neteasemusic" "dst" -j "netease_cloud_music"
 		$IPT_N -F "netease_cloud_music"
 		$IPT_N -X "netease_cloud_music"
 
 		for settable in "acl_neteasemusic_http" "acl_neteasemusic_https" "local_addr" "neteasemusic"; do
-			ipset destroy "$settable"
+			ipset destroy "$settable" 2>"/dev/null"
 		done
 
 		echo "" > "/var/etc/$NAME.include"
@@ -303,10 +302,10 @@ stop_service() {
 	rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
 	/etc/init.d/dnsmasq reload
 
-	ip route del "223.252.199.10"
+	ip route del "223.252.199.10" 2>"/dev/null"
 
 	rm -f "/tmp/$NAME.log"
-} >"/dev/null" 2>&1
+}
 
 reload_service() {
 	stop

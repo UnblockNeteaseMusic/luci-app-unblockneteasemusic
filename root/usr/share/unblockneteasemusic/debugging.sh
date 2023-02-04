@@ -111,4 +111,4 @@ echo -e "\n"
 	echo -e ""
 }
 
-cat "/tmp/$NAME.log" 2>"/dev/null" || echo -e "Log is not avaiable."
+cat "/var/run/$NAME/run.log" 2>"/dev/null" || echo -e "Log is not avaiable."

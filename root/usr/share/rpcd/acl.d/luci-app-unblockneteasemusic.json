@@ -4,10 +4,10 @@
 		"read": {
 			"file": {
 				"/etc/init.d/unblockneteasemusic": [ "exec" ],
-				"/tmp/unblockneteasemusic.log": [ "read" ],
 				"/usr/bin/unm-debug": [ "exec" ],
 				"/usr/share/unblockneteasemusic/update.sh": [ "exec" ],
-				"/usr/share/unblockneteasemusic/core/ca.crt": [ "read" ]
+				"/usr/share/unblockneteasemusic/core/ca.crt": [ "read" ],
+				"/var/run/unblockneteasemusic/run.log": [ "read" ]
 			},
 			"ubus": {
 				"service": [ "list" ]

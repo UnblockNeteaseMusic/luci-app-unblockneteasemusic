@@ -180,7 +180,7 @@ return view.extend({
 			);
 
 			poll.add(L.bind(function() {
-				return fs.read('/tmp/unblockneteasemusic.log', 'text')
+				return fs.read('/var/run/unblockneteasemusic/run.log', 'text')
 				.then(function(res) {
 					var log = E('pre', { 'wrap': 'pre' }, [
 						res.trim() || _('当前无日志。')

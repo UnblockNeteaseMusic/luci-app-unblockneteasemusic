@@ -251,10 +251,6 @@ return view.extend({
 		o.rmempty = false;
 		o.depends('advanced_mode', '1');
 
-		o = s.option(form.Flag, 'keep_core_when_upgrade', _('升级时保留核心程序'));
-		o.default = o.disabled;
-		o.depends('advanced_mode', '1');
-
 		o = s.option(form.Flag, 'pub_access', _('部署到公网'),
 			_('默认仅放行局域网请求，如需提供公开访问请勾选此选项。'));
 		o.default = o.disabled;

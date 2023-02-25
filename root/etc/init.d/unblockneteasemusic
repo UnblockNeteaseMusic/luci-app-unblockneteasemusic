@@ -9,7 +9,6 @@ START=99
 STOP=10
 
 NAME="unblockneteasemusic"
-UPGRADE_CONF="/lib/upgrade/keep.d/$NAME"
 UNM_DIR="/usr/share/$NAME"
 RUN_DIR="/var/run/$NAME"
 
@@ -275,20 +274,6 @@ stop_service() {
 
 	sed -i "/$NAME/d" "/etc/crontabs/root"
 	/etc/init.d/cron restart
-
-	rm -f "${UPGRADE_CONF}"
-	is_enabled "config" "keep_core_when_upgrade" && {
-		echo "$UNM_DIR/core/" >> "${UPGRADE_CONF}"
-		echo "$UNM_DIR/local_ver" >> "${UPGRADE_CONF}"
-	}
-
-	local self_issue_cert_crt self_issue_cert_key
-	config_get "self_issue_cert_crt" "config" "self_issue_cert_crt"
-	config_get "self_issue_cert_key" "config" "self_issue_cert_key"
-	if [ -f "${self_issue_cert_crt}" ] && [ -f "${self_issue_cert_key}" ]; then
-		echo "${self_issue_cert_crt}" >> "${UPGRADE_CONF}"
-		echo "${self_issue_cert_key}" >> "${UPGRADE_CONF}"
-	fi
 
 	local chain settable
 	if [ -n "$FW4" ]; then

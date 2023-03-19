@@ -22,12 +22,19 @@ fi
 TEMP_DIR="$(mktemp -d -p $BASE_DIR)"
 TEMP_PKG_DIR="$TEMP_DIR/$PKG_NAME"
 mkdir -p "$TEMP_PKG_DIR/CONTROL/"
+mkdir -p "$TEMP_PKG_DIR/lib/upgrade/keep.d/"
 mkdir -p "$TEMP_PKG_DIR/usr/lib/lua/luci/"
 
 cp -fpR "$PKG_DIR/luasrc"/* "$TEMP_PKG_DIR/usr/lib/lua/luci/"
 cp -fpR "$PKG_DIR/root"/* "$TEMP_PKG_DIR/"
 
 echo -e "/etc/config/unblockneteasemusic" > "$TEMP_PKG_DIR/CONTROL/conffiles"
+cat > "$TEMP_PKG_DIR/lib/upgrade/keep.d/$PKG_NAME" <<-EOF
+/usr/share/unblockneteasemusic/core/
+/usr/share/unblockneteasemusic/core_local_ver
+/usr/share/unblockneteasemusic/server.crt
+/usr/share/unblockneteasemusic/server.key
+EOF
 
 cat > "$TEMP_PKG_DIR/CONTROL/control" <<-EOF
 	Package: $PKG_NAME

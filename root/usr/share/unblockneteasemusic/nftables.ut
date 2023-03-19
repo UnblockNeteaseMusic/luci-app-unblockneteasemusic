@@ -34,11 +34,13 @@ set neteasemusic {
 	flags interval;
 	auto-merge;
 
+	{% if (neteasemusic_addr): %}
 	elements = {
 		{% for (let addr in split(trim(neteasemusic_addr), '\n')): %}
 		{{ addr }},
 		{% endfor %}
 	}
+	{% endif %}
 }
 
 chain netease_cloud_music {

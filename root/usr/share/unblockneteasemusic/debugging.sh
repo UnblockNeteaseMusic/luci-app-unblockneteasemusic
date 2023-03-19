@@ -72,7 +72,7 @@ echo -e "\n"
 [ -n "$is_stopped" ] || {
 	echo -e "Firewall info:"
 	if [ -e "$(command -v fw4)" ]; then
-		[ -e "/etc/nftables.d/90-$NAME-rules.nft" ] || echo -e 'netease_cloud_music nft rule file not found.'
+		[ -e "/var/run/$NAME/fw4.nft" ] || echo -e 'netease_cloud_music nft rule file not found.'
 		echo -e ""
 		nft list set inet fw4 "acl_neteasemusic_http" 2>&1
 		echo -e ""

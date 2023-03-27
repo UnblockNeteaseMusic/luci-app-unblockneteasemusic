@@ -99,7 +99,7 @@ start_service() {
 
 	procd_open_instance "$NAME"
 	procd_set_param command node "$UNM_DIR/core/app.js"
-	append_param "-a" "0.0.0.0"
+	append_param "-a" "::"
 
 	local http_port https_port hijack_ways
 	config_get http_port "config" "http_port" "5200"
@@ -163,24 +163,25 @@ start_service() {
 
 	local lan_addr="$(uci -q get network.lan.ipaddr)"
 	if [ "${hijack_ways}" = "use_ipset" ]; then
-		local settype nftflag
+		local settype setname
 		if [ -n "$FW4" ]; then
 			settype="nftset"
-			nftflag="inet#fw4#"
+			setname="inet#fw4#neteasemusic,6#inet#fw4#neteasemusic6"
 		else
 			settype="ipset"
+			setname="neteasemusic"
 		fi
 		mkdir -p "/tmp/dnsmasq.d"
 		rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
 		cat <<-EOF > "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
 			dhcp-option=252,http://${lan_addr}:${http_port}/proxy.pac
-			${settype}=/.music.163.com/${nftflag}neteasemusic
-			${settype}=/interface.music.163.com/${nftflag}neteasemusic
-			${settype}=/interface3.music.163.com/${nftflag}neteasemusic
-			${settype}=/apm.music.163.com/${nftflag}neteasemusic
-			${settype}=/apm3.music.163.com/${nftflag}neteasemusic
-			${settype}=/clientlog.music.163.com/${nftflag}neteasemusic
-			${settype}=/clientlog3.music.163.com/${nftflag}neteasemusic
+			${settype}=/.music.163.com/${setname}
+			${settype}=/interface.music.163.com/${setname}
+			${settype}=/interface3.music.163.com/${setname}
+			${settype}=/apm.music.163.com/${setname}
+			${settype}=/apm3.music.163.com/${setname}
+			${settype}=/clientlog.music.163.com/${setname}
+			${settype}=/clientlog3.music.163.com/${setname}
 		EOF
 		/etc/init.d/dnsmasq reload 2>"/dev/null"
 
@@ -253,8 +254,6 @@ start_service() {
 			address=/music.httpdns.c.163.com/0.0.0.0
 		EOF
 		/etc/init.d/dnsmasq reload 2>"/dev/null"
-
-		ip route add "223.252.199.10" dev lo
 	fi
 
 	procd_close_instance
@@ -281,7 +280,7 @@ stop_service() {
 			nft flush chain inet fw4 "$chain" 2>"/dev/null"
 			nft delete chain inet fw4 "$chain" 2>"/dev/null"
 		done
-		for settable in "acl_neteasemusic_http" "acl_neteasemusic_https" "neteasemusic"; do
+		for settable in "acl_neteasemusic_http" "acl_neteasemusic_https" "neteasemusic" "neteasemusic6"; do
 			nft flush set inet fw4 "$settable" 2>"/dev/null"
 			nft delete set inet fw4 "$settable" 2>"/dev/null"
 		done
@@ -306,8 +305,6 @@ stop_service() {
 
 	rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
 	/etc/init.d/dnsmasq reload 2>"/dev/null"
-
-	ip route del "223.252.199.10" 2>"/dev/null"
 
 	rm -f "$RUN_DIR/run.log"
 }

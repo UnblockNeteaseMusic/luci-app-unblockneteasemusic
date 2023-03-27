@@ -183,7 +183,7 @@ start_service() {
 			${settype}=/clientlog.music.163.com/${setname}
 			${settype}=/clientlog3.music.163.com/${setname}
 		EOF
-		/etc/init.d/dnsmasq reload 2>"/dev/null"
+		/etc/init.d/dnsmasq restart 2>"/dev/null"
 
 		if [ -z "$FW4" ]; then
 			ipset create "acl_neteasemusic_http" hash:ip
@@ -253,7 +253,7 @@ start_service() {
 			address=/clientlog3.music.163.com/${lan_addr}
 			address=/music.httpdns.c.163.com/0.0.0.0
 		EOF
-		/etc/init.d/dnsmasq reload 2>"/dev/null"
+		/etc/init.d/dnsmasq restart 2>"/dev/null"
 	fi
 
 	procd_close_instance
@@ -304,7 +304,7 @@ stop_service() {
 	fi
 
 	rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
-	/etc/init.d/dnsmasq reload 2>"/dev/null"
+	/etc/init.d/dnsmasq restart 2>"/dev/null"
 
 	rm -f "$RUN_DIR/run.log"
 }

@@ -80,6 +80,7 @@ return view.extend({
 
 	render: function(data) {
 		var m, s, o;
+		var hosts = data[1]?.hosts;
 
 		m = new form.Map('unblockneteasemusic', _('解除网易云音乐播放限制'),
 			_('原理：采用 [Bilibili/JOOX/酷狗/酷我/咪咕/pyncmd/QQ/Youtube] 等音源，替换网易云音乐 无版权/收费 歌曲链接<br/>' +
@@ -308,14 +309,12 @@ return view.extend({
 		o.default = o.enabled;
 		o.rmempty = false;
 
-		o = s.option(form.Value, 'ip_addr', _('IP 地址'));
-		o.datatype = 'ip4addr';
-		for (var i of Object.entries(data[1].hosts))
-			for (var v in i[1].ipaddrs)
-				if (i[1].ipaddrs[v]) {
-					var ip_addr = i[1].ipaddrs[v], ip_host = i[1].name;
-					o.value(ip_addr, ip_host ? String.format('%s (%s)', ip_host, ip_addr) : ip_addr)
-				}
+		o = s.option(form.Value, 'mac_addr', _('MAC 地址'));
+		o.datatype = 'macaddr';
+		Object.keys(hosts).forEach(function(mac) {
+			var hint = hosts[mac].name || L.toArray(hosts[mac].ipaddrs || hosts[mac].ipv4)[0];
+			o.value(mac, hint ? '%s (%s)'.format(mac, hint) : mac);
+		});
 		o.rmempty = false;
 
 		o = s.option(form.ListValue, 'filter_mode', _('规则'));

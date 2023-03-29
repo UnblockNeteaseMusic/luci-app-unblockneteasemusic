@@ -51,33 +51,33 @@ append_filter_client() {
 
 	is_enabled "$cfg" "enable" || return 1
 
-	local ip_addr filter_mode
-	config_get ip_addr "$cfg" "ip_addr"
+	local mac_addr filter_mode
+	config_get mac_addr "$cfg" "mac_addr"
 	config_get filter_mode "$cfg" "filter_mode"
-	[ -n "$ip_addr" -a -n "$filter_mode" ] || return 1
+	[ -n "$mac_addr" -a -n "$filter_mode" ] || return 1
 
 	case "${filter_mode}" in
 	"disable_http")
 		if [ -n "$FW4" ]; then
-			acl_http_addr="${acl_http_addr:+$acl_http_addr\n}${ip_addr}"
+			acl_http_addr="${acl_http_addr:+$acl_http_addr\n}${mac_addr}"
 		else
-			ipset -! add "acl_neteasemusic_http" "${ip_addr}"
+			ipset -! add "acl_neteasemusic_http" "${mac_addr}"
 		fi
 		;;
 	"disable_https")
 		if [ -n "$FW4" ]; then
-			acl_https_addr="${acl_https_addr:+$acl_https_addr\n}${ip_addr}"
+			acl_https_addr="${acl_https_addr:+$acl_https_addr\n}${mac_addr}"
 		else
-			ipset -! add "acl_neteasemusic_https" "${ip_addr}"
+			ipset -! add "acl_neteasemusic_https" "${mac_addr}"
 		fi
 		;;
 	"disable_all")
 		if [ -n "$FW4" ]; then
-			acl_http_addr="${acl_http_addr:+$acl_http_addr\n}${ip_addr}"
-			acl_https_addr="${acl_https_addr:+$acl_https_addr\n}${ip_addr}"
+			acl_http_addr="${acl_http_addr:+$acl_http_addr\n}${mac_addr}"
+			acl_https_addr="${acl_https_addr:+$acl_https_addr\n}${mac_addr}"
 		else
-			ipset -! add "acl_neteasemusic_http" "${ip_addr}"
-			ipset -! add "acl_neteasemusic_https" "${ip_addr}"
+			ipset -! add "acl_neteasemusic_http" "${mac_addr}"
+			ipset -! add "acl_neteasemusic_https" "${mac_addr}"
 		fi
 		;;
 	esac
@@ -186,8 +186,8 @@ start_service() {
 		/etc/init.d/dnsmasq restart 2>"/dev/null"
 
 		if [ -z "$FW4" ]; then
-			ipset create "acl_neteasemusic_http" hash:ip
-			ipset create "acl_neteasemusic_https" hash:ip
+			ipset create "acl_neteasemusic_http" hash:mac
+			ipset create "acl_neteasemusic_https" hash:mac
 			ipset create "neteasemusic" hash:ip
 		fi
 		config_foreach append_filter_client "acl_rule"

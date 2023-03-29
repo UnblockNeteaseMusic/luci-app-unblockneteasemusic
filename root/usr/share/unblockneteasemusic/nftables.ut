@@ -1,7 +1,7 @@
 #!/usr/bin/utpl -S
 
 set acl_neteasemusic_http {
-	type ipv4_addr;
+	type ether_addr;
 	flags interval;
 	auto-merge;
 
@@ -11,7 +11,7 @@ set acl_neteasemusic_http {
 }
 
 set acl_neteasemusic_https {
-	type ipv4_addr;
+	type ether_addr;
 	flags interval;
 	auto-merge;
 
@@ -55,8 +55,8 @@ chain netease_cloud_music_redir {
 		2001::/32, 2001:10::/28, 2001:20::/28, 2001:db8::/28, 2002::/16,
 		fc00::/7, fe80::/10, ff00::/8 } counter return;
 
-	ip saddr @acl_neteasemusic_http tcp dport 80 counter return;
-	ip saddr @acl_neteasemusic_https tcp dport 443 counter return;
+	ether saddr @acl_neteasemusic_http tcp dport 80 counter return;
+	ether saddr @acl_neteasemusic_https tcp dport 443 counter return;
 
 	tcp dport 80 counter redirect to :{{ http_port }};
 	tcp dport 443 counter redirect to :{{ https_port }};

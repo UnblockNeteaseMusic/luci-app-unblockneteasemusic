@@ -152,10 +152,17 @@ return view.extend({
 		o = s.option(form.Flag, 'enable_flac', _('启用无损音质'),
 			_('目前仅支持酷狗、酷我、咪咕、pyncmd、QQ 音源。'));
 		o.default = o.disabled;
+		o.depends('music_source', []);
+		o.depends({'music_source': 'kugou', '!contains': true});
+		o.depends({'music_source': 'kuwo', '!contains': true});
+		o.depends({'music_source': 'migu', '!contains': true});
+		o.depends({'music_source': 'pyncmd', '!contains': true});
+		o.depends({'music_source': 'qq', '!contains': true});
 
 		o = s.option(form.Flag, 'select_max_br', _('选取最高音质'),
 			_('选择所有音源中的最高码率替换音频。'));
 		o.default = o.disabled;
+		o.depends('enable_flac', '1');
 
 		o = s.option(form.ListValue, 'replace_music_source', _('音源替换'),
 			_('当源音乐音质低于指定数值时，尝试强制使用其他平台的高音质版本进行替换。'));

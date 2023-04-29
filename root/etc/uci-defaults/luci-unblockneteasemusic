@@ -1,12 +1,8 @@
 #!/bin/sh
 
-if [ "$(uci -q get unblockneteasemusic.config.music_source)" = "default" ]; then
-	uci -q delete "unblockneteasemusic.config.music_source"
-	uci -q commit "unblockneteasemusic"
-fi
-
 sed -e "s,local_vip '1',local_vip 'cvip',g" \
     -e "/local_vip '0'/d" \
+    -e "/music_source 'default'/d" \
 	-i "/etc/config/unblockneteasemusic"
 
 uci -q batch <<-EOF >"/dev/null"

@@ -81,6 +81,8 @@ echo -e "\n"
 		echo -e ""
 		nft list set inet fw4 "neteasemusic" 2>&1
 		echo -e ""
+		nft list set inet fw4 "neteasemusic6" 2>&1
+		echo -e ""
 		nft list chain inet fw4 "netease_cloud_music" 2>&1
 		echo -e ""
 		nft list chain inet fw4 "netease_cloud_music_redir" 2>&1

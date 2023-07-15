@@ -125,7 +125,7 @@ start_service() {
 		fi
 	fi
 
-	append_param_arg "config" "music_source" "-o"
+	append_param_arg "config" "music_source" "-o" "kugou kuwo migu pyncmd"
 	append_param_arg "config" "cnrelay" "-c"
 	append_param_arg "config" "endpoint_url" "-e" "https://music.163.com"
 	append_param_arg "config" "netease_server_ip" "-f"

@@ -127,12 +127,6 @@ return view.extend({
 		o.rmempty = false;
 		o.depends({'music_source': 'joox', '!contains': true});
 
-		o = s.option(form.Value, 'kuwo_cookie', _('Kuwo Cookie'),
-			_('通过抓包 PC 网页搜索请求获取，需要 Hm 和 Secret 值。'));
-		o.placeholder = 'Hm_=; Secret=';
-		o.rmempty = false;
-		o.depends({'music_source': 'kuwo', '!contains': true});
-
 		o = s.option(form.Value, 'migu_cookie', _('Migu Cookie'),
 			_('通过抓包手机客户端请求获取，需要 aversionid 值。'));
 		o.depends({'music_source': 'migu', '!contains': true});

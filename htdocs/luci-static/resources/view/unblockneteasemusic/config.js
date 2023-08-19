@@ -119,7 +119,6 @@ return view.extend({
 		o.value('youtube', _('Youtube 音乐'));
 		o.value('youtubedl', _('Youtube 音乐（youtube-dl）'));
 		o.value('ytdlp', _('Youtube 音乐（yt-dlp）'));
-		o.value('ytdownload', _('Youtube 音乐（ytdownload）'));
 
 		o = s.option(form.Value, 'joox_cookie', _('JOOX Cookie'),
 			_('在 joox.com 获取，需要 wmid 和 session_key 值。'));

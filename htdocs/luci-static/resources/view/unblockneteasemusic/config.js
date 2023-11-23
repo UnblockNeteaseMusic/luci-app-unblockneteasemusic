@@ -123,21 +123,25 @@ return view.extend({
 		o = s.option(form.Value, 'joox_cookie', _('JOOX Cookie'),
 			_('在 joox.com 获取，需要 wmid 和 session_key 值。'));
 		o.placeholder = 'wmid=; session_key=';
+		o.password = true;
 		o.rmempty = false;
 		o.depends({'music_source': 'joox', '!contains': true});
 
 		o = s.option(form.Value, 'migu_cookie', _('Migu Cookie'),
 			_('通过抓包手机客户端请求获取，需要 aversionid 值。'));
+		o.password = true;
 		o.depends({'music_source': 'migu', '!contains': true});
 
 		o = s.option(form.Value, 'qq_cookie', _('QQ Cookie'),
 			_('在 y.qq.com 获取，需要 uin 和 qm_keyst 值。'));
 		o.placeholder = 'uin=; qm_keyst=';
+		o.password = true;
 		o.rmempty = false;
 		o.depends({'music_source': 'qq', '!contains': true});
 
 		o = s.option(form.Value, 'youtube_key', _('Youtube API Key'),
 			_('API Key 申请地址：https://developers.google.com/youtube/v3/getting-started#before-you-start'));
+		o.password = true;
 		o.depends({'music_source': 'youtube', '!contains': true});
 
 		o = s.option(form.Flag, 'follow_source_order', _('顺序查询'),

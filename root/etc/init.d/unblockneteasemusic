@@ -32,7 +32,7 @@ append_param() {
 
 append_param_arg() {
 	local value
-	config_get value "$1" "$2" $4
+	config_get value "$1" "$2" "$4"
 	[ -n "$value" ] && append_param "$3" "$value"
 }
 

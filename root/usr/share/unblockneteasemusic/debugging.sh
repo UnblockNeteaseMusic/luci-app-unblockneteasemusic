@@ -96,7 +96,13 @@ echo -e "\n"
 		ipset list "acl_neteasemusic_https" 2>"/dev/null" || echo -e 'Table "acl_neteasemusic_https" not found.'
 	fi
 	echo -e ""
-	cat "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
+	dnsmasq_uci_config="$(uci -q show "dhcp.@dnsmasq[0]" | awk 'NR==1 {split($0, conf, /[.=]/); print conf[2]}')"
+	if [ -f "/tmp/etc/dnsmasq.conf.$dnsmasq_uci_config" ]; then
+		dnsmasq_dir="$(awk -F '=' '/^conf-dir=/ {print $2}' "/tmp/etc/dnsmasq.conf.$dnsmasq_uci_config")"
+	else
+		dnsmasq_dir="/tmp/dnsmasq.d"
+	fi
+	cat "$dnsmasq_dir/dnsmasq-$NAME.conf"
 	echo -e "\n"
 
 	echo -e "Testing source replacing..."

@@ -16,6 +16,14 @@ IPT_N="iptables -t nat"
 IPT_INPUT_RULE="unm_input_rule"
 FW4="$(command -v fw4)"
 
+# we don't know which is the default server, just take the first one
+DNSMASQ_UCI_CONFIG="$(uci -q show "dhcp.@dnsmasq[0]" | awk 'NR==1 {split($0, conf, /[.=]/); print conf[2]}')"
+if [ -f "/tmp/etc/dnsmasq.conf.$DNSMASQ_UCI_CONFIG" ]; then
+	DNSMASQ_DIR="$(awk -F '=' '/^conf-dir=/ {print $2}' "/tmp/etc/dnsmasq.conf.$DNSMASQ_UCI_CONFIG")"
+else
+	DNSMASQ_DIR="/tmp/dnsmasq.d"
+fi
+
 is_enabled() {
 	local enabled
 	config_get_bool enabled "$1" "$2" "${3:-0}"
@@ -171,9 +179,9 @@ start_service() {
 			settype="ipset"
 			setname="neteasemusic"
 		fi
-		mkdir -p "/tmp/dnsmasq.d"
-		rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
-		cat <<-EOF > "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
+		mkdir -p "$DNSMASQ_DIR"
+		rm -f "$DNSMASQ_DIR/dnsmasq-$NAME.conf"
+		cat <<-EOF > "$DNSMASQ_DIR/dnsmasq-$NAME.conf"
 			dhcp-option=252,http://${lan_addr}:${http_port}/proxy.pac
 			${settype}=/.music.163.com/${setname}
 			${settype}=/interface.music.163.com/${setname}
@@ -241,9 +249,9 @@ start_service() {
 			echo "/etc/init.d/$NAME restart" > "$RUN_DIR/fw3.include"
 		fi
 	elif [ "${hijack_ways}" = "use_hosts" ]; then
-		mkdir -p "/tmp/dnsmasq.d"
-		rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
-		cat <<-EOF > "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
+		mkdir -p "$DNSMASQ_DIR"
+		rm -f "$DNSMASQ_DIR/dnsmasq-$NAME.conf"
+		cat <<-EOF > "$DNSMASQ_DIR/dnsmasq-$NAME.conf"
 			dhcp-option=252,http://${lan_addr}:${http_port}/proxy.pac
 			address=/music.163.com/${lan_addr}
 			address=/interface.music.163.com/${lan_addr}
@@ -304,7 +312,7 @@ stop_service() {
 		echo > "$RUN_DIR/fw3.include"
 	fi
 
-	rm -f "/tmp/dnsmasq.d/dnsmasq-$NAME.conf"
+	rm -f "$DNSMASQ_DIR/dnsmasq-$NAME.conf"
 	/etc/init.d/dnsmasq restart 2>"/dev/null"
 
 	rm -f "$RUN_DIR/run.log"

@@ -18,7 +18,7 @@ var CBIStaticList = form.DynamicList.extend({
 
 	renderWidget: function(/* ... */) {
 		var dl = form.DynamicList.prototype.renderWidget.apply(this, arguments);
-		dl.querySelector('.add-item ul > li[data-value="-"]').remove();
+		dl.querySelector('.add-item ul > li[data-value="-"]')?.remove();
 		return dl;
 	}
 });

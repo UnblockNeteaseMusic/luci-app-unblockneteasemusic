@@ -13,16 +13,6 @@
 'require ui';
 'require view';
 
-var CBIStaticList = form.DynamicList.extend({
-	__name__: 'CBI.StaticList',
-
-	renderWidget: function(/* ... */) {
-		var dl = form.DynamicList.prototype.renderWidget.apply(this, arguments);
-		dl.querySelector('.add-item ul > li[data-value="-"]')?.remove();
-		return dl;
-	}
-});
-
 var callServiceList = rpc.declare({
 	object: 'service',
 	method: 'list',
@@ -107,9 +97,10 @@ return view.extend({
 		o.default = o.disabled;
 		o.rmempty = false;
 
-		o = s.option(CBIStaticList, 'music_source', _('音源接口'),
+		o = s.option(form.DynamicList, 'music_source', _('音源接口'),
 			_('留空以使用默认音源。'));
 		o.value('bilibili', _('Bilibili 音乐'));
+		o.value('bilivideo', _('Bilibili 音乐 (bilivideo)'));
 		o.value('joox', _('JOOX 音乐'));
 		o.value('kugou', _('酷狗音乐'));
 		o.value('kuwo', _('酷我音乐'));
@@ -119,6 +110,11 @@ return view.extend({
 		o.value('youtube', _('Youtube 音乐'));
 		o.value('youtubedl', _('Youtube 音乐（youtube-dl）'));
 		o.value('ytdlp', _('Youtube 音乐（yt-dlp）'));
+		o.renderWidget = function(/* ... */) {
+			let dl = form.DynamicList.prototype.renderWidget.apply(this, arguments);
+			dl?.querySelector('.add-item ul > li[data-value="-"]')?.remove();
+			return dl;
+		}
 
 		o = s.option(form.Value, 'joox_cookie', _('JOOX Cookie'),
 			_('在 joox.com 获取，需要 wmid 和 session_key 值。'));

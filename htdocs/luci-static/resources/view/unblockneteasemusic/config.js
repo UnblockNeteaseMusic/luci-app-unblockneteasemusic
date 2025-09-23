@@ -101,6 +101,7 @@ return view.extend({
 			_('留空以使用默认音源。'));
 		o.value('bilibili', _('Bilibili 音乐'));
 		o.value('bilivideo', _('Bilibili 音乐 (bilivideo)'));
+		o.value('bodian', _('波点音乐'));
 		o.value('joox', _('JOOX 音乐'));
 		o.value('kugou', _('酷狗音乐'));
 		o.value('kuwo', _('酷我音乐'));

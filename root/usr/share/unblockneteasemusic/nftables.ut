@@ -34,6 +34,10 @@ set neteasemusic6 {
 	type ipv6_addr;
 	flags interval;
 	auto-merge;
+
+	{% if (neteasemusic_addr6): %}
+	elements = { {{ join(', ', split(trim(neteasemusic_addr6), '\n')) }} }
+	{% endif %}
 }
 
 chain netease_cloud_music {

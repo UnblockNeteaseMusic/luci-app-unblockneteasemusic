@@ -200,12 +200,12 @@ start_service() {
 		fi
 		config_foreach append_filter_client "acl_rule"
 
-		local netease_music_ips="$(wget -qO- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.data.*.ip.*')"
-		local netease_music_ips2="$(wget -qO- "https://music.httpdns.c.163.com/d" --post-data="music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com" |jsonfilter -e '@.dns.*["ips"].*')"
+		local netease_music_ips="$(wget -qO- "http://httpdns.n.netease.com/httpdns/v2/d?domain=music.163.com,interface.music.163.com,interface3.music.163.com,apm.music.163.com,apm3.music.163.com,clientlog.music.163.com,clientlog3.music.163.com")"
 		if [ -n "$FW4" ]; then
 			json_add_string acl_http_addr "$(echo -e "${acl_http_addr}" | sort -u)"
 			json_add_string acl_https_addr "$(echo -e "${acl_https_addr}" | sort -u)"
-			json_add_string neteasemusic_addr "$(echo -e "${netease_music_ips}\n${netease_music_ips2}" | sort -u)"
+			json_add_string neteasemusic_addr "$(echo -e "${netease_music_ips}" | jsonfilter -e '@.data.*.ip.*' | sort -u)"
+			json_add_string neteasemusic_addr6 "$(echo -e "${netease_music_ips}" | jsonfilter -e '@.data.*.ipv6.*' | sort -u)"
 
 			json_dump > "$RUN_DIR/fw4.info"
 			json_cleanup
@@ -235,7 +235,7 @@ start_service() {
 				procd_close_data
 			fi
 		else
-			echo -e "${netease_music_ips}\n${netease_music_ips2}" | sort -u | awk '{print "ipset add neteasemusic "$1}' | sh
+			echo -e "${netease_music_ips}" | jsonfilter -e '@.data.*.ip.*' | sort -u | awk '{print "ipset add neteasemusic "$1}' | sh
 
 			$IPT_N -N "netease_cloud_music"
 			for local_addr in "0.0.0.0/8" "10.0.0.0/8" "127.0.0.0/8" "169.254.0.0/16" "172.16.0.0/12" "192.168.0.0/16" "224.0.0.0/4" "240.0.0.0/4"; do

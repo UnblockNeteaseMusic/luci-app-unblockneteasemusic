@@ -196,7 +196,7 @@ start_service() {
 		if [ -z "$FW4" ]; then
 			ipset create "acl_neteasemusic_http" hash:mac
 			ipset create "acl_neteasemusic_https" hash:mac
-			ipset create "neteasemusic" hash:ip
+			ipset create "neteasemusic" hash:ip timeout 7200
 		fi
 		config_foreach append_filter_client "acl_rule"
 

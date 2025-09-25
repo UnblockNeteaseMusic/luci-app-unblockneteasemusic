@@ -11,11 +11,11 @@ LOCK="$RUN_DIR/update_core.lock"
 LOG="$RUN_DIR/run.log"
 
 check_core_if_already_running() {
-	if [ -e "$LOCK" ]; then
+	exec 200>"$LOCK"
+
+	if ! flock -n 200 &> /dev/null; then
 		echo -e "\nA task is already running." >> "$LOG"
 		exit 2
-	else
-		touch "$LOCK"
 	fi
 }
 
@@ -25,7 +25,7 @@ clean_log(){
 
 check_core_latest_version() {
 	core_latest_ver="$(wget -qO- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' | jsonfilter -e '@[0].sha')"
-	[ -n "$core_latest_ver" ] || { echo -e "\nFailed to check latest core version, please try again later." >> "$LOG"; rm -f "$LOCK"; exit 1; }
+	[ -n "$core_latest_ver" ] || { echo -e "\nFailed to check latest core version, please try again later." >> "$LOG"; exit 1; }
 	if [ ! -e "$UNM_DIR/core_local_ver" ]; then
 		clean_log
 		echo -e "Local version: NOT FOUND, latest version: $core_latest_ver." >> "$LOG"
@@ -38,7 +38,6 @@ check_core_latest_version() {
 		else
 			echo -e "\nLocal version: $(cat $UNM_DIR/core_local_ver 2>"/dev/null"), latest version: $core_latest_ver." >> "$LOG"
 			echo -e "You're already using the latest version." >> "$LOG"
-			rm -f "$LOCK"
 			exit 3
 		fi
 	fi
@@ -55,7 +54,6 @@ update_core() {
 		wget "https://fastly.jsdelivr.net/gh/UnblockNeteaseMusic/server@$core_latest_ver/$file" -qO "$UNM_DIR/core/${file##*/}"
 		[ -s "$UNM_DIR/core/${file##*/}" ] || {
 			echo -e "Failed to download ${file##*/}." >> "$LOG"
-			rm -f "$LOCK"
 			exit 1
 		}
 	done
@@ -65,7 +63,6 @@ update_core() {
 		wget "https://fastly.jsdelivr.net/gh/UnblockNeteaseMusic/server@$core_latest_ver/$cert" -qO "$UNM_DIR/core/$cert"
 		[ -s "$UNM_DIR/core/${cert}" ] || {
 			echo -e "Failed to download ${cert}." >> "$LOG"
-			rm -f "$LOCK"
 			exit 1
 		}
 	done
@@ -75,7 +72,6 @@ update_core() {
 
 	echo -e "Succeeded in updating core." > "$LOG"
 	echo -e "Current core version: $core_latest_ver.\n" >> "$LOG"
-	rm -f "$LOCK"
 }
 
 case "$1" in

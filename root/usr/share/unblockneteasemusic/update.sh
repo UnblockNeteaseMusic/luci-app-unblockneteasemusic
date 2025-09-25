@@ -21,7 +21,7 @@ check_core_latest_version() {
 		exit 2
 	fi
 
-	core_latest_ver="$(wget -qO- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' | jsonfilter -e '@[0].sha')"
+	core_latest_ver="$(wget -T10 -qO- 'https://api.github.com/repos/UnblockNeteaseMusic/server/commits?sha=enhanced&path=precompiled' | jsonfilter -e '@[0].sha')"
 	[ -n "$core_latest_ver" ] || { echo -e "\nFailed to check latest core version, please try again later." >> "$LOG"; exit 1; }
 	if [ ! -e "$UNM_DIR/core_local_ver" ]; then
 		clean_log
@@ -46,9 +46,9 @@ update_core() {
 	mkdir -p "$UNM_DIR/core"
 	rm -rf "$UNM_DIR/core"/*
 
-	for file in $(wget -qO- "https://api.github.com/repos/UnblockNeteaseMusic/server/contents/precompiled" | jsonfilter -e '@[*].path')
+	for file in $(wget -T10 -qO- "https://api.github.com/repos/UnblockNeteaseMusic/server/contents/precompiled" | jsonfilter -e '@[*].path')
 	do
-		wget "https://fastly.jsdelivr.net/gh/UnblockNeteaseMusic/server@$core_latest_ver/$file" -qO "$UNM_DIR/core/${file##*/}"
+		wget -T10 "https://fastly.jsdelivr.net/gh/UnblockNeteaseMusic/server@$core_latest_ver/$file" -qO "$UNM_DIR/core/${file##*/}"
 		[ -s "$UNM_DIR/core/${file##*/}" ] || {
 			echo -e "Failed to download ${file##*/}." >> "$LOG"
 			exit 1
@@ -57,7 +57,7 @@ update_core() {
 
 	for cert in "ca.crt" "server.crt" "server.key"
 	do
-		wget "https://fastly.jsdelivr.net/gh/UnblockNeteaseMusic/server@$core_latest_ver/$cert" -qO "$UNM_DIR/core/$cert"
+		wget -T10 "https://fastly.jsdelivr.net/gh/UnblockNeteaseMusic/server@$core_latest_ver/$cert" -qO "$UNM_DIR/core/$cert"
 		[ -s "$UNM_DIR/core/${cert}" ] || {
 			echo -e "Failed to download ${cert}." >> "$LOG"
 			exit 1
